@@ -89,6 +89,17 @@ test('pressing Enter in the password field submits the form', async () => {
   await waitFor(() => expect(getToken()).not.toBeNull());
 });
 
+test('the demo admin button signs in directly without showing credentials', async () => {
+  mount();
+  const accounts = (await (await fetch('/api/v1/session/accounts')).json()) as { email: string; userType: string }[];
+  const admin = accounts.find(account => account.userType === 'admin');
+  if (!admin) throw new Error('no seeded demo admin account');
+  const button = await screen.findByTestId(tid.signIn.demoAdmin);
+  await userEvent.click(button);
+  await waitFor(() => expect(getToken()).not.toBeNull());
+  expect(screen.queryByText(admin.email)).not.toBeInTheDocument();
+});
+
 /* SIGN IN / SIGN OUT: "It is plain that browser storage is not a security boundary". */
 test('the sign-in screen says where the demo keeps its data, and that it is not a security boundary', () => {
   mount();

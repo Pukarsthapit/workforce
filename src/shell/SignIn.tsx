@@ -35,12 +35,24 @@ export function SignIn() {
   const [email, setEmail] = useState(''); const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null); const [busy, setBusy] = useState(false);
   const [showAccounts, setShowAccounts] = useState(false);
-  const accounts = useQuery({ queryKey: ['demo-accounts'], queryFn: () => api(listAccounts), enabled: showAccounts && FAKE_SERVER_ON });
-  async function submit(e: FormEvent) {
-    e.preventDefault(); setBusy(true); setError(null);
-    try { await signIn(email, password); }
+  const accounts = useQuery({ queryKey: ['demo-accounts'], queryFn: () => api(listAccounts), enabled: FAKE_SERVER_ON });
+  async function signInWith(address: string, secret: string) {
+    setBusy(true); setError(null);
+    try { await signIn(address, secret); }
     catch (err) { setError(err instanceof ApiError ? `${err.refusal.message} ${err.refusal.next}` : 'Sign-in failed. Nothing has been changed.'); }
     finally { setBusy(false); }
+  }
+  async function submit(e: FormEvent) {
+    e.preventDefault();
+    await signInWith(email, password);
+  }
+  async function continueAsDemoAdmin() {
+    const admin = accounts.data?.find(account => account.userType === 'admin');
+    if (!admin) {
+      setError('The demo admin account could not be loaded. Check the connection and try again.');
+      return;
+    }
+    await signInWith(admin.email, 'calm.ly@123');
   }
   return (
     <div className="flex min-h-dvh flex-col">
@@ -58,6 +70,13 @@ export function SignIn() {
               <Button testId={tid.signIn.submit} kind="primary" type="submit" disabled={busy} className="w-full">Sign in</Button>
             </form>
             {FAKE_SERVER_ON && <>
+              <div className="mt-md">
+                <Button testId={tid.signIn.demoAdmin} kind="secondary" disabled={busy || accounts.isPending}
+                  onClick={continueAsDemoAdmin} className="w-full">
+                  {accounts.isPending ? 'Loading demo account…' : 'Continue as demo admin'}
+                </Button>
+                <p className="mt-xs text-center text-xs text-text-muted">Demo access only. Changes stay in this browser.</p>
+              </div>
               <div className="mt-md text-center">
                 <Button testId={tid.signIn.showAccounts} kind="link" aria-expanded={showAccounts} className="max-md:min-h-touch" onClick={() => setShowAccounts(s => !s)}>
                   {showAccounts ? 'Hide the accounts' : 'Which accounts exist?'}</Button>

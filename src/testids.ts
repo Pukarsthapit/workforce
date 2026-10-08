@@ -9,7 +9,7 @@ export const tid = {
   page: (view: string) => k('page', view),
   signIn: {
     form: 'sign-in-form', email: 'sign-in-email', password: 'sign-in-password', submit: 'sign-in-submit',
-    error: 'sign-in-error', showAccounts: 'sign-in-show-accounts', storageNote: 'sign-in-storage-note', account: (email: string) => k('sign-in-account', email),
+    error: 'sign-in-error', demoAdmin: 'sign-in-demo-admin', showAccounts: 'sign-in-show-accounts', storageNote: 'sign-in-storage-note', account: (email: string) => k('sign-in-account', email),
     storageTip: 'sign-in-storage-tip',
   },
   nav: {
