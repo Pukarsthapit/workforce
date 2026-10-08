@@ -85,8 +85,18 @@ test('the top bar keeps theme and notifications on the right without a role or e
   const controls = topBar?.querySelector('.ml-auto');
   expect(controls).toContainElement(screen.getByTestId(tid.shell.theme));
   expect(controls).toContainElement(screen.getByTestId(tid.shell.bell));
+  expect(screen.getByTestId(tid.shell.theme)).toHaveClass('border-border-strong', 'bg-surface-card');
+  expect(screen.getByTestId(tid.shell.bell)).toHaveClass('border-border-strong', 'bg-surface-card');
   expect(topBar?.querySelector('[data-caps]')).toBeNull();
   expectTestIdCoverage();
+});
+
+test('the Timesheet page title sits in the top bar', () => {
+  const nav = buildNav({ caps: new Set(['own_home', 'own_ts']), modules: { CORE: true, TS: true, A: true }, flags: {}, onboarding: false });
+  render(<QueryClientProvider client={queryClient}><MemoryRouter initialEntries={['/work/ts']}>
+    <ShellView nav={nav} roleLabel="Employee" viewingAs={null} account={menuAccount('Priya Shah')} inbox={emptyInbox(0)} onSignOut={() => {}} onEndViewAs={() => {}} /></MemoryRouter></QueryClientProvider>);
+  const title = screen.getByRole('heading', { level: 1, name: 'Timesheet' });
+  expect(title.closest('[data-shell-topbar]')).not.toBeNull();
 });
 
 /* A valid session whose capabilities resolve to nothing gets a clear page,

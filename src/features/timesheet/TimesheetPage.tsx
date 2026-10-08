@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { tid } from '@/testids';
-import { GuideButton, Page, PageHead, Seg } from '@/ui';
+import { GuideButton, Page, Seg } from '@/ui';
 import { useTimesheetWeek } from '@/api/timesheets';
 import { useCurrentSession } from '@/shell/SessionProvider';
 import { todayIso } from '@/lib/format';
@@ -40,17 +40,17 @@ export function TimesheetPage() {
   let shown: View = view ?? (c ? defaultView(c) : 'day');
   if (shown === 'week' && !weekOk) shown = 'day';
   if (shown === 'day' && !dayOk) shown = 'week';
+  const viewActions = <>
+    <GuideButton view="ts" />
+    {c && <Seg label="Show the day or the week" value={shown} onChange={setView} testId={v => tid.ts.view(v)}
+      options={[{ value: 'day', label: 'Day', disabled: !dayOk }, { value: 'week', label: 'Week', disabled: !weekOk }]} />}
+  </>;
   return (
     <Page testId={tid.page('ts')}>
-      <PageHead title="Timesheet" actions={<>
-        <GuideButton view="ts" />
-        {c && <Seg label="Show the day or the week" value={shown} onChange={setView} testId={v => tid.ts.view(v)}
-          options={[{ value: 'day', label: 'Day', disabled: !dayOk }, { value: 'week', label: 'Week', disabled: !weekOk }]} />}
-      </>} />
       {q.isError && <p data-testid={tid.ts.error} role="alert" className="text-err">Your timesheet could not be loaded. Reload the page to try again.</p>}
       {!q.isError && (!week || serverToday === null) && <p className="text-text-secondary">Loading your timesheet&hellip;</p>}
       {week && serverToday !== null && (shown === 'day'
-        ? <DayView week={week} date={date} today={today} onDate={setAnchor} personId={personId} />
-        : <WeekView week={week} today={today} onAnchor={setAnchor} personId={personId} />)}
+        ? <DayView week={week} date={date} today={today} onDate={setAnchor} personId={personId} toolbarActions={viewActions} />
+        : <WeekView week={week} today={today} onAnchor={setAnchor} personId={personId} toolbarActions={viewActions} />)}
     </Page>);
 }

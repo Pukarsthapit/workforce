@@ -41,8 +41,8 @@ export function dayChip(day: WeekDay) {
    day the clock acts on while the server's gates allow it (D4), and a clock
    left open on an earlier day shows its close banner (D6). */
 export interface DayClock { card: MyClock | null; readAt: number; open: ClockRecord | null; openBlocked: MyClock['openBlocked'] }
-export function DayView({ week, date, today, onDate, personId }: {
-  week: TimesheetWeek; date: string; today: string; onDate: (d: string) => void; personId: string;
+export function DayView({ week, date, today, onDate, personId, toolbarActions }: {
+  week: TimesheetWeek; date: string; today: string; onDate: (d: string) => void; personId: string; toolbarActions?: ReactNode;
 }) {
   const q = useMyClock(week.capture.mode === 'clock'), c = q.data;
   const day = week.days.find(d => d.date === date);
@@ -52,7 +52,7 @@ export function DayView({ week, date, today, onDate, personId }: {
   const onCard = c ? date === c.date || date === c.now.date : false;
   const clock: DayClock = { card: c?.gates.show && onCard ? c : null, readAt: q.dataUpdatedAt,
     open: c?.gates.live && c.gates.mode === 'clock' ? c.open : null, openBlocked: c?.openBlocked ?? null };
-  return <DayPanel key={`${date}:${day.version}`} week={week} day={day} today={today} onDate={onDate} personId={personId} clock={clock} />;
+  return <DayPanel key={`${date}:${day.version}`} week={week} day={day} today={today} onDate={onDate} personId={personId} clock={clock} toolbarActions={toolbarActions} />;
 }
 
 function entryTip(week: TimesheetWeek, clocking: boolean) {
@@ -64,8 +64,8 @@ function entryTip(week: TimesheetWeek, clocking: boolean) {
   return mand ? `${first} Fields marked required are required for ${week.person.typeName}.` : first;
 }
 
-function DayPanel({ week, day, today, onDate, personId, clock }: {
-  week: TimesheetWeek; day: WeekDay; today: string; onDate: (d: string) => void; personId: string; clock: DayClock;
+function DayPanel({ week, day, today, onDate, personId, clock, toolbarActions }: {
+  week: TimesheetWeek; day: WeekDay; today: string; onDate: (d: string) => void; personId: string; clock: DayClock; toolbarActions?: ReactNode;
 }) {
   const c = week.capture, rec = day.record, mgr = week.person.manager.trim() || 'your manager';
   const flagged = (r: DaySaved) => (r.warnings.length ? `Flagged: ${r.warnings.join(' ')}` : undefined);
@@ -132,6 +132,7 @@ function DayPanel({ week, day, today, onDate, personId, clock }: {
             {day.clock?.late && <Pill testId={tid.clock.late} tone="warn" glyph={<AlarmClock />}>Late</Pill>}
             {day.clock?.closedLate && <Pill testId={tid.clock.closedLate} tone="neu" glyph={<History />}>Closed later</Pill>}
             <Pill testId={tid.ts.dayState} tone={chip.tone} glyph={chip.glyph}>{chip.label}</Pill>
+            {toolbarActions}
           </div>
         </div>
       </Card>
@@ -177,7 +178,7 @@ function DayPanel({ week, day, today, onDate, personId, clock }: {
             </div>
           </Card>
         </div>
-        <div className="lg:sticky lg:top-[150px]">
+        <div>
           <DayStatsCard capture={c} stats={stats} scheduled={line?.hours} />
           {formGroups(c).some(g => g.group.key === 'allow' && g.fields.length > 0) && <FormExpander testId={tid.dayForm.group('allow')}
             title="Allowances" note="Tick those that apply" defaultOpen={false}>

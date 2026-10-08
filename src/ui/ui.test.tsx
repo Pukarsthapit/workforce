@@ -1,6 +1,8 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Button, Field, TextInput, Pill, SelectBox, CheckboxField, SwitchField, Modal, ConfirmModal, Tip, HelpButton, Caution, Page, PageHead, FilterBar, SearchFilter, SelectFilter, Row } from '@/ui';
+import { PageTitleProvider } from '@/ui/Page';
+import { TopBar } from '@/shell/TopBar';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/ui/shadcn/table';
 import { expectTestIdCoverage } from '@/test/testid-coverage';
 
@@ -41,6 +43,18 @@ test('filter controls name themselves', () => {
 test('Button renders its test id', () => {
   render(<Button testId="people-add">Add someone</Button>);
   expect(screen.getByTestId('people-add')).toHaveTextContent('Add someone');
+});
+test('ghost buttons have a visible outline against the page background', () => {
+  render(<Button testId="secondary-action" kind="ghost">Copy yesterday</Button>);
+  expect(screen.getByTestId('secondary-action')).toHaveClass('border-border-strong', 'bg-surface-card');
+});
+test('a managed page title renders in the shared top bar instead of the page body', () => {
+  render(<PageTitleProvider initialTitle="">
+    <TopBar />
+    <Page testId="page-demo"><PageHead title="Timesheet" /></Page>
+  </PageTitleProvider>);
+  expect(screen.getByRole('heading', { level: 1, name: 'Timesheet' }).closest('[data-shell-topbar]')).not.toBeNull();
+  expect(screen.getByTestId('page-demo').querySelector('h1')).toBeNull();
 });
 test('Field wires label, hint and error to the control, and takes its test ids from the control', () => {
   render(<Field label="Email" hint="Used to sign in" error="Already used by Amara Okafor" tip="The address they sign in with.">

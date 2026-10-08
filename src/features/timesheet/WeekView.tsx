@@ -29,8 +29,8 @@ export function weekChip(week: TimesheetWeek) {
   return WEEK_CHIP[key] ?? DRAFT_CHIP;
 }
 
-export function WeekView({ week, today, onAnchor, personId }: {
-  week: TimesheetWeek; today: string; onAnchor: (date: string) => void; personId: string;
+export function WeekView({ week, today, onAnchor, personId, toolbarActions }: {
+  week: TimesheetWeek; today: string; onAnchor: (date: string) => void; personId: string; toolbarActions?: ReactNode;
 }) {
   const submit = useSubmitWeek();
   const [result, setResult] = useState<{ weekStart: string; res: WeekSubmitted } | null>(null);
@@ -50,7 +50,7 @@ export function WeekView({ week, today, onAnchor, personId }: {
   const shown = result?.weekStart === week.weekStart ? result.res : null;
   return (
     <>
-      <WeekPanel key={signature} week={week} today={today} onAnchor={onAnchor} onSubmit={onSubmit} pending={pending} />
+      <WeekPanel key={signature} week={week} today={today} onAnchor={onAnchor} onSubmit={onSubmit} pending={pending} toolbarActions={toolbarActions} />
       {submit.refusal && <FormWarn testId={tid.ts.banner('week-refusal')}>{refusedDay(week, submit.refusal.field)}{submit.refusal.message} <span className="opacity-90">{submit.refusal.next}</span></FormWarn>}
       {shown && shown.held.length > 0 && <Banner testId={tid.ts.weekResult} tone="info" title={`${shown.held.length} day${shown.held.length === 1 ? '' : 's'} held back`}>
         {shown.held.map(h => <span key={h.date} className="block">{h.reason}</span>)}</Banner>}
@@ -58,8 +58,8 @@ export function WeekView({ week, today, onAnchor, personId }: {
     </>);
 }
 
-function WeekPanel({ week, today, onAnchor, onSubmit, pending }: {
-  week: TimesheetWeek; today: string; onAnchor: (date: string) => void; onSubmit: (s: GridState) => void; pending: boolean;
+function WeekPanel({ week, today, onAnchor, onSubmit, pending, toolbarActions }: {
+  week: TimesheetWeek; today: string; onAnchor: (date: string) => void; onSubmit: (s: GridState) => void; pending: boolean; toolbarActions?: ReactNode;
 }) {
   const c = week.capture, narrow = useNarrow();
   const m = weekModel(c.fields, typeOf(c), envOf(c), c.weekGrid);
@@ -90,6 +90,7 @@ function WeekPanel({ week, today, onAnchor, onSubmit, pending }: {
           <Pill testId={tid.ts.weekState} tone={chip.tone} glyph={chip.glyph}>{chip.label}</Pill>
           {c.modules.R && <Button testId={tid.ts.fillRota} kind="ghost" small onClick={fill}>Fill from rota</Button>}
           <Button testId={tid.ts.submitWeek} kind="primary" small pending={pending} onClick={() => onSubmit(current)}>Submit week</Button>
+          {toolbarActions}
         </div>
       </div>
       <WeekGrid week={week} model={m} layout={layout} state={current} onChange={setState} today={today} />

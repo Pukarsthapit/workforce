@@ -1,6 +1,19 @@
-import type { ReactNode } from 'react';
+import { createContext, useContext, useLayoutEffect, useState, type ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { Tip } from './Affordances';
+
+interface PageTitle { title: string; tip?: string; tipTestId?: string }
+interface PageTitleState { heading: PageTitle; setHeading: (heading: PageTitle) => void }
+const PageTitleContext = createContext<PageTitleState | null>(null);
+
+export function PageTitleProvider({ initialTitle, children }: { initialTitle: string; children: ReactNode }) {
+  const [heading, setHeading] = useState<PageTitle>({ title: initialTitle });
+  return <PageTitleContext.Provider value={{ heading, setHeading }}>{children}</PageTitleContext.Provider>;
+}
+
+export function usePageTitle() {
+  return useContext(PageTitleContext)?.heading;
+}
 
 /* The page frame every routed screen sits in: the prototype's .page
    (calm.ly-workforce-v15.html:388-389, 1524-1525), at most 1360px wide and
@@ -22,6 +35,12 @@ export function Page({ testId, narrow, className, children }: { testId: string; 
 export function PageHead({ title, crumb, tip, tipTestId, actions }: {
   title: string; crumb?: string; tip?: string; tipTestId?: string; actions?: ReactNode;
 }) {
+  const pageTitle = useContext(PageTitleContext);
+  const setHeading = pageTitle?.setHeading;
+  useLayoutEffect(() => {
+    if (!setHeading) return;
+    setHeading({ title, tip, tipTestId });
+  }, [setHeading, title, tip, tipTestId]);
   const parentCrumb = crumb?.split('·').map(part => part.trim())
     .filter(part => part.toLocaleLowerCase() !== title.toLocaleLowerCase()).join(' · ');
   return (
@@ -30,9 +49,9 @@ export function PageHead({ title, crumb, tip, tipTestId, actions }: {
         {parentCrumb && <div className="mb-sm flex items-center gap-sm text-xs font-medium tracking-[.08em] text-text-muted">
           <span aria-hidden="true" className="flow-knot" />{parentCrumb}
         </div>}
-        <h1 className="max-w-[22ch] text-[length:var(--type-page-title)] leading-[1.08] font-medium tracking-[-.045em]">
+        {!pageTitle && <h1 className="max-w-[22ch] text-[length:var(--type-page-title)] leading-[1.08] font-medium tracking-[-.045em]">
           {title}{tip && tipTestId && <Tip testId={tipTestId} text={tip} />}
-        </h1>
+        </h1>}
       </div>
         {actions && <div className="ml-auto flex flex-wrap items-center gap-sm">{actions}</div>}
     </header>);

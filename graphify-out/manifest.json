@@ -887,7 +887,7 @@
     "ast_hash": "2e15ee48bb11fd5b7370287b501a24ba",
     "semantic_hash": "2e15ee48bb11fd5b7370287b501a24ba"
   },
-  "src/mocks/seed/qnipay.json": {
+  "src/mocks/seed/calm.ly.json": {
     "mtime": 1790742432.670645,
     "seen": 1790831512.6986606,
     "ast_hash": "c672e9e3f01523f3fab864ba7c7d4499",

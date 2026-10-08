@@ -37,7 +37,7 @@ export function NotificationBell({ inbox }: { inbox: InboxState }) {
     <div ref={box} className="relative">
       <button type="button" data-testid={tid.shell.bell} aria-label={`Notifications, ${unread} unread`} aria-expanded={open} aria-controls={open ? tid.inbox.panel : undefined}
         onClick={() => setOpen(o => !o)}
-        className="relative grid size-[34px] shrink-0 place-items-center rounded-pill text-shell-ink transition-colors duration-(--qp-duration-fast) hover:bg-shell-hover max-md:size-11 [&>svg]:size-[18px]">
+        className="relative grid size-[34px] shrink-0 place-items-center rounded-pill border border-border-strong bg-surface-card text-shell-ink transition-colors duration-(--qp-duration-fast) hover:bg-surface-tint max-md:size-11 [&>svg]:size-[18px]">
         <Bell aria-hidden="true" />
         {unread > 0 && <span data-testid={tid.shell.bellCount} className="absolute top-px right-0 grid h-4 min-w-4 place-items-center rounded-pill bg-brand-accent px-xs text-xs leading-none font-bold text-text-on-accent max-md:top-[6px] max-md:right-[4px]">{unread}</span>}
       </button>

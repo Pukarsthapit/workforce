@@ -7,6 +7,7 @@ import { tid } from '@/testids';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/ui/shadcn/button';
 import { Logo, Modal, NavLink, Page, PageHead, Card, toastInfo } from '@/ui';
+import { PageTitleProvider } from '@/ui/Page';
 import { GUIDES } from '@/ui/guides';
 import { AccountMenu, type MenuAccount } from './AccountMenu';
 import { TopBar } from './TopBar';
@@ -139,31 +140,33 @@ export function ShellView({ nav, roleLabel, viewingAs, account, canViewAs = fals
         profilePath={profile?.path} here={here} account={account} roleLabel={roleLabel} viewingAs={viewingAs} canViewAs={canViewAs}
         onSignOut={onSignOut} onViewAs={onViewAs} onEndViewAs={onEndViewAs}
         collapsed={sidebarCollapsed} onToggle={toggleSidebar} onHelp={() => setHelpOpen(true)} />
-      <div className="flex min-h-dvh min-w-0 flex-col">
-        <TopBar homePath={first?.path ?? '/'}>
-          <MobileNavigation homeTab={homeTab} sections={sections} profilePath={profile?.path} here={here}
-            account={account} roleLabel={roleLabel} viewingAs={viewingAs} canViewAs={canViewAs}
-            onSignOut={onSignOut} onViewAs={onViewAs} onEndViewAs={onEndViewAs} onHelp={() => setHelpOpen(true)} />
-          <div className="ml-auto flex shrink-0 items-center gap-md max-md:gap-[2px]">
-            <IconButton testId={tid.shell.theme} label={`${theme === 'dark' ? 'Light' : 'Dark'} theme`} onClick={toggleTheme}><Sun aria-hidden="true" /></IconButton>
-            {inbox ? <NotificationBell inbox={inbox} /> : <ServerBell readOnly={viewingAs !== null} />}
-          </div>
-        </TopBar>
-        {viewingAs && <div role="status" className="flex flex-wrap items-center gap-md border-b border-warn bg-warn-surface px-xl py-sm text-sm text-warn max-lg:px-md">
-          <span>Looking at the app as <b>{viewingAs}</b>. Your own account is unchanged.</span>
-          <button type="button" data-testid={tid.shell.viewAsEnd} className="inline-flex min-h-touch items-center font-semibold underline" onClick={onEndViewAs}>Return to my account</button></div>}
-        <main className={cn('min-w-0 flex-1 lg:pb-10', stripTabs.length > 0 && 'max-lg:pb-[calc(72px+env(safe-area-inset-bottom,0px))]')}>
-          <Routes>
-            {nav.flatMap(g => g.tabs).map(t => {
-              const Built = BUILT[t.view];
-              return <Route key={t.path} path={t.path} element={Built ? <Built /> : <NotBuilt tab={t} />} />;
-            })}
-            <Route path="/" element={homeTab?.view === 'workspace-home' ? <WorkspaceHome sections={sections} roleLabel={roleLabel} /> : first ? <Navigate to={first.path} replace /> : <NothingAvailable />} />
-            <Route path="*" element={first ? <PageUnavailable path={pathname} home={first} /> : <NothingAvailable />} />
-          </Routes>
-        </main>
-        {stripTabs.length > 0 && <BottomBar tabs={stripTabs} here={here} />}
-      </div>
+      <PageTitleProvider key={pathname} initialTitle={activeTab?.label ?? ''}>
+        <div className="flex min-h-dvh min-w-0 flex-col">
+          <TopBar homePath={first?.path ?? '/'}>
+            <MobileNavigation homeTab={homeTab} sections={sections} profilePath={profile?.path} here={here}
+              account={account} roleLabel={roleLabel} viewingAs={viewingAs} canViewAs={canViewAs}
+              onSignOut={onSignOut} onViewAs={onViewAs} onEndViewAs={onEndViewAs} onHelp={() => setHelpOpen(true)} />
+            <div className="ml-auto flex shrink-0 items-center gap-md max-md:gap-[2px]">
+              <IconButton testId={tid.shell.theme} label={`${theme === 'dark' ? 'Light' : 'Dark'} theme`} onClick={toggleTheme}><Sun aria-hidden="true" /></IconButton>
+              {inbox ? <NotificationBell inbox={inbox} /> : <ServerBell readOnly={viewingAs !== null} />}
+            </div>
+          </TopBar>
+          {viewingAs && <div role="status" className="flex flex-wrap items-center gap-md border-b border-warn bg-warn-surface px-xl py-sm text-sm text-warn max-lg:px-md">
+            <span>Looking at the app as <b>{viewingAs}</b>. Your own account is unchanged.</span>
+            <button type="button" data-testid={tid.shell.viewAsEnd} className="inline-flex min-h-touch items-center font-semibold underline" onClick={onEndViewAs}>Return to my account</button></div>}
+          <main className={cn('min-w-0 flex-1 lg:pb-10', stripTabs.length > 0 && 'max-lg:pb-[calc(72px+env(safe-area-inset-bottom,0px))]')}>
+            <Routes>
+              {nav.flatMap(g => g.tabs).map(t => {
+                const Built = BUILT[t.view];
+                return <Route key={t.path} path={t.path} element={Built ? <Built /> : <NotBuilt tab={t} />} />;
+              })}
+              <Route path="/" element={homeTab?.view === 'workspace-home' ? <WorkspaceHome sections={sections} roleLabel={roleLabel} /> : first ? <Navigate to={first.path} replace /> : <NothingAvailable />} />
+              <Route path="*" element={first ? <PageUnavailable path={pathname} home={first} /> : <NothingAvailable />} />
+            </Routes>
+          </main>
+          {stripTabs.length > 0 && <BottomBar tabs={stripTabs} here={here} />}
+        </div>
+      </PageTitleProvider>
       <HelpDialog open={helpOpen} onOpenChange={setHelpOpen} view={activeTab?.view} />
     </div>);
 }
@@ -190,7 +193,7 @@ function useHomeOnSwitch(who: string | undefined, nav: NavGroup[], pathname: str
 function IconButton({ testId, label, onClick, children }: { testId: string; label: string; onClick?: () => void; children: ReactNode }) {
   return (
     <button type="button" data-testid={testId} aria-label={label} onClick={onClick}
-      className="relative grid size-[34px] shrink-0 place-items-center rounded-pill text-shell-ink transition-colors duration-(--qp-duration-fast) hover:bg-shell-hover max-md:size-11 [&>svg]:size-[18px]">
+      className="relative grid size-[34px] shrink-0 place-items-center rounded-pill border border-border-strong bg-surface-card text-shell-ink transition-colors duration-(--qp-duration-fast) hover:bg-surface-tint max-md:size-11 [&>svg]:size-[18px]">
       {children}
     </button>);
 }

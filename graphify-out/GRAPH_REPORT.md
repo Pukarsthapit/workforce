@@ -1,4 +1,4 @@
-# Graph Report - qnipay-workforce-app  (2026-10-01)
+# Graph Report - calm.ly-workforce-app  (2026-10-01)
 
 ## Corpus Check
 - 284 files · ~429,641 words
@@ -334,7 +334,7 @@ Nodes (6): compilerOptions, module, moduleResolution, skipLibCheck, types, inclu
 
 ### Community 56 - "Prototype Trace Workflow"
 Cohesion: 0.47
-Nodes (6): mockup-slicer agent, completedAreas (e2e/trace-areas.json), trace-filler agent, scripts/trace.mjs (npm run trace, trace:check), Prototype regression suite (qnipay-regression-suite.js, 965 assertions), Prototype trace (e2e/trace.json)
+Nodes (6): mockup-slicer agent, completedAreas (e2e/trace-areas.json), trace-filler agent, scripts/trace.mjs (npm run trace, trace:check), Prototype regression suite (calm.ly-regression-suite.js, 965 assertions), Prototype trace (e2e/trace.json)
 
 ### Community 57 - "Porting Agents"
 Cohesion: 0.47

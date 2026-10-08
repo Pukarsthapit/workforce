@@ -18,7 +18,7 @@ const buttonVariants = cva(
         destructive: "border-err bg-transparent text-err hover:bg-err-surface",
         outline: "border-border-strong bg-surface-card text-text-primary hover:bg-surface-tint",
         secondary: "bg-brand-subtle text-brand hover:bg-brand-subtle-hover dark:text-brand-accent",
-        ghost: "border-transparent bg-transparent text-text-secondary hover:bg-surface-tint hover:text-text-primary",
+        ghost: "border-border-strong bg-surface-card text-text-secondary hover:bg-surface-tint hover:text-text-primary",
         success: "bg-ok text-white hover:bg-ok/90",
         link: "h-auto border-0 p-0 text-xs font-semibold text-brand underline dark:text-brand-accent",
       },
