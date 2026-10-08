@@ -46461,8 +46461,7 @@
                       "type": "boolean"
                     },
                     "simulated": {
-                      "type": "boolean",
-                      "const": true
+                      "type": "boolean"
                     }
                   },
                   "required": [
@@ -46618,8 +46617,7 @@
                       "type": "boolean"
                     },
                     "simulated": {
-                      "type": "boolean",
-                      "const": true
+                      "type": "boolean"
                     }
                   },
                   "required": [
@@ -46818,8 +46816,7 @@
                       "type": "boolean"
                     },
                     "simulated": {
-                      "type": "boolean",
-                      "const": true
+                      "type": "boolean"
                     }
                   },
                   "required": [
@@ -46857,7 +46854,7 @@
         }
       },
       "post": {
-        "summary": "Sign in (simulated; Entra ID in production)",
+        "summary": "Sign in to the local demonstration server",
         "security": [],
         "requestBody": {
           "required": true,
@@ -46976,8 +46973,7 @@
                       "type": "boolean"
                     },
                     "simulated": {
-                      "type": "boolean",
-                      "const": true
+                      "type": "boolean"
                     }
                   },
                   "required": [

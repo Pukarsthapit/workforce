@@ -7,6 +7,7 @@ import { Button, Field, Logo, Pill, TextInput, Tip } from '@/ui';
 import { useSession } from './SessionProvider';
 import { TopBar } from './TopBar';
 import { FAKE_SERVER_ON } from '@/lib/fake-server';
+import { startGoogleSignIn } from '@/api/supabase-auth';
 
 const NOTE = { employee: 'Their own work: timesheet, shifts and leave', manager: 'Approvals and their team', admin: 'Configuration, modules and access' } as const;
 const ROLE = { employee: 'Employee', manager: 'Manager', admin: 'Admin' } as const;
@@ -46,6 +47,14 @@ export function SignIn() {
     e.preventDefault();
     await signInWith(email, password);
   }
+  async function signInWithGoogle() {
+    setBusy(true); setError(null);
+    try { await startGoogleSignIn(); }
+    catch (err) {
+      setError(err instanceof Error ? err.message : 'Microsoft sign-in could not be started. Nothing has changed.');
+      setBusy(false);
+    }
+  }
   async function continueAsDemoAdmin() {
     const admin = accounts.data?.find(account => account.userType === 'admin');
     if (!admin) {
@@ -62,13 +71,18 @@ export function SignIn() {
           <div className="w-[min(420px,100%)] rounded-card border bg-surface-card p-xl shadow-md max-md:border-0 max-md:px-0 max-md:py-md max-md:shadow-none">
             <div className="mb-lg flex rounded-sm bg-surface-inverse px-[14px] py-md"><Logo /></div>
             <h1 className="mb-[2px]">Sign in</h1>
-            <p className="mb-lg text-text-secondary">Simulated sign-in. Production uses your Microsoft work account.</p>
-            <form data-testid={tid.signIn.form} onSubmit={submit} noValidate>
+            <p className="mb-lg text-text-secondary">{FAKE_SERVER_ON ? 'Simulated sign-in for this local demonstration.' : 'Sign in with your Google account. Access is matched to your employee email.'}</p>
+            {FAKE_SERVER_ON ? <form data-testid={tid.signIn.form} onSubmit={submit} noValidate>
               <Field label="Email address"><TextInput testId={tid.signIn.email} type="email" inputMode="email" autoComplete="username" placeholder="you@company.com" value={email} onChange={e => setEmail(e.target.value)} /></Field>
               <Field label="Password"><TextInput testId={tid.signIn.password} type="password" autoComplete="current-password" placeholder="Your password" value={password} onChange={e => setPassword(e.target.value)} /></Field>
               {error && <p data-testid={tid.signIn.error} role="alert" className="mb-md rounded-card border border-l-4 border-err bg-err-surface px-lg py-md text-sm font-semibold text-err">{error}</p>}
               <Button testId={tid.signIn.submit} kind="primary" type="submit" disabled={busy} className="w-full">Sign in</Button>
-            </form>
+            </form> : <div>
+              {error && <p data-testid={tid.signIn.error} role="alert" className="mb-md rounded-card border border-l-4 border-err bg-err-surface px-lg py-md text-sm font-semibold text-err">{error}</p>}
+              <Button testId={tid.signIn.submit} kind="primary" disabled={busy} onClick={signInWithGoogle} className="w-full">
+                {busy ? 'Redirecting to Google…' : 'Continue with Google'}
+              </Button>
+            </div>}
             {FAKE_SERVER_ON && <>
               <div className="mt-md">
                 <Button testId={tid.signIn.demoAdmin} kind="secondary" disabled={busy || accounts.isPending}

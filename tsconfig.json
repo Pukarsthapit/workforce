@@ -7,5 +7,5 @@
     "baseUrl": ".", "paths": { "@/*": ["src/*"] }, "ignoreDeprecations": "6.0",
     "types": ["node", "vitest/globals", "@testing-library/jest-dom"]
   },
-  "include": ["src", "e2e", "scripts"]
+  "include": ["api", "src", "e2e", "scripts"]
 }

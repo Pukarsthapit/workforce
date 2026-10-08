@@ -5,6 +5,8 @@ import { createSession, deleteSession, endViewAs, getSession, startViewAs, type 
 import { queryClient } from '@/api/query';
 import { toastRefusal } from '@/ui';
 import { sessionEvents } from '@/api/session-events';
+import { FAKE_SERVER_ON } from '@/lib/fake-server';
+import { supabaseAuth } from '@/api/supabase-auth';
 
 interface Ctx { session: Session | null; ready: boolean;
   signIn(email: string, password: string): Promise<void>; signOut(): Promise<void>;
@@ -21,20 +23,57 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   /* No token means there is nothing to check, so the app is ready from the
      first render; a lazy initializer keeps that a pure read, not a setState
      call inside the effect body below. */
-  const [ready, setReady] = useState(() => !getToken());
+  const [ready, setReady] = useState(() => FAKE_SERVER_ON && !getToken());
   const adopt = useCallback((s: Session | null) => { setToken(s?.token ?? null); setSession(s); queryClient.clear(); }, []);
   useEffect(() => {
-    if (!getToken()) return;
-    api(getSession).then(adopt, (err: unknown) => {
-      /* Only a confirmed 401 (the token, or the account behind it, is gone)
-         should clear a cached token: that is a signed-out person, not an
-         empty shell. A 5xx or network failure (ApiError status 0) says
-         nothing about whether the session is still valid, so the token stays
-         and the person is told what happened instead of being silently
-         signed out from under an unrelated outage. */
-      if (err instanceof ApiError && err.status === 401) { adopt(null); return; }
-      if (err instanceof ApiError) toastRefusal(err.refusal);
-    }).finally(() => setReady(true));
+    let cancelled = false;
+    const loadSession = (token: string | null) => {
+      setToken(token);
+      if (!token) { setReady(true); return; }
+      api(getSession).then(s => { if (!cancelled) adopt(s); }, (err: unknown) => {
+        /* Only a confirmed 401 (the token, or the account behind it, is gone)
+           should clear a cached token: that is a signed-out person, not an
+           empty shell. A 5xx or network failure (ApiError status 0) says
+           nothing about whether the session is still valid, so the token stays
+           and the person is told what happened instead of being silently
+           signed out from under an unrelated outage. */
+        if (err instanceof ApiError && err.status === 401) { adopt(null); return; }
+        if (err instanceof ApiError) toastRefusal(err.refusal);
+      }).finally(() => { if (!cancelled) setReady(true); });
+    };
+    if (FAKE_SERVER_ON) {
+      if (getToken()) loadSession(getToken());
+      return () => { cancelled = true; };
+    }
+    void supabaseAuth().then(client => client.auth.getSession()).then(({ data, error }) => {
+      if (cancelled) return;
+      if (error) {
+        toastRefusal({ message: 'Could not restore your Google sign-in session.', next: 'Sign in again. If this continues, contact your administrator.' });
+        setReady(true);
+        return;
+      }
+      loadSession(data.session?.access_token ?? null);
+    }).catch(() => {
+      if (!cancelled) {
+        toastRefusal({ message: 'Google sign-in is not configured for this deployment.', next: 'Contact your administrator to configure Supabase Auth.' });
+        setReady(true);
+      }
+    });
+    return () => { cancelled = true; };
+  }, [adopt]);
+  useEffect(() => {
+    if (FAKE_SERVER_ON) return;
+    let unsubscribe: (() => void) | undefined;
+    void supabaseAuth().then(client => {
+      const { data } = client.auth.onAuthStateChange((event, next) => {
+        if (event === 'TOKEN_REFRESHED' && next?.access_token) setToken(next.access_token);
+        if (event === 'SIGNED_OUT') adopt(null);
+      });
+      unsubscribe = () => data.subscription.unsubscribe();
+    }).catch(() => {
+      toastRefusal({ message: 'Could not initialize Google sign-in.', next: 'Reload the page. If the problem continues, contact your administrator.' });
+    });
+    return () => unsubscribe?.();
   }, [adopt]);
   /* A write that can change this person's own capabilities (their own
      template or exception) asks for the session to be read again. Only the
@@ -78,7 +117,16 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   }, [adopt]);
   const value: Ctx = { session, ready,
     signIn: async (email, password) => adopt(await api(createSession, { body: { email, password } })),
-    signOut: async () => { try { await api(deleteSession); } catch (e) { if (!(e instanceof ApiError)) throw e; } adopt(null); },
+    signOut: async () => {
+      if (FAKE_SERVER_ON) {
+        try { await api(deleteSession); } catch (e) { if (!(e instanceof ApiError)) throw e; }
+      } else {
+        const client = await supabaseAuth();
+        const { error } = await client.auth.signOut();
+        if (error) throw error;
+      }
+      adopt(null);
+    },
     viewAs: personCode => switchView(() => api(startViewAs, { body: { personCode } })),
     endViewAs: () => switchView(() => api(endViewAs)) };
   return <SessionCtx.Provider value={value}>{children}</SessionCtx.Provider>;

@@ -13,7 +13,7 @@ export const Session = z.object({
   /* module 5 D8: the person whose eyes this is (the viewed one while viewing as) is a
      candidate or preboarding while the Onboarding module is on, so they see the portal only */
   onboarding: z.boolean(),
-  simulated: z.literal(true),   // honest label: this sign-in is not Entra ID yet
+  simulated: z.boolean(),   // true only for the local demonstration session
 });
 export type Session = z.infer<typeof Session>;
 export const SignInRequest = z.object({ email: z.string().min(1), password: z.string().min(1) });
@@ -26,7 +26,7 @@ export const ViewAsPerson = z.object({ personCode: z.string(), name: z.string(),
 export type ViewAsPerson = z.infer<typeof ViewAsPerson>;
 export const DemoAccount = z.object({ email: z.string(), name: z.string(), userType: SessionAccount.shape.userType, personCode: z.string() });
 
-export const createSession = defineEndpoint({ method: 'POST', path: '/api/v1/session', request: SignInRequest, response: Session, public: true, errors: [401], summary: 'Sign in (simulated; Entra ID in production)' });
+export const createSession = defineEndpoint({ method: 'POST', path: '/api/v1/session', request: SignInRequest, response: Session, public: true, errors: [401], summary: 'Sign in to the local demonstration server' });
 export const getSession = defineEndpoint({ method: 'GET', path: '/api/v1/session', response: Session, summary: 'The current session' });
 export const deleteSession = defineEndpoint({ method: 'DELETE', path: '/api/v1/session', response: z.null(), allowedWhileViewing: true, allowedWhileOnboarding: true, summary: 'Sign out' });
 export const startViewAs = defineEndpoint({ method: 'POST', path: '/api/v1/session/view-as', request: ViewAsRequest, response: Session, capability: 'perm_cfg', summary: 'Look at the app as another person, as a preview in which changes are off; audited' });
