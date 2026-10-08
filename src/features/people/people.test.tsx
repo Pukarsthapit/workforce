@@ -13,7 +13,7 @@ import { TeamPeoplePage } from './TeamPeoplePage';
 withFakeServer();
 beforeEach(() => resetTo('social'));
 
-describe('Qnipay setup · People, as an admin', () => {
+describe('calm.ly setup · People, as an admin', () => {
   beforeEach(async () => { await signInAs('admin'); });
   test('CR Every row shows a lifecycle state, and the page has full test id coverage', async () => {
     renderPage(<AdminPeoplePage />);

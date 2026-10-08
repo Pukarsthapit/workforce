@@ -1,6 +1,6 @@
 /* The weekly grid's model, shared by My timesheet and proxy entry: the
    prototype's renderWeekGrid, renderWeekClassic, renderWeekDays, readWeekGrid,
-   readWeekDays and recalcWeekGrid (qnipay-workforce-v15.html:6441-6662), held
+   readWeekDays and recalcWeekGrid (calm.ly-workforce-v15.html:6441-6662), held
    as state rather than read back out of the DOM. The classic and grid layouts
    hold allocation rows, each with its selects and seven cells; the day list
    holds lines per day, each with its own selects. Either becomes the same

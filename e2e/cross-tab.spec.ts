@@ -13,7 +13,7 @@ test('a stale write from a second tab is refused with 412, and the first tab\'s 
   const tabB = await context.newPage();
   await tabB.goto('/');
   await tabB.getByTestId(tid.signIn.email).fill(admin.email);
-  await tabB.getByTestId(tid.signIn.password).fill('Qnipay@123');
+  await tabB.getByTestId(tid.signIn.password).fill('calm.ly@123');
   await tabB.getByTestId(tid.signIn.submit).click();
   await expect(tabB.getByTestId(tid.shell.account)).toBeVisible();
 

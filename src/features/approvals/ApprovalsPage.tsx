@@ -8,7 +8,7 @@ import { CHAIN_TIP, FIXED_TIP } from '@/domain/approvals';
 import { formatDmy } from '@/domain/time';
 import { ChainDialog, DelegationDialog } from './ApprovalDialogs';
 
-/* Approvals: the prototype's admApprovals (qnipay-workforce-v15.html:
+/* Approvals: the prototype's admApprovals (calm.ly-workforce-v15.html:
    8405-8473). The approval chain per module, layer by layer, with the
    Business Central posting step locked at the end of the Timesheet chain;
    each module's chain is edited whole in a dialog and saved with If-Match
@@ -23,7 +23,7 @@ export function ApprovalsPage() {
   const setup = useApprovalSetup();
   return (
     <Page testId={tid.page('aappr')}>
-      <PageHead title="Approval framework" crumb="Qnipay setup · Approvals" tipTestId={tid.aappr.tip}
+      <PageHead title="Approval framework" crumb="calm.ly setup · Approvals" tipTestId={tid.aappr.tip}
         tip="One framework: layer, approver, scope, condition, SLA, escalation, delegation and return reason. Workflows stay module-specific." />
       {setup.data
         ? <><ChainCard chains={setup.data.chains} /><SignOffCard s={setup.data.signOff} /></>

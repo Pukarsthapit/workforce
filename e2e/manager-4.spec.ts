@@ -4,13 +4,13 @@ import { PUKAR, signInEmail } from './support/timesheet';
 import { stored, type NoteRow } from './support/rota';
 import { leaveAudit, type LeaveReq } from './support/leave';
 
-/* Module 4, the manager's journey on Team leave on qnipay (brief D14): an
+/* Module 4, the manager's journey on Team leave on calm.ly (brief D14): an
    approval with its toast that moves the balance exactly once; a decline
    without a reason refused on the field, then with one, which the colleague
    is told (D4, Review Focus 2 and 3); and team balances with how a
    colleague's entitlement was worked out. Rota is off here, so nothing
    reaches a rota and the card offers no rota link. */
-test.beforeEach(async ({ api }) => { await api.seed('qnipay'); await api.setClock(FROZEN); });
+test.beforeEach(async ({ api }) => { await api.seed('calm.ly'); await api.setClock(FROZEN); });
 const info = (page: import('@playwright/test').Page, text: string | RegExp) => page.getByTestId(tid.toast.info).filter({ hasText: text });
 interface EntRead { balance: { takenD: number; pending: number; leftD: number } }
 

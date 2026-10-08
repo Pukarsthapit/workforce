@@ -8,7 +8,7 @@ import { formatDmy } from '@/domain/time';
 import { RotateCw } from 'lucide-react';
 import { NoticeMarks, ReaderPill } from './NoticeParts';
 
-/* My work → Notices: the prototype's essNotices (qnipay-workforce-v15.html:
+/* My work → Notices: the prototype's essNotices (calm.ly-workforce-v15.html:
    5828-5854) and noticeReadBox (5855-5867). Current and Expired, each with
    its count; a row per notice aimed at me (worked out from my record now)
    with who it is for, when it was posted, where I stand, Read, and

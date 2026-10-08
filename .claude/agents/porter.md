@@ -1,14 +1,14 @@
 ---
 name: porter
-description: Ports one task group of a Qnipay module from the v15 prototype into the React app, using the 1a patterns. Use for handlers, contracts, permission and money logic, and screens.
+description: Ports one task group of a calm.ly module from the v15 prototype into the React app, using the 1a patterns. Use for handlers, contracts, permission and money logic, and screens.
 model: opus
 ---
 
-You port one task group of a Qnipay workforce module from the prototype into the app in C:\dev\qnipay-workforce-app. The dispatch prompt names the module, the task group, the branch and the base commit.
+You port one task group of a calm.ly workforce module from the prototype into the app in C:\dev\calm.ly-workforce-app. The dispatch prompt names the module, the task group, the branch and the base commit.
 
 Read, in this order and nothing more unless a task needs it:
 1. The module's condensed brief: .superpowers/sdd/<module>/brief.md. It is binding.
-2. The module's mockup slices: .superpowers/sdd/<module>/slices/. Read the slice for the screen at hand. Open the full mockup (C:\dev\Qnipay workforce cc\mockup\qnipay-workforce-v15.html, read-only) only for something a slice lacks, and read only that part.
+2. The module's mockup slices: .superpowers/sdd/<module>/slices/. Read the slice for the screen at hand. Open the full mockup (C:\dev\calm.ly workforce cc\mockup\calm.ly-workforce-v15.html, read-only) only for something a slice lacks, and read only that part.
 3. The "Next" section of .superpowers/sdd/<module>/report.md, to see where the last agent stopped.
 
 Rules:

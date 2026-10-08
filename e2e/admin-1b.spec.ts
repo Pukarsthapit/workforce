@@ -137,7 +137,7 @@ test('CR The capability appears in the matrix', async ({ page, signInAs }) => {
 });
 
 test.describe('the professional-services tenant', () => {
-  test.beforeEach(async ({ api }) => { await api.seed('qnipay'); await api.setClock(FROZEN); });
+  test.beforeEach(async ({ api }) => { await api.seed('calm.ly'); await api.setClock(FROZEN); });
   test('EI Employee IDs are the tenant’s own, not Business Central keys; a Business Central resource number is a separate field; a new ID follows the scheme already in use; TD the roster is the real resource list, inactive resources are archived, and the projects and cost centres are the real ones', async ({ page, api, signInAs }) => {
     await signInAs('admin');
     const people = await everyone(api);
@@ -166,7 +166,7 @@ test.describe('the professional-services tenant', () => {
     expect(accounts.filter(a => a.email === 'manish.nepal@dogmagroup.co.uk')).toEqual([expect.objectContaining({ userType: 'admin' })]);
 
     await page.goto('/setup/aloc?d=projects');
-    await expect(page.getByTestId(tid.dims.row('J00020'))).toContainText('Qnipay D365 Implementation');
+    await expect(page.getByTestId(tid.dims.row('J00020'))).toContainText('calm.ly D365 Implementation');
     await page.goto('/setup/aloc?d=cost-centres');
     await expect(page.getByTestId(tid.dims.row('CC-100'))).toContainText('Delivery');
   });

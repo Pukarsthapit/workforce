@@ -1,25 +1,33 @@
 import { toast } from 'sonner';
+import { CircleCheck, Info, OctagonAlert, TriangleAlert } from 'lucide-react';
 import { tid } from '@/testids';
 import type { Refusal } from '@/contract/common';
 
-/* The prototype's .toast (qnipay-workforce-v15.html:632-640): the inverse
-   surface with its pale ink, 11px 18px, radius 8, 14px, shadow-lg, as wide
-   as its words and centred. An error is the error colour with white ink; in
-   dark theme that colour is a light coral, so its ink turns dark to stay
-   readable (the prototype kept white there, at about 2.3:1).
-
-   A toast states the consequence and what to do next. `next` is not optional
-   on a refusal, so a refusal can never be shown without it. */
-const BOX = 'mx-auto w-fit max-w-full rounded-control px-[18px] py-[11px] text-sm shadow-lg';
-export function toastInfo(message: string, next?: string) {
+type Tone = 'info' | 'success' | 'warning' | 'error';
+const STATUS = {
+  info: { id: tid.toast.info, cls: 'border-info bg-info-surface text-info', icon: Info, role: 'status' },
+  success: { id: tid.toast.success, cls: 'border-ok bg-ok-surface text-ok', icon: CircleCheck, role: 'status' },
+  warning: { id: tid.toast.warning, cls: 'border-warn bg-warn-surface text-warn', icon: TriangleAlert, role: 'status' },
+  error: { id: tid.toast.error, cls: 'border-err bg-err-surface text-err', icon: OctagonAlert, role: 'alert' },
+} as const;
+const BOX = 'mx-auto flex w-fit max-w-full items-start gap-sm rounded-control border border-l-4 px-lg py-md text-sm shadow-sm';
+function showToast(tone: Tone, message: string, next?: string, duration = 5000) {
+  const status = STATUS[tone], Icon = status.icon;
   toast.custom(() => (
-    <div data-testid={tid.toast.info} role="status" className={`${BOX} bg-surface-inverse text-text-on-inverse`}>
-      <div>{message}</div>{next && <div data-testid={tid.toast.next} className="opacity-80">{next}</div>}
-    </div>), { duration: 5000 });
+    <div data-testid={status.id} role={status.role} className={`${BOX} ${status.cls}`}>
+      <Icon aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
+      <div>{message}{next && <div data-testid={tid.toast.next} className="mt-0.5 text-text-secondary">{next}</div>}</div>
+    </div>), { duration });
+}
+export function toastInfo(message: string, next?: string) {
+  showToast('info', message, next);
+}
+export function toastSuccess(message: string, next?: string) {
+  showToast('success', message, next);
+}
+export function toastWarning(message: string, next?: string) {
+  showToast('warning', message, next);
 }
 export function toastRefusal(r: Pick<Refusal, 'message' | 'next'>) {
-  toast.custom(() => (
-    <div data-testid={tid.toast.error} role="alert" className={`${BOX} bg-err text-text-on-brand dark:text-text-on-accent`}>
-      <div>{r.message}</div><div data-testid={tid.toast.next} className="opacity-90">{r.next}</div>
-    </div>), { duration: 8000 });
+  showToast('error', r.message, r.next, 8000);
 }

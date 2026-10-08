@@ -17,7 +17,7 @@ import { DOC_DONE, PoliciesStep, PolicyList, ReadDialog } from './OnbPolicies';
 import { readUpload, tooLarge } from './upload';
 
 /* My work → Onboarding: the new starter's portal, the prototype's
-   essOnboarding and onbSubmitted (qnipay-workforce-v15.html:4766-4804) with
+   essOnboarding and onbSubmitted (calm.ly-workforce-v15.html:4766-4804) with
    the onb-* handlers (10967-10983, 11434-11631). A rail of the steps asked,
    one step's body at a time, Back, the save dot and Save and continue, which
    is Submit to HR on the review step. Every write goes to the server and the

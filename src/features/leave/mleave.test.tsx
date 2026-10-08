@@ -163,8 +163,8 @@ describe('Leave setup', () => {
     expect(screen.queryByTestId(tid.mleave.card('types'))).toBeNull();
   });
 
-  test('on qnipay, with Rota off, Leave and Rota says approved leave reaches no rota', async () => {
-    resetTo('qnipay');
+  test('on calm.ly, with Rota off, Leave and Rota says approved leave reaches no rota', async () => {
+    resetTo('calm.ly');
     await signInAs('admin');
     await open();
     expect(screen.getByTestId(tid.mleave.rotaOff)).toHaveTextContent('The Rota module is off for this tenant');

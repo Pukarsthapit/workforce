@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ChevronDown } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/ui/shadcn/dropdown-menu';
 import { useViewAsPeople } from '@/api/session';
 import { tid } from '@/testids';
@@ -8,7 +9,7 @@ export interface MenuAccount { name: string; email: string; personCode: string; 
 /* The prototype's initials(): the first letter of each word, two at most. */
 const initials = (name: string) => name.split(' ').map(w => w.charAt(0)).join('').slice(0, 2).toUpperCase();
 
-/* Ported from the prototype's drawMenu (qnipay-workforce-v15.html:10765-10790):
+/* Ported from the prototype's drawMenu (calm.ly-workforce-v15.html:10765-10790):
    who you are signed in as (name, email, role, location and ID), a "Your
    account" line, then, for a holder of perm_cfg, one person per role to look
    at the app as. While viewing as someone the menu names them and offers the
@@ -20,9 +21,11 @@ const initials = (name: string) => name.split(' ').map(w => w.charAt(0)).join(''
    subtle tint and a brand tick. The trigger is the avatar: a 30px accent disc
    with your initials, then ▾ (.avbtn, .av; v15:316-320), inside a 44px
    target. */
-export function AccountMenu({ account, viewingAs, canViewAs, onSignOut, onViewAs, onEndViewAs }: {
+export function AccountMenu({ account, viewingAs, canViewAs, onSignOut, onViewAs, onEndViewAs, testId = tid.shell.account, side = 'bottom', align = 'end' }: {
   account: MenuAccount; viewingAs: string | null; canViewAs: boolean;
   onSignOut(): void; onViewAs(personCode: string): void; onEndViewAs(): void;
+  testId?: string;
+  side?: 'top' | 'bottom'; align?: 'start' | 'end';
 }) {
   const [open, setOpen] = useState(false);
   const offerViewAs = canViewAs && !viewingAs;
@@ -31,14 +34,14 @@ export function AccountMenu({ account, viewingAs, canViewAs, onSignOut, onViewAs
   const label = 'px-[11px] pt-[9px] pb-xs';
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
-      <DropdownMenuTrigger data-testid={tid.shell.account} aria-label={`Account: ${account.name}`}
+      <DropdownMenuTrigger data-testid={testId} aria-label={`Account: ${account.name}`}
         className="group inline-flex min-h-touch shrink-0 items-center rounded-pill focus-visible:shadow-none">
         <span className="flex items-center gap-[7px] rounded-pill py-[3px] pr-sm pl-[3px] text-text-on-inverse transition-colors duration-(--qp-duration-fast) group-hover:bg-shell-hover group-focus-visible:shadow-focus group-data-[state=open]:bg-shell-hover">
           <span aria-hidden="true" className="grid size-[30px] shrink-0 place-items-center rounded-pill bg-brand-accent text-xs font-bold text-text-on-accent">{initials(account.name)}</span>
-          <span aria-hidden="true" className="text-xs">▾</span>
+          <ChevronDown aria-hidden="true" className="size-3 shrink-0 transition-transform group-data-[state=open]:rotate-180" />
         </span>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" sideOffset={0} className="w-[308px] max-h-[78vh] max-md:w-[min(340px,calc(100vw-24px))]">
+      <DropdownMenuContent side={side} align={align} sideOffset={0} className="w-[308px] max-h-[78vh] max-md:w-[min(340px,calc(100vw-24px))]">
         <div data-testid={tid.shell.menuAccount} className="mb-[6px] border-b p-md">
           <div className="text-sm font-semibold">{account.name}</div>
           <div className="text-xs text-text-muted">{account.email}</div>

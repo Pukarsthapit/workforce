@@ -59,7 +59,7 @@ export function buildOpenApi() {
     (paths[p] ??= {})[e.method.toLowerCase()] = op;
   }
   return {
-    openapi: '3.1.0', info: { title: 'Qnipay Workforce API (draft, from the fake server)', version: '0.1.0' },
+    openapi: '3.1.0', info: { title: 'calm.ly Workforce API (draft, from the fake server)', version: '0.1.0' },
     security: [{ bearer: [] }],
     components: {
       securitySchemes: { bearer: { type: 'http', scheme: 'bearer', description: 'The session token from POST /api/v1/session' } },

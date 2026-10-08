@@ -1,5 +1,5 @@
 import social from './social.json';
-import qnipay from './qnipay.json';
+import calmly from './calmly.json';
 import {
   absenceCellPlan, balanceOf, bookedLeaveDates, bradford, datesCellPlan, entitlement, isLeaveState, latestAbsenceText, leaveCan, leaveConfigProblem,
   leaveYear, monthsWorked, nextStepText, policyBy, reconcileLeaver, requestDays, requestProblem, sicknessDates, slaOf, typeLeaveFor,
@@ -34,7 +34,7 @@ function world(seed: SeedFile) {
   return { people, cfg, requests, ledger, bases, episodes, leavers, balance, policyOf, must };
 }
 
-for (const [name, raw] of Object.entries({ social, qnipay })) {
+for (const [name, raw] of Object.entries({ social, 'calm.ly': calmly })) {
   const seed = raw as unknown as SeedFile, w = world(seed);
   describe(`seed ${name} for module 4`, () => {
     test('the leave setup passes its own check and keeps the prototype\'s types, policies and four stages', () => {
@@ -155,8 +155,8 @@ describe('seed social for module 4: the prototype\'s numbers', () => {
   });
 });
 
-describe('seed qnipay for module 4', () => {
-  const q = qnipay as unknown as SeedFile, w = world(q);
+describe('seed calmly for module 4', () => {
+  const q = calmly as unknown as SeedFile, w = world(q);
   test('the prototype\'s records land on Manish Nepal\'s reports at Manchester, the employee persona first', () => {
     expect([...new Set(w.requests.map(r => r.personCode))]).toEqual(['EMP005', 'EMP007', 'EMP004', 'EMP009']);
     expect(w.requests.filter(r => r.decidedBy).map(r => r.decidedBy?.personCode)).toEqual(['EMP001', 'EMP001']);
@@ -164,7 +164,7 @@ describe('seed qnipay for module 4', () => {
     expect(w.leavers.map(l => [l.personCode, w.people.get(l.personCode)?.state])).toEqual([['EMP008', 'archived']]);
     for (const r of w.requests) expect(w.people.get(r.personCode)?.location).toBe('MCR');
   });
-  test('Bradford is the prototype\'s on qnipay too', () => {
+  test('Bradford is the prototype\'s on calmly too', () => {
     expect(bradford(w.episodes.filter(e => e.personCode === 'EMP009'), TODAY, w.cfg.absenceTrigger)).toEqual({ spells: 4, days: 7, score: 112, triggered: true });
   });
   test('Rota is off, so no request claims a rota effect and there is no rota data', () => {

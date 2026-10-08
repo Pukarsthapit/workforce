@@ -9,7 +9,7 @@ import { fakeServerOn } from './scripts/fake-server-flag.mjs';
    each use and, when it is false, drops the fake server, its seed and the
    demo sign-in from the bundle. */
 const fakeServerFlag = (): Plugin => ({
-  name: 'qnipay-fake-server-flag',
+  name: 'calm.ly-fake-server-flag',
   config: (config, { mode }) => ({ define: { __FAKE_SERVER_ON__: JSON.stringify(fakeServerOn(mode, config.root ?? process.cwd())) } }),
 });
 

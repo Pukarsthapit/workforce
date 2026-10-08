@@ -14,15 +14,15 @@ export const tid = {
   },
   nav: {
     group: (key: string) => k('nav-group', key),
+    mobileGroup: (key: string) => k('nav-mobile-group', key),
     tab: (view: string) => k('nav-tab', view),
-    menu: (group: string) => k('nav-menu', group),
     bottom: (view: string) => k('nav-bottom', view),
     more: 'nav-bottom-more',
     /* 1c group 8: the phone's Go to sheet behind More (v15:12072) */
     goToList: 'nav-goto-list', goTo: (view: string) => k('nav-goto', view),
   },
   shell: {
-    rolePill: 'shell-role-pill', bell: 'shell-bell', bellCount: 'shell-bell-count', theme: 'shell-theme',
+    bell: 'shell-bell', bellCount: 'shell-bell-count', theme: 'shell-theme',
     account: 'shell-account', signOut: 'shell-sign-out', viewAsEnd: 'shell-view-as-end',
     viewAs: (personCode: string) => k('shell-view-as', personCode),
     menuAccount: 'shell-menu-account', menuRole: 'shell-menu-role', menuViewAsEnd: 'shell-menu-view-as-end',
@@ -113,7 +113,7 @@ export const tid = {
   /* A Field's own ids come from the control it wraps, so a form never types one by hand. */
   field: { root: (controlTestId: string) => `${controlTestId}-field`, tip: (controlTestId: string) => `${controlTestId}-field-tip` },
   modal: { root: 'modal', title: 'modal-title', close: 'modal-close', confirm: 'modal-confirm', cancel: 'modal-cancel' },
-  toast: { info: 'toast-info', error: 'toast-error', next: 'toast-next' },
+  toast: { info: 'toast-info', success: 'toast-success', warning: 'toast-warning', error: 'toast-error', next: 'toast-next' },
   /* A page head's own affordances (src/ui/Page.tsx): its i tip and its standing caution. */
   head: { tip: (view: string) => k('head-tip', view), caution: (view: string) => k('head-caution', view) },
   /* module 2: a page's guide behind `?` (src/ui/Guide.tsx) */
@@ -532,7 +532,7 @@ export const tid = {
     /* the not-ready dialog (onb-activate) */
     notReady: 'tonb-not-ready', blocker: (i: number) => k('tonb-blocker', i), notReadyClose: 'tonb-not-ready-close', chase: 'tonb-chase',
   },
-  /* module 5: Qnipay setup → Modules → Onboarding → Onboarding setup (admOnboarding, v15:4672) */
+  /* module 5: calm.ly setup → Modules → Onboarding → Onboarding setup (admOnboarding, v15:4672) */
   monb: {
     error: 'monb-error', loading: 'monb-loading', off: 'monb-off', warn: 'monb-warn', save: 'monb-save', cancel: 'monb-cancel', dirty: 'monb-dirty',
     card: (key: string) => k('monb-card', key), tip: (key: string) => k('monb-tip', key), stepsCount: 'monb-steps-count',
@@ -547,7 +547,7 @@ export const tid = {
     /* the add and edit dialog (pol-add, pol-edit) */
     polName: 'monb-pol-name', polVersion: 'monb-pol-version', polSum: 'monb-pol-sum', polWarn: 'monb-pol-warn', polCancel: 'monb-pol-cancel', polSave: 'monb-pol-save',
   },
-  /* module 3: Qnipay setup → Integrations → IT service desk (admIT, v15:9689) */
+  /* module 3: calm.ly setup → Integrations → IT service desk (admIT, v15:9689) */
   iit: {
     error: 'iit-error', loading: 'iit-loading', banner: 'iit-banner', table: 'iit-table', empty: 'iit-empty',
     row: (ref: string) => k('iit-row', ref), status: (ref: string) => k('iit-status', ref),

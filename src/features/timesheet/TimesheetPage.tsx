@@ -12,7 +12,7 @@ import { flagOn } from './capture';
 import { DayView } from './DayView';
 import { WeekView } from './WeekView';
 
-/* My timesheet: the prototype's essTimesheet (qnipay-workforce-v15.html:6330-6345).
+/* My timesheet: the prototype's essTimesheet (calm.ly-workforce-v15.html:6330-6345).
    Day and Week follow the DAILY and WEEKLY flags; a grid-mode type opens on the
    week while WEEKLY is on (defaultTsView). The date is the server's: until
    the first week arrives the page asks for the week holding the browser's
@@ -42,7 +42,7 @@ export function TimesheetPage() {
   if (shown === 'day' && !dayOk) shown = 'week';
   return (
     <Page testId={tid.page('ts')}>
-      <PageHead title="My timesheet" crumb="My work · Timesheet" actions={<>
+      <PageHead title="Timesheet" actions={<>
         <GuideButton view="ts" />
         {c && <Seg label="Show the day or the week" value={shown} onChange={setView} testId={v => tid.ts.view(v)}
           options={[{ value: 'day', label: 'Day', disabled: !dayOk }, { value: 'week', label: 'Week', disabled: !weekOk }]} />}

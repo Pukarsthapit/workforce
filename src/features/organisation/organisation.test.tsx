@@ -126,7 +126,7 @@ test('remove asks first; the template in use is refused with the server\'s words
 
 test('import a file: it is listed, with what was left out; a file that is not JSON could not be read', async () => {
   await open();
-  const body = { kind: 'qnipay.template', v: 1, key: 'tpl_x', template: {
+  const body = { kind: 'calm.ly.template', v: 1, key: 'tpl_x', template: {
     name: 'From a file', description: 'Brought in', scope: 'config', modules: { R: false }, flags: {}, extras: {}, labels: { project: 'Contract' },
     employeeTypes: [], company: { currency: 'GBP £' } } };
   await userEvent.upload(screen.getByTestId(tid.aorg.importFile), new File([JSON.stringify(body)], 'from-a-file.json', { type: 'application/json' }), { applyAccept: false });

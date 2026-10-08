@@ -1,78 +1,319 @@
 @import "tailwindcss";
 @import "./ui/tokens.css";
-/* Inter, self-hosted so it renders offline and in the production build, at the
-   four weights the prototype loads from Google Fonts (v15 <head>). */
-@import "@fontsource/inter/400.css";
-@import "@fontsource/inter/500.css";
-@import "@fontsource/inter/600.css";
-@import "@fontsource/inter/700.css";
+/* Lexend Deca variable font, self-hosted for offline and production use. */
+@import "@fontsource-variable/lexend-deca/wght.css";
 
 /* the prototype switches theme with [data-theme="dark"], so shadcn's dark: does too */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
-/* shadcn reads these names. Each is an alias of a Qnipay semantic token, never a value. */
+/* shadcn reads these names. Each is an alias of a calm.ly semantic token, never a value. */
 :root {
-  --background: var(--qp-color-surface-page);
+  color-scheme: light;
+  --color-primary-50: color-mix(in srgb, #313A97 8%, white);
+  --color-primary-100: color-mix(in srgb, #313A97 16%, white);
+  --color-primary-200: color-mix(in srgb, #313A97 30%, white);
+  --color-primary-300: color-mix(in srgb, #313A97 46%, white);
+  --color-primary-400: color-mix(in srgb, #313A97 72%, white);
+  --color-primary-500: #313A97;
+  --color-primary-600: color-mix(in srgb, #313A97 88%, black);
+  --color-primary-700: color-mix(in srgb, #313A97 76%, black);
+  --color-primary-800: color-mix(in srgb, #313A97 62%, black);
+  --color-primary-900: color-mix(in srgb, #313A97 48%, black);
+  --color-neutral-50: #FCFBFB;
+  --color-neutral-100: #F7F5F5;
+  --color-neutral-200: #EAE6E7;
+  --color-neutral-300: #D9D2D4;
+  --color-neutral-400: #C9C0C3;
+  --color-neutral-500: #B9AEB2;
+  --color-neutral-600: #91868A;
+  --color-neutral-700: #6D6266;
+  --color-neutral-800: #4A4043;
+  --color-neutral-900: #312C2D;
+  --color-success-50: color-mix(in srgb, #3D683B 8%, white);
+  --color-success-100: color-mix(in srgb, #3D683B 16%, white);
+  --color-success-200: color-mix(in srgb, #3D683B 30%, white);
+  --color-success-300: color-mix(in srgb, #3D683B 48%, white);
+  --color-success-400: color-mix(in srgb, #3D683B 72%, white);
+  --color-success-500: #3D683B;
+  --color-success-600: color-mix(in srgb, #3D683B 88%, black);
+  --color-success-700: color-mix(in srgb, #3D683B 76%, black);
+  --color-success-800: color-mix(in srgb, #3D683B 62%, black);
+  --color-success-900: color-mix(in srgb, #3D683B 48%, black);
+  --color-danger-50: color-mix(in srgb, #AE3F37 8%, white);
+  --color-danger-100: color-mix(in srgb, #AE3F37 16%, white);
+  --color-danger-200: color-mix(in srgb, #AE3F37 30%, white);
+  --color-danger-300: color-mix(in srgb, #BF7170 58%, white);
+  --color-danger-400: #BF7170;
+  --color-danger-500: #AE3F37;
+  --color-danger-600: color-mix(in srgb, #AE3F37 88%, black);
+  --color-danger-700: color-mix(in srgb, #AE3F37 76%, black);
+  --color-danger-800: color-mix(in srgb, #AE3F37 62%, black);
+  --color-danger-900: color-mix(in srgb, #AE3F37 48%, black);
+  --color-warning-50: color-mix(in srgb, #A66A1F 8%, white);
+  --color-warning-100: color-mix(in srgb, #A66A1F 16%, white);
+  --color-warning-200: color-mix(in srgb, #A66A1F 30%, white);
+  --color-warning-300: color-mix(in srgb, #A66A1F 48%, white);
+  --color-warning-400: color-mix(in srgb, #A66A1F 72%, white);
+  --color-warning-500: #A66A1F;
+  --color-warning-600: color-mix(in srgb, #A66A1F 88%, black);
+  --color-warning-700: color-mix(in srgb, #A66A1F 76%, black);
+  --color-warning-800: color-mix(in srgb, #A66A1F 62%, black);
+  --color-warning-900: color-mix(in srgb, #A66A1F 48%, black);
+  --color-info-50: color-mix(in srgb, #798794 8%, white);
+  --color-info-100: color-mix(in srgb, #798794 16%, white);
+  --color-info-200: color-mix(in srgb, #798794 30%, white);
+  --color-info-300: color-mix(in srgb, #798794 48%, white);
+  --color-info-400: color-mix(in srgb, #798794 72%, white);
+  --color-info-500: #798794;
+  --color-info-600: color-mix(in srgb, #798794 88%, black);
+  --color-info-700: color-mix(in srgb, #798794 76%, black);
+  --color-info-800: color-mix(in srgb, #798794 62%, black);
+  --color-info-900: color-mix(in srgb, #798794 48%, black);
+
+  --color-background: #F5F6F9;
+  --color-surface: #FFFFFF;
+  --color-surface-subtle: #EEF0F5;
+  --color-surface-raised: #FFFFFF;
+  --color-border: #E1E4EC;
+  --color-border-strong: #BDC3D0;
+  --color-text: #312C2D;
+  --color-text-secondary: #62595C;
+  --color-text-muted: #6D6266;
+  --color-text-disabled: #798794;
+  --color-primary: var(--color-primary-500);
+  --color-primary-hover: var(--color-primary-600);
+  --color-primary-active: var(--color-primary-700);
+  --color-success: var(--color-success-700);
+  --color-success-subtle: var(--color-success-50);
+  --color-danger: var(--color-danger-500);
+  --color-danger-subtle: var(--color-danger-50);
+  --color-warning: var(--color-warning-700);
+  --color-warning-subtle: var(--color-warning-50);
+  --color-info: var(--color-info-700);
+  --color-info-subtle: var(--color-info-50);
+  --color-focus: var(--color-primary-500);
+  --type-page-title: clamp(2rem, 4.2vw, 3.5rem);
+  --type-section-title: clamp(1.2rem, 2vw, 1.55rem);
+  --type-data-large: clamp(1.85rem, 3.6vw, 3rem);
+  --type-data-medium: clamp(1.55rem, 2.8vw, 2.2rem);
+  --motion-fast: 140ms;
+  --motion-base: 240ms;
+  --motion-flow: 520ms;
+  --ease-flow: cubic-bezier(.22, .72, .18, 1);
+  --elevation-menu: 0 14px 38px rgba(17, 21, 31, .12);
+
+  --qp-primary-50: var(--color-primary-50); --qp-primary-100: var(--color-primary-100);
+  --qp-primary-200: var(--color-primary-200); --qp-primary-300: var(--color-primary-300);
+  --qp-primary-400: var(--color-primary-400); --qp-primary-500: var(--color-primary-500);
+  --qp-primary-600: var(--color-primary-600); --qp-primary-700: var(--color-primary-700);
+  --qp-primary-800: var(--color-primary-800); --qp-primary-900: var(--color-primary-900);
+  --qp-sec1-50: var(--color-success-50); --qp-sec1-100: var(--color-success-100);
+  --qp-sec1-200: var(--color-success-200); --qp-sec1-300: var(--color-success-300);
+  --qp-sec1-400: var(--color-success-400); --qp-sec1-500: var(--color-success-500);
+  --qp-sec1-600: var(--color-success-600); --qp-sec1-700: var(--color-success-700);
+  --qp-sec1-800: var(--color-success-800); --qp-sec1-900: var(--color-success-900);
+  --qp-sec2-50: var(--color-warning-50); --qp-sec2-100: var(--color-warning-100);
+  --qp-sec2-200: var(--color-warning-200); --qp-sec2-300: var(--color-warning-300);
+  --qp-sec2-400: var(--color-warning-400); --qp-sec2-500: var(--color-warning-500);
+  --qp-sec2-600: var(--color-warning-600); --qp-sec2-700: var(--color-warning-700);
+  --qp-sec2-800: var(--color-warning-800); --qp-sec2-900: var(--color-warning-900);
+  --qp-sec3-50: var(--color-danger-50); --qp-sec3-100: var(--color-danger-100);
+  --qp-sec3-200: var(--color-danger-200); --qp-sec3-300: var(--color-danger-300);
+  --qp-sec3-400: var(--color-danger-400); --qp-sec3-500: var(--color-danger-500);
+  --qp-sec3-600: var(--color-danger-600); --qp-sec3-700: var(--color-danger-700);
+  --qp-sec3-800: var(--color-danger-800); --qp-sec3-900: var(--color-danger-900);
+  --qp-sec4-50: var(--color-neutral-50); --qp-sec4-100: var(--color-neutral-100);
+  --qp-sec4-200: var(--color-neutral-200); --qp-sec4-300: var(--color-neutral-300);
+  --qp-sec4-400: var(--color-neutral-400); --qp-sec4-500: var(--color-neutral-500);
+  --qp-sec4-600: var(--color-neutral-600); --qp-sec4-700: var(--color-neutral-700);
+  --qp-sec4-800: var(--color-neutral-800); --qp-sec4-900: var(--color-neutral-900);
+  --qp-hl-50: var(--color-danger-50); --qp-hl-100: var(--color-danger-100);
+  --qp-hl-200: var(--color-danger-200); --qp-hl-300: var(--color-danger-300);
+  --qp-hl-400: var(--color-danger-400); --qp-hl-500: var(--color-danger-400);
+  --qp-hl-600: var(--color-danger-600); --qp-hl-700: var(--color-danger-700);
+  --qp-hl-800: var(--color-danger-800); --qp-hl-900: var(--color-danger-900);
+  --qp-info-50: var(--color-info-50); --qp-info-100: var(--color-info-100);
+  --qp-info-200: var(--color-info-200); --qp-info-300: var(--color-info-300);
+  --qp-info-400: var(--color-info-400); --qp-info-500: var(--color-info-500);
+  --qp-info-600: var(--color-info-600); --qp-info-700: var(--color-info-700);
+  --qp-info-800: var(--color-info-800); --qp-info-900: var(--color-info-900);
+  --qp-success-50: var(--color-success-50); --qp-success-100: var(--color-success-100);
+  --qp-success-200: var(--color-success-200); --qp-success-300: var(--color-success-300);
+  --qp-success-400: var(--color-success-400); --qp-success-500: var(--color-success-500);
+  --qp-success-600: var(--color-success-600); --qp-success-700: var(--color-success-700);
+  --qp-success-800: var(--color-success-800); --qp-success-900: var(--color-success-900);
+  --qp-warning-50: var(--color-warning-50); --qp-warning-100: var(--color-warning-100);
+  --qp-warning-200: var(--color-warning-200); --qp-warning-300: var(--color-warning-300);
+  --qp-warning-400: var(--color-warning-400); --qp-warning-500: var(--color-warning-500);
+  --qp-warning-600: var(--color-warning-600); --qp-warning-700: var(--color-warning-700);
+  --qp-warning-800: var(--color-warning-800); --qp-warning-900: var(--color-warning-900);
+  --qp-danger-50: var(--color-danger-50); --qp-danger-100: var(--color-danger-100);
+  --qp-danger-200: var(--color-danger-200); --qp-danger-300: var(--color-danger-300);
+  --qp-danger-400: var(--color-danger-400); --qp-danger-500: var(--color-danger-500);
+  --qp-danger-600: var(--color-danger-600); --qp-danger-700: var(--color-danger-700);
+  --qp-danger-800: var(--color-danger-800); --qp-danger-900: var(--color-danger-900);
+  --qp-ink: var(--color-neutral-900);
+  --qp-ink-secondary: var(--color-neutral-700);
+  --qp-ink-disabled: var(--color-neutral-500);
+  --qp-ink-secondary-aa: var(--color-text-secondary);
+  --qp-white: #FFFFFF;
+  --qp-bg-primary: var(--color-surface);
+  --qp-bg-base: var(--color-background);
+  --qp-bg-secondary: var(--color-surface-subtle);
+  --qp-line-300: var(--color-border);
+  --qp-line-700: #3A4250;
+  --qp-bg-primary-dark: #1A202B;
+  --qp-bg-base-dark: #11151F;
+  --qp-bg-secondary-dark: #222A36;
+  --qp-color-brand-primary: var(--color-primary);
+  --qp-color-brand-primary-hover: var(--color-primary-hover);
+  --qp-color-brand-primary-active: var(--color-primary-active);
+  --qp-color-brand-primary-subtle: var(--color-primary-50);
+  --qp-color-brand-primary-subtle-hover: var(--color-primary-100);
+  --qp-color-brand-accent: var(--color-danger-500);
+  --qp-color-surface-page: var(--color-background);
+  --qp-color-surface-card: var(--color-surface);
+  --qp-color-surface-sunken: var(--color-surface-subtle);
+  --qp-color-surface-tint: var(--color-surface-subtle);
+  --qp-color-surface-inverse: #312C2D;
+  --qp-color-text-primary: var(--color-text);
+  --qp-color-text-secondary: var(--color-text-secondary);
+  --qp-color-text-muted: var(--color-text-muted);
+  --qp-color-text-disabled: var(--color-text-disabled);
+  --qp-color-text-on-brand: #FFFFFF;
+  --qp-color-text-on-inverse: #FFFFFF;
+  --qp-color-text-on-accent: #FFFFFF;
+  --qp-color-border: var(--color-border);
+  --qp-color-border-strong: var(--color-border-strong);
+  --qp-color-status-success: var(--color-success);
+  --qp-color-status-success-surface: var(--color-success-subtle);
+  --qp-color-status-warning: var(--color-warning);
+  --qp-color-status-warning-surface: var(--color-warning-subtle);
+  --qp-color-status-error: var(--color-danger);
+  --qp-color-status-error-surface: var(--color-danger-subtle);
+  --qp-color-status-info: var(--color-info);
+  --qp-color-status-info-surface: var(--color-info-subtle);
+  --qp-color-status-neutral: var(--color-text-secondary);
+  --qp-color-status-neutral-surface: var(--color-surface-subtle);
+  --qp-color-shell-ink-muted: var(--color-neutral-700);
+  --qp-color-shell-ink: var(--color-text);
+  --qp-color-shell-hover: color-mix(in srgb, var(--color-primary) 8%, transparent);
+  --qp-color-accent-line: color-mix(in srgb, var(--color-primary) 24%, transparent);
+  --qp-color-scrim: color-mix(in srgb, #11151F 56%, transparent);
+  --qp-ring-invalid: 0 0 0 3px color-mix(in srgb, var(--color-danger) 18%, transparent);
+  --qp-ring-focus: 0 0 0 3px color-mix(in srgb, var(--color-primary) 24%, transparent);
+  --qp-shadow-sm: 0 1px 2px rgba(17, 21, 31, .04);
+  --qp-shadow: 0 1px 3px rgba(17, 21, 31, .06);
+  --qp-shadow-md: 0 6px 16px rgba(17, 21, 31, .08);
+  --qp-shadow-lg: 0 16px 32px rgba(17, 21, 31, .12);
+  --qp-shadow-xl: 0 20px 40px rgba(17, 21, 31, .14);
+  --qp-shadow-2xl: 0 24px 48px rgba(17, 21, 31, .16);
+  --qp-space-5: 20px; --qp-space-6: 24px; --qp-space-8: 32px;
+  --qp-space-10: 40px; --qp-space-12: 48px; --qp-space-16: 64px; --qp-space-20: 80px;
+  --qp-layout-max: 1440px;
+  --qp-radius-xs: 4px; --qp-radius-sm: 6px; --qp-radius-control: 8px;
+  --qp-radius-card: 12px; --qp-radius-overlay: 16px; --qp-radius-pill: 999px;
+  --qp-text-48: 32px; --qp-text-36: 28px; --qp-text-30: 24px;
+  --qp-text-24: 22px; --qp-text-20: 20px; --qp-text-18: 18px;
+  --qp-text-16: 16px; --qp-text-14: 14px; --qp-text-12: 12px;
+  --type-display: 32px;
+  --type-h1: 28px;
+  --type-h2: 20px;
+  --type-h3: 17px;
+  --type-h4: 15px;
+  --type-body-lg: 16px;
+  --type-body: 15px;
+  --type-body-sm: 14px;
+  --type-label: 13px;
+  --type-caption: 12px;
+  --type-overline: 11px;
+  --background: var(--color-background);
   --foreground: var(--qp-color-text-primary);
-  --card: var(--qp-color-surface-card);
+  --card: color-mix(in srgb, var(--qp-color-surface-card) 96%, var(--qp-white));
   --card-foreground: var(--qp-color-text-primary);
-  --popover: var(--qp-color-surface-card);
+  --popover: color-mix(in srgb, var(--qp-color-surface-card) 98%, var(--qp-white));
   --popover-foreground: var(--qp-color-text-primary);
-  --primary: var(--qp-color-brand-primary);
-  --primary-foreground: var(--qp-color-text-on-brand);
-  --secondary: var(--qp-color-surface-tint);
+  --primary: var(--color-primary);
+  --primary-foreground: #FFFFFF;
+  --secondary: color-mix(in srgb, var(--qp-color-surface-tint) 85%, var(--qp-white));
   --secondary-foreground: var(--qp-color-text-primary);
-  --muted: var(--qp-color-surface-sunken);
+  --muted: color-mix(in srgb, var(--qp-color-surface-sunken) 86%, var(--qp-white));
   --muted-foreground: var(--qp-color-text-secondary);
-  --accent: var(--qp-color-brand-primary-subtle);
+  --accent: color-mix(in srgb, var(--qp-color-brand-primary-subtle) 80%, var(--qp-white));
   --accent-foreground: var(--qp-color-text-primary);
   --destructive: var(--qp-color-status-error);
-  --border: var(--qp-color-border);
-  --input: var(--qp-color-border);
+  --border: color-mix(in srgb, var(--qp-color-border) 82%, var(--qp-white));
+  --input: color-mix(in srgb, var(--qp-color-border) 82%, var(--qp-white));
+  --shadow-premium: var(--qp-shadow-sm);
   --ring: var(--qp-color-brand-primary);
   --radius: var(--qp-radius-control);
-  /* the prototype pairs the lime accent with this dark ink on every one of
-     those surfaces (line 406: dark-mode `.btn.pri` sets color to #0A2410) —
-     a value no existing --qp token names, so it is named once, here. Named
-     in :root, not only the dark block below: --qp-color-brand-accent itself
-     never changes between themes (tokens.css defines no dark override for
-     it), so anything painted on it — the "current" nav pill, the account
-     menu trigger, the notification badge — needs this same ink in light
-     theme too, not the page's own --foreground/--primary-foreground, which
-     each flip for an unrelated reason (dark theme repoints --primary itself
-     to the accent, for buttons whose background and text move together;
-     using that same repointed foreground on a *fixed*-background element
-     left it unreadable in dark theme — axe's color-contrast check on
-     /setup/asetup caught this, task 11 fix round 1). */
-  --qp-color-text-on-accent: #0A2410;
-  /* The rest of the prototype's shell and overlay literals, each named once
-     here for the same reason as the ink above: no --qp token carries them.
-     Each is the exact value the prototype paints (line numbers in v15). */
-  --qp-color-shell-ink-muted: #98B29D;           /* .modsw button, 293 */
-  --qp-color-shell-ink: #D9E9D2;                 /* .iconbtn, 309 */
-  --qp-color-text-on-inverse: #EAF4E6;           /* .avbtn, .toast, #tipbubble */
-  --qp-color-shell-hover: rgba(255,255,255,.10); /* .modsw, .iconbtn, .avbtn :hover */
-  --qp-color-accent-line: rgba(173,238,104,.4);  /* .rolepill border, 305 */
-  --qp-color-scrim: rgba(10,36,16,.55);          /* .scrim, 574 */
-  --qp-color-brand-primary-subtle-hover: #CFEFC2;/* .btn.sec:hover, 438 */
-  --qp-ring-invalid: 0 0 0 3px rgba(138,44,32,.15); /* .fld.bad, 506 */
-  --qp-color-ring-track: rgba(255,255,255,.16);  /* .ring .rt, 1231 */
-  --qp-color-glass: rgba(255,255,255,.14);       /* .btn.glass, 1252 */
-  --qp-color-glass-line: rgba(255,255,255,.22);  /* .btn.glass border, 1252 */
-  --qp-color-glass-hover: rgba(255,255,255,.22); /* .btn.glass:hover, 1253 */
+  --qp-color-ring-track: color-mix(in srgb, var(--qp-white) 16%, transparent);
+  --qp-color-glass: color-mix(in srgb, var(--qp-white) 14%, transparent);
+  --qp-color-glass-line: color-mix(in srgb, var(--qp-white) 22%, transparent);
+  --qp-color-glass-hover: color-mix(in srgb, var(--qp-white) 22%, transparent);
 }
 
-/* Dark theme re-points shadcn's primary alias to the lime accent, not to a
-   different value of qp-color-brand-primary: the prototype's dark-mode CTAs,
-   toggles and selected chips all swap to the accent (e.g. `[data-theme="dark"]
-   .btn.pri`, `.tog.on`, `.chipbtn.on`, `.chips button.on`, `.dayc button.on`
-   at lines 406, 527, 544, 739, 744). This block must follow :root so it wins
-   the tie in specificity between `:root` and `[data-theme="dark"]` on <html>. */
+/* Dark surfaces and accessible status inks are tuned independently from the
+   light theme; the CALM.LY blue remains the primary action color. */
 [data-theme="dark"] {
-  --primary: var(--qp-color-brand-accent);
-  --primary-foreground: var(--qp-color-text-on-accent);
-  --ring: var(--qp-color-brand-accent);
-  --qp-color-brand-primary-subtle-hover: #1D4A24; /* [data-theme=dark] .btn.sec:hover, 439 */
+  color-scheme: dark;
+  --color-background: #11151F;
+  --color-surface: #1A202B;
+  --color-surface-subtle: #222A36;
+  --color-surface-raised: #202734;
+  --color-border: #333B49;
+  --color-border-strong: #4C5665;
+  --color-text: #F4F3F4;
+  --color-text-secondary: #D9D2D4;
+  --color-text-muted: #C9C0C3;
+  --color-text-disabled: #9AA5AF;
+  --color-success: var(--color-success-300);
+  --color-success-subtle: color-mix(in srgb, var(--color-success-500) 18%, var(--color-surface));
+  --color-danger: var(--color-danger-300);
+  --color-danger-subtle: color-mix(in srgb, var(--color-danger-500) 18%, var(--color-surface));
+  --color-warning: var(--color-warning-300);
+  --color-warning-subtle: color-mix(in srgb, var(--color-warning-500) 18%, var(--color-surface));
+  --color-info: var(--color-info-300);
+  --color-info-subtle: color-mix(in srgb, var(--color-info-500) 18%, var(--color-surface));
+  --elevation-menu: 0 18px 42px rgba(0, 0, 0, .34);
+  --qp-color-brand-accent: var(--color-primary-300);
+  --qp-color-text-on-accent: #312C2D;
+  --qp-color-brand-primary-subtle: var(--color-primary-800);
+  --qp-color-brand-primary-subtle-hover: color-mix(in srgb, var(--color-primary-500) 24%, var(--color-surface));
+  --qp-bg-base-dark: var(--color-background);
+  --qp-bg-primary-dark: var(--color-surface);
+  --qp-bg-secondary-dark: var(--color-surface-subtle);
+  --qp-color-surface-inverse: #0B0E15;
+  --qp-color-text-on-inverse: #F4F3F4;
+  --qp-color-status-success: var(--color-success);
+  --qp-color-status-success-surface: var(--color-success-subtle);
+  --qp-color-status-warning: var(--color-warning);
+  --qp-color-status-warning-surface: var(--color-warning-subtle);
+  --qp-color-status-error: var(--color-danger);
+  --qp-color-status-error-surface: var(--color-danger-subtle);
+  --qp-color-status-info: var(--color-info);
+  --qp-color-status-info-surface: var(--color-info-subtle);
+  --qp-color-status-neutral: var(--color-text-secondary);
+  --qp-color-status-neutral-surface: var(--color-surface-subtle);
+  --qp-color-shell-ink-muted: var(--color-text-secondary);
+  --qp-color-shell-ink: var(--color-text);
+  --qp-color-accent-line: color-mix(in srgb, var(--color-primary-300) 35%, transparent);
+  --qp-color-scrim: color-mix(in srgb, #000000 68%, transparent);
+  --qp-ring-focus: 0 0 0 3px color-mix(in srgb, var(--color-primary-300) 38%, transparent);
+  --qp-ring-invalid: 0 0 0 3px color-mix(in srgb, var(--color-danger-300) 28%, transparent);
+  --background: var(--color-background);
+  --card: var(--color-surface-raised);
+  --popover: var(--color-surface-raised);
+  --secondary: var(--color-surface-subtle);
+  --muted: var(--color-surface-subtle);
+  --muted-foreground: var(--color-text-secondary);
+  --foreground: var(--color-text);
+  --card-foreground: var(--color-text);
+  --popover-foreground: var(--color-text);
+  --primary: var(--color-primary);
+  --primary-foreground: #FFFFFF;
+  --ring: var(--color-primary);
+  --shadow-premium: var(--qp-shadow-sm);
 }
 
 @theme inline {
@@ -83,7 +324,7 @@
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
+  --color-primary: var(--qp-color-brand-primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
@@ -95,7 +336,7 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  /* Qnipay names, for everything shadcn does not name */
+  /* calm.ly names, for everything shadcn does not name */
   --color-brand: var(--qp-color-brand-primary);
   --color-brand-hover: var(--qp-color-brand-primary-hover);
   --color-brand-accent: var(--qp-color-brand-accent);
@@ -138,6 +379,55 @@
   --color-err-surface: var(--qp-color-status-error-surface);
   --color-info: var(--qp-color-status-info);
   --color-info-surface: var(--qp-color-status-info-surface);
+  --color-primary-50: var(--qp-primary-50); --color-primary-100: var(--qp-primary-100);
+  --color-primary-200: var(--qp-primary-200); --color-primary-300: var(--qp-primary-300);
+  --color-primary-400: var(--qp-primary-400); --color-primary-500: var(--qp-primary-500);
+  --color-primary-600: var(--qp-primary-600); --color-primary-700: var(--qp-primary-700);
+  --color-primary-800: var(--qp-primary-800); --color-primary-900: var(--qp-primary-900);
+  --color-neutral-50: var(--qp-sec4-50); --color-neutral-100: var(--qp-sec4-100);
+  --color-neutral-200: var(--qp-sec4-200); --color-neutral-300: var(--qp-sec4-300);
+  --color-neutral-400: var(--qp-sec4-400); --color-neutral-500: var(--qp-sec4-500);
+  --color-neutral-600: var(--qp-sec4-600); --color-neutral-700: var(--qp-sec4-700);
+  --color-neutral-800: var(--qp-sec4-800); --color-neutral-900: var(--qp-sec4-900);
+  --color-success-50: var(--qp-success-50); --color-success-100: var(--qp-success-100);
+  --color-success-200: var(--qp-success-200); --color-success-300: var(--qp-success-300);
+  --color-success-400: var(--qp-success-400); --color-success-500: var(--qp-success-500);
+  --color-success-600: var(--qp-success-600); --color-success-700: var(--qp-success-700);
+  --color-success-800: var(--qp-success-800); --color-success-900: var(--qp-success-900);
+  --color-danger-50: var(--qp-danger-50); --color-danger-100: var(--qp-danger-100);
+  --color-danger-200: var(--qp-danger-200); --color-danger-300: var(--qp-danger-300);
+  --color-danger-400: var(--qp-danger-400); --color-danger-500: var(--qp-danger-500);
+  --color-danger-600: var(--qp-danger-600); --color-danger-700: var(--qp-danger-700);
+  --color-danger-800: var(--qp-danger-800); --color-danger-900: var(--qp-danger-900);
+  --color-warning-50: var(--qp-warning-50); --color-warning-100: var(--qp-warning-100);
+  --color-warning-200: var(--qp-warning-200); --color-warning-300: var(--qp-warning-300);
+  --color-warning-400: var(--qp-warning-400); --color-warning-500: var(--qp-warning-500);
+  --color-warning-600: var(--qp-warning-600); --color-warning-700: var(--qp-warning-700);
+  --color-warning-800: var(--qp-warning-800); --color-warning-900: var(--qp-warning-900);
+  --color-info-50: var(--qp-info-50); --color-info-100: var(--qp-info-100);
+  --color-info-200: var(--qp-info-200); --color-info-300: var(--qp-info-300);
+  --color-info-400: var(--qp-info-400); --color-info-500: var(--qp-info-500);
+  --color-info-600: var(--qp-info-600); --color-info-700: var(--qp-info-700);
+  --color-info-800: var(--qp-info-800); --color-info-900: var(--qp-info-900);
+  --color-surface: var(--qp-color-surface-card);
+  --color-surface-subtle: var(--qp-color-surface-sunken);
+  --color-surface-raised: var(--card);
+  --color-border-strong: var(--qp-color-border-strong);
+  --color-text: var(--qp-color-text-primary);
+  --color-text-secondary: var(--qp-color-text-secondary);
+  --color-text-muted: var(--qp-color-text-muted);
+  --color-text-disabled: var(--qp-color-text-disabled);
+  --color-primary-hover: var(--qp-color-brand-primary-hover);
+  --color-primary-active: var(--qp-color-brand-primary-active);
+  --color-success: var(--qp-color-status-success);
+  --color-success-subtle: var(--qp-color-status-success-surface);
+  --color-danger: var(--qp-color-status-error);
+  --color-danger-subtle: var(--qp-color-status-error-surface);
+  --color-warning: var(--qp-color-status-warning);
+  --color-warning-subtle: var(--qp-color-status-warning-surface);
+  --color-info: var(--qp-color-status-info);
+  --color-info-subtle: var(--qp-color-status-info-surface);
+  --font-display: var(--qp-font-display);
   --color-neu: var(--qp-color-status-neutral);
   --color-neu-surface: var(--qp-color-status-neutral-surface);
   --radius-xs: var(--qp-radius-xs);
@@ -147,6 +437,9 @@
   --radius-card: var(--qp-radius-card);
   --radius-overlay: var(--qp-radius-overlay);
   --radius-pill: var(--qp-radius-pill);
+  --radius-lg: var(--qp-radius-card);
+  --radius-xl: var(--qp-radius-overlay);
+  --radius-full: var(--qp-radius-pill);
   --spacing-xs: var(--qp-space-xs);
   --spacing-sm: var(--qp-space-sm);
   --spacing-md: var(--qp-space-md);
@@ -154,6 +447,13 @@
   --spacing-xl: var(--qp-space-xl);
   --spacing-2xl: var(--qp-space-2xl);
   --spacing-3xl: var(--qp-space-3xl);
+  --spacing-5: var(--qp-space-5);
+  --spacing-6: var(--qp-space-6);
+  --spacing-8: var(--qp-space-8);
+  --spacing-10: var(--qp-space-10);
+  --spacing-12: var(--qp-space-12);
+  --spacing-16: var(--qp-space-16);
+  --spacing-20: var(--qp-space-20);
   /* min-h-touch / min-w-touch: the 44px minimum touch target (spec §10.3,
      WCAG 2.5.5). Resolves the same way max-w-* does below: a named utility
      falls back to --spacing-<key> when there is no more specific
@@ -178,11 +478,16 @@
   --max-width-xl: var(--container-xl);
   --max-width-2xl: var(--container-2xl);
   --max-width-3xl: var(--container-3xl);
-  --shadow-sm: var(--qp-shadow-sm);
+  --shadow-xs: var(--qp-shadow-sm);
+  --shadow-sm: var(--qp-shadow);
   --shadow-md: var(--qp-shadow-md);
   --shadow-lg: var(--qp-shadow-lg);
+  --shadow-premium: var(--qp-shadow-sm);
   --shadow-focus: var(--qp-ring-focus);
   --shadow-invalid: var(--qp-ring-invalid);
+  --radius-lg: var(--qp-radius-card);
+  --radius-xl: var(--qp-radius-overlay);
+  --radius-full: var(--qp-radius-pill);
   /* The official type scale (tokens.css), not Tailwind's own: text-xs is
      12px, text-sm 14px and so on, at the prototype's body line-height of
      1.45; the headline sizes take its headline line-height of 1.33. */
@@ -205,14 +510,34 @@
      was never added: without it, table rules, menus and dialogs drew in ink. */
   *, ::before, ::after { border-color: var(--color-border); }
   html { -webkit-text-size-adjust: 100%; }
-  body { background: var(--background); color: var(--foreground); font-family: var(--qp-font-body);
-    font-size: var(--qp-text-14); line-height: var(--qp-lh-body); -webkit-font-smoothing: antialiased; }
+  body {
+    min-width: 320px;
+    background: var(--color-background);
+    color: var(--color-text);
+    font-family: var(--qp-font-body);
+    font-size: var(--type-body);
+    line-height: var(--qp-lh-body);
+    -webkit-font-smoothing: antialiased;
+  }
   h1, h2, h3, h4 { font-family: var(--qp-font-display); font-weight: var(--qp-weight-semibold);
     letter-spacing: -.01em; line-height: var(--qp-lh-headline); }
-  h1 { font-size: var(--qp-text-24); }
-  h2 { font-size: var(--qp-text-18); }
-  h3 { font-size: var(--qp-text-16); }
+  h1 { font-size: var(--type-h1); }
+  h2 { font-size: var(--type-h2); }
+  h3 { font-size: var(--type-h3); }
+  h4 { font-size: var(--type-h4); }
+  [data-slot="ess-cols"] > * { grid-column: span 6 / span 6; }
+  [data-slot="stats"] > [data-slot="stat"]:nth-child(2n + 1) { padding-left: 0; }
+  @media (max-width: 767px) {
+    [data-slot="ess-cols"] > * { grid-column: span 12 / span 12; }
+    [data-slot="stats"] > [data-slot="stat"]:nth-child(2n + 1) { border-left: 0; }
+    [data-slot="stats"] > [data-slot="stat"]:nth-child(2n + 1) { padding-left: 0; }
+    [data-slot="stats"] > [data-slot="stat"]:nth-child(-n + 2) { border-bottom: 1px solid var(--color-border); }
+  }
+  ::selection { background: color-mix(in srgb, var(--qp-color-brand-primary) 24%, transparent); }
   button:not(:disabled), [role="button"]:not([aria-disabled="true"]) { cursor: pointer; }
+  a { color: inherit; }
+  [data-slot="table"] tbody tr { transition: background-color var(--qp-duration-fast) var(--qp-ease); }
+  [data-slot="table"] tbody tr:hover { background-color: color-mix(in srgb, var(--color-primary) 4%, var(--color-surface)); }
   /* the ring never reshapes what it rings: a pill stays a pill, a circle a circle */
   :focus-visible { outline: none; box-shadow: var(--qp-ring-focus); }
   /* a box-shadow ring does not render in Windows High Contrast, so give it an outline there */
@@ -223,6 +548,32 @@
       transition-property: opacity, color, background-color, border-color, box-shadow, fill, stroke !important;
       transition-duration: var(--qp-duration-fast) !important; transition-timing-function: var(--qp-ease) !important; }
   }
+}
+
+.flow-knot {
+  position: relative;
+  display: inline-block;
+  width: 13px;
+  height: 8px;
+  flex: none;
+}
+.flow-knot::before,
+.flow-knot::after {
+  position: absolute;
+  top: 1px;
+  width: 7px;
+  height: 6px;
+  content: "";
+  border: 1px solid var(--color-primary);
+  border-radius: 60% 45% 60% 45%;
+  transform: rotate(28deg);
+}
+.flow-knot::before { left: 0; }
+.flow-knot::after { right: 0; transform: rotate(-28deg); }
+[data-slot="ess-cols"] > [data-slot="ess-card"] { grid-column: span 6 / span 6; }
+[data-slot="ess-cols"] > button { grid-column: span 12 / span 12; }
+@media (max-width: 767px) {
+  [data-slot="ess-cols"] > [data-slot="ess-card"] { grid-column: span 12 / span 12; }
 }
 
 /* Ported from the prototype's `select[multiple]{height:auto;min-height:96px}`

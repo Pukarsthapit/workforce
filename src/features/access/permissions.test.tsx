@@ -33,7 +33,7 @@ beforeEach(async () => {
   store.reset('social');
   queryClient.clear();
   const admin = anyAccount('admin');
-  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: admin.email, password: 'Qnipay@123' }) });
+  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: admin.email, password: 'calm.ly@123' }) });
   const s = (await r.json()) as { token: string };
   setToken(s.token);
 });

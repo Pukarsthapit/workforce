@@ -9,14 +9,14 @@ import { renderPage, withFakeServer } from '@/test/render-page';
 import { audits, resetTo, signInAs } from '@/test/api-helpers';
 import { TeamLeavePage } from './TeamLeavePage';
 
-/* qnipay at the frozen clock (Thursday 13/08/2026): Pukar Sthapit (EMP001),
+/* calm.ly at the frozen clock (Thursday 13/08/2026): Pukar Sthapit (EMP001),
    the manager persona, decides Bigyan Poudel's (EMP004) waiting request for
    3-4 September (lr_3). Rota is off there, so nothing reaches a rota (D14).
    social has Rota and Leave to rota on: Rachel Hussain (the manager persona)
    decides Priya Shah's escalated request (lr_1), which leaves a day short. */
 withFakeServer();
 const signInEmail = async (email: string) => {
-  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'Qnipay@123' }) });
+  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'calm.ly@123' }) });
   const body = (await r.json()) as { token?: string };
   if (!body.token) throw new Error(`sign-in as ${email} failed`);
   setToken(body.token);
@@ -34,8 +34,8 @@ const open = async () => {
   await screen.findByTestId(tid.tleave.balances);
 };
 
-describe('Team leave on qnipay', () => {
-  beforeEach(async () => { resetTo('qnipay'); await signInEmail(PUKAR); });
+describe('Team leave on calm.ly', () => {
+  beforeEach(async () => { resetTo('calm.ly'); await signInEmail(PUKAR); });
 
   test('the waiting request with its balance, cover, stage and SLA, team balances and the leaver, with full test id coverage', async () => {
     await open();
@@ -45,7 +45,7 @@ describe('Team leave on qnipay', () => {
     expect(within(card).getByTestId(tid.tleave.balance('lr_3'))).toHaveTextContent('of 24 days left');
     expect(within(card).getByTestId(tid.tleave.stage('lr_3'))).toHaveTextContent(/^Stage \d of \d/);
     expect(within(card).getByTestId(tid.tleave.sla('lr_3'))).toBeInTheDocument();
-    /* Rota is off on qnipay: no rota link */
+    /* Rota is off on calm.ly: no rota link */
     expect(within(card).queryByTestId(tid.tleave.rota('lr_3'))).toBeNull();
     expect(screen.getByTestId(tid.tleave.balanceRow('EMP004'))).toHaveTextContent('Bigyan Poudel');
     expect(await screen.findByTestId(tid.tleave.leaver('EMP008'))).toBeInTheDocument();
@@ -125,7 +125,7 @@ describe('While you are away (1c D8)', () => {
     expect(within(card).getByTestId(tid.away.row('dlg_1'))).toHaveTextContent('Rachel Hussain → Dee Fitzgerald');
     expect(within(card).getByTestId(tid.away.row('dlg_1'))).toHaveTextContent('24/08/2026 – 31/08/2026 · Timesheet, Leave');
     expect(within(card).queryByTestId(tid.away.cover)).toBeNull();
-    expect(card).toHaveTextContent('Cover is set by an administrator in Qnipay setup, under Approvals.');
+    expect(card).toHaveTextContent('Cover is set by an administrator in calm.ly setup, under Approvals.');
     expectTestIdCoverage(document.body);
   });
 });

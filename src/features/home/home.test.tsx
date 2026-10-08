@@ -31,7 +31,7 @@ test('social: the greeting, the who-line, the month painted from the rota, leave
   expect(cell('2026-08-05')).toHaveAttribute('data-paint', 'N');
   expect(cell('2026-08-10')).toHaveAttribute('aria-label', expect.stringMatching(/^10 Aug: Early .*, Nothing recorded$/));
   expect(cell('2026-08-12')).toHaveAttribute('data-glyph', 'pend');
-  expect(cell('2026-08-13').className).toMatch(/border-2/);
+  expect(cell('2026-08-13').className).toMatch(/border-t-2/);
   expect(cell('2026-08-17')).toHaveAttribute('data-paint', 'V');
   expect(cell('2026-08-17')).toHaveTextContent('17Leave');
   expect(cell('2026-08-17').querySelector('svg.lucide-sun')).not.toBeNull(); // the sun from the icon set, never the emoji
@@ -48,9 +48,9 @@ test('social: the greeting, the who-line, the month painted from the rota, leave
   expectTestIdCoverage(document.body);
 });
 
-test('qnipay: the home boots with no rota, so no shifts and no next shift, but leave and the recorded days still show, with full test id coverage', async () => {
-  resetTo('qnipay');
-  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: 'bigyan.poudel@dogmagroup.co.uk', password: 'Qnipay@123' }) });
+test('calm.ly: the home boots with no rota, so no shifts and no next shift, but leave and the recorded days still show, with full test id coverage', async () => {
+  resetTo('calm.ly');
+  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: 'bigyan.poudel@dogmagroup.co.uk', password: 'calm.ly@123' }) });
   setToken(((await r.json()) as { token: string }).token);
   await open();
   expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Good afternoon, Bigyan');

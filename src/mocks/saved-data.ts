@@ -27,7 +27,7 @@ export const savedDataHandlers = [
   serve(getSavedData, () => status()),
 
   serve(exportSavedData, () => ({
-    kind: 'qnipay.state' as const, v: 1 as const, at: store.now(), version: SEED_VERSION, tenant: store.tenant,
+    kind: 'calm.ly.state' as const, v: 1 as const, at: store.now(), version: SEED_VERSION, tenant: store.tenant,
     data: Object.fromEntries(Object.entries(store.db).filter(([k]) => k !== SESSIONS)),
   })),
 

@@ -11,7 +11,7 @@ import {
   DAY_INDEXES, SWATCH_CLASS, TONE_CLASS, cellLabel, cellTone, dayNum, dow, hoursLine, longDay, overCap, restWarnedOn, shortDay, weekRange, working,
 } from './week';
 
-/* The week grid: the prototype's rotaGrid (qnipay-workforce-v15.html:7281-7324)
+/* The week grid: the prototype's rotaGrid (calm.ly-workforce-v15.html:7281-7324)
    with its CSS (826-886). A 172px name column and seven day columns, the
    cover row under them while minimum staffing is on, then the live key. Each
    cell is a drop target for a dragged shift; its button opens the picker, or
@@ -24,8 +24,8 @@ export interface GridHandlers {
   onFill: (day: number) => void;
 }
 
-const H = 'rounded-sm px-sm pt-[9px] pb-[7px] text-center text-xs font-bold tracking-[.04em] text-text-muted uppercase';
-const ROWHEAD = 'sticky left-0 z-[2] flex flex-col justify-center border-r bg-surface-card px-[9px] py-[7px]';
+const H = 'border-b border-border px-sm pt-[9px] pb-[7px] text-center text-xs font-medium tracking-[.08em] text-text-muted';
+const ROWHEAD = 'sticky left-0 z-[2] flex flex-col justify-center border-b border-border bg-surface-page px-[9px] py-[9px]';
 
 export function RotaGrid({ view, rows, handlers }: { view: RotaWeekView; rows: readonly RotaRow[]; handlers: GridHandlers }) {
   const [over, setOver] = useState<string | null>(null);
@@ -42,15 +42,15 @@ export function RotaGrid({ view, rows, handlers }: { view: RotaWeekView; rows: r
   const click = (r: RotaRow, day: number) => (e: MouseEvent) => handlers.onCell(r, day, e.detail === 0);
   return (
     <>
-      <div className="mb-md overflow-auto rounded-card border bg-surface-card max-md:hidden">
+      <div className="mb-lg overflow-auto max-md:hidden">
         <div data-testid={tid.trota.grid} role="grid" aria-label={`Rota, ${weekRange(ws).replace(' – ', ' to ')}`}
-          className="grid min-w-[820px] grid-cols-[172px_repeat(7,minmax(96px,1fr))] gap-[3px] p-[3px]">
+          className="grid min-w-[820px] grid-cols-[188px_repeat(7,minmax(96px,1fr))] gap-0">
           <div role="row" className="contents">
             <div role="columnheader" className={H}><span className="sr-only">Colleague</span></div>
             {DAY_INDEXES.map(i => {
               const now = addDays(ws, i) === view.today;
               return (
-                <div key={i} role="columnheader" className={cn(H, now && 'bg-brand-subtle text-brand dark:text-brand-accent')}>
+                <div key={i} role="columnheader" className={cn(H, now && 'border-t-2 border-t-brand text-brand dark:border-t-brand-accent dark:text-text-primary')}>
                   <span className="block">{dow(i)}{now && ' · today'}</span>
                   <b className="block text-sm tracking-normal text-text-primary normal-case">{dayNum(ws, i)}</b>
                 </div>);
@@ -67,13 +67,13 @@ export function RotaGrid({ view, rows, handlers }: { view: RotaWeekView; rows: r
                 const warned = warnRest && working(r, day) && restWarnedOn(r, day);
                 return (
                   <div key={day} role="gridcell" data-testid={tid.trota.cell(r.personCode, day)} {...drop(r, day)}
-                    className={cn('flex min-h-[44px] items-stretch rounded-[7px] bg-surface-sunken', !code && 'border border-dashed border-border-strong',
+                    className={cn('flex min-h-[56px] items-stretch border-b border-border bg-transparent',
                       handlers.lifted && 'outline-1 -outline-offset-1 outline-border-strong outline-dashed',
-                      over === key && 'bg-surface-tint outline-2 outline-brand outline-solid')}>
+                      over === key && 'bg-brand-subtle outline-2 outline-brand outline-solid')}>
                     {code
                       ? <button type="button" data-testid={tid.trota.chip(r.personCode, day)} onClick={click(r, day)}
                           aria-label={`${cellLabel(shifts, r, ws, day)}${warned ? `. Under ${view.rules.restHours} hours rest` : ''}`}
-                          className={cn('flex min-h-[44px] flex-1 cursor-pointer items-center gap-[6px] rounded-[7px] border-l-3 px-sm py-[5px] text-left text-xs',
+                          className={cn('flex min-h-[44px] flex-1 cursor-pointer items-center gap-[6px] rounded-sm border-l-2 px-sm py-[5px] text-left text-xs',
                             'transition-colors duration-(--qp-duration-fast)', TONE_CLASS[cellTone(shifts, code)],
                             warned && 'shadow-[inset_0_0_0_2px_var(--qp-rota-gap-border)]')}>
                           <span aria-hidden="true" className="flex-none text-sm font-bold">{shiftLetter(code)}</span>
@@ -82,7 +82,7 @@ export function RotaGrid({ view, rows, handlers }: { view: RotaWeekView; rows: r
                         </button>
                       : <button type="button" data-testid={tid.trota.add(r.personCode, day)} onClick={click(r, day)}
                           aria-label={`Add a shift for ${r.name} on ${shortDay(ws, day)}`}
-                          className="min-h-[44px] w-full rounded-[7px] text-base text-text-disabled hover:bg-brand-subtle hover:text-brand dark:hover:text-brand-accent">+</button>}
+                          className="min-h-[44px] w-full text-base text-text-disabled hover:bg-brand-subtle hover:text-brand dark:hover:text-text-primary">+</button>}
                   </div>);
               })}
             </div>))}
@@ -96,8 +96,8 @@ export function RotaGrid({ view, rows, handlers }: { view: RotaWeekView; rows: r
                 const c = view.onShift[day] ?? 0, lo = c < view.min;
                 return (
                   <div key={day} role="gridcell" data-testid={tid.trota.cov(day)} aria-label={`${shortDay(ws, day)}: ${c} of ${view.min} on shift${lo ? ', short' : ''}`}
-                    className={cn('flex flex-col items-center justify-center gap-[3px] rounded-[7px] bg-surface-tint px-xs py-[6px]',
-                      lo && 'border border-(--qp-rota-gap-border) bg-err-surface')}>
+                    className={cn('flex flex-col items-center justify-center gap-[3px] border-b border-border px-xs py-[8px]',
+                      lo && 'bg-err-surface')}>
                     <div aria-hidden="true" className={cn('text-sm font-bold tabular-nums', lo && 'text-err')}>
                       {lo && <TriangleAlert aria-hidden="true" className="mr-[3px] inline size-[13px] align-[-2px]" />}{c}<span className="font-medium text-text-muted">/{view.min}</span></div>
                     {lo && <button type="button" data-testid={tid.trota.fill(day)} onClick={() => handlers.onFill(day)}
@@ -178,4 +178,3 @@ export function DayView({ view, rows, day, onDay, onFill }: {
       </Table>
     </section>);
 }
-

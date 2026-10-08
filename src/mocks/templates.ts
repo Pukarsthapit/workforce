@@ -245,7 +245,7 @@ export const templateHandlers = [
     const parsed = TemplateSchema.safeParse(read.template);
     if (!parsed.success) {
       const issue = parsed.error.issues[0];
-      return refuseWith({ ...NOT_A_TEMPLATE, next: `${issue ? `It has ${issue.path.join('.') || 'a part'} that Qnipay cannot use. ` : ''}${NOT_A_TEMPLATE.next}` });
+      return refuseWith({ ...NOT_A_TEMPLATE, next: `${issue ? `It has ${issue.path.join('.') || 'a part'} that calm.ly cannot use. ` : ''}${NOT_A_TEMPLATE.next}` });
     }
     const template: Template = parsed.data;
     const roles = template.roleNames ? roleNamesProblem(template.roleNames) : null;

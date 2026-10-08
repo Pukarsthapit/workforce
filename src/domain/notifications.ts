@@ -1,5 +1,5 @@
 /* 1c group 4: the shared notification framework (brief D9). Ported from the
-   prototype's NOTIF_CHANNELS, NOTIF_EVENTS (qnipay-workforce-v15.html:2163-2197),
+   prototype's NOTIF_CHANNELS, NOTIF_EVENTS (calm.ly-workforce-v15.html:2163-2197),
    notifyEvent (2137-2148), NOTIF_TARGETS, notifTarget, notifReachable
    (5205-5225) and NOTIF_SRC_MOD, notifSrcLive (5247-5252).
 

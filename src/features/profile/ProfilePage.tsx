@@ -12,7 +12,7 @@ import { StatePill } from '@/features/people/StatePill';
 import { perWeek } from '@/features/people/PersonRecord';
 import { ProposeChange } from './ProposeChange';
 
-/* Ported from the prototype's essProfile (qnipay-workforce-v15.html:5587-
+/* Ported from the prototype's essProfile (calm.ly-workforce-v15.html:5587-
    5645): who you are and your contract, both set by HR, then your own
    details, which you may propose changes to. The rota and leave cards belong
    to modules not built yet. */

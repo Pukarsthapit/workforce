@@ -1,5 +1,5 @@
 import social from './social.json';
-import qnipay from './qnipay.json';
+import calmly from './calmly.json';
 import {
   STEP_IDS, blockers, caseId, emptyCase, isStarterState, isStepId, isVerifier, nextPolVer, onbFeatures, progress, progressText,
   type OnboardingCase, type OnboardingConfig, type OnbPolicy,
@@ -14,11 +14,11 @@ const ONBOARDING = ['onboardingConfig', 'onboardingPolicies', 'onboardingCases']
 /* The keys a money field would carry, anywhere in the onboarding collections. */
 const MONEY_KEY = /"(rate|amount|cost|pay|salary|wage|value|price|offer|bank\w*)"\s*:/i;
 const STARTERS: Record<string, [string, string][]> = {
-  qnipay: [['EMP002', 'candidate'], ['EMP003', 'preboard']],
+  calmly: [['EMP002', 'candidate'], ['EMP003', 'preboard']],
   social: [['CP-1501', 'candidate'], ['CP-1502', 'preboard']],
 };
 
-for (const [name, raw] of Object.entries({ social, qnipay })) {
+for (const [name, raw] of Object.entries({ social, 'calm.ly': calmly })) {
   const seed = raw as unknown as SeedFile;
   const cfg = seed.data.onboardingConfig?.onboardingConfig as Rec & OnboardingConfig;
   const policies = vals<Rec & OnbPolicy>(seed, 'onboardingPolicies');

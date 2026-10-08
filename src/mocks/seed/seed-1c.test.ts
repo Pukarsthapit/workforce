@@ -1,5 +1,5 @@
 import social from './social.json';
-import qnipay from './qnipay.json';
+import calmly from './calmly.json';
 import { Company, FinancialYear, BankHoliday } from '@/contract/tenant';
 import { EXTRA_BOUNDS, FLAGS, SWITCH_CODES, moduleLive, moduleBy } from '@/domain/modules';
 
@@ -10,7 +10,7 @@ interface TenantSeed {
 interface SeedFile { data: Record<string, Record<string, unknown>> }
 const tenantOf = (s: SeedFile) => s.data.tenant?.tenant as TenantSeed;
 
-for (const [name, raw] of Object.entries({ social, qnipay })) {
+for (const [name, raw] of Object.entries({ social, 'calm.ly': calmly })) {
   const seed = raw as unknown as SeedFile, t = tenantOf(seed);
   describe(`seed ${name} for 1c`, () => {
     test('company details parse, and carry no currency (no money)', () => {
@@ -50,18 +50,18 @@ for (const [name, raw] of Object.entries({ social, qnipay })) {
     });
   });
 }
-test('social runs Rota and holds its horizon on Rota setup; qnipay has none and reads the default', () => {
+test('social runs Rota and holds its horizon on Rota setup; calmly has none and reads the default', () => {
   expect((social as unknown as SeedFile).data.rotaConfig?.rotaConfig).toMatchObject({ horizon: 12 });
-  expect((qnipay as unknown as SeedFile).data.rotaConfig).toBeUndefined();
+  expect((calmly as unknown as SeedFile).data.rotaConfig).toBeUndefined();
 });
-test('social carries the prototype\'s delegation by employee code (D8); qnipay has none; no chain is seeded', () => {
+test('social carries the prototype\'s delegation by employee code (D8); calmly has none; no chain is seeded', () => {
   expect((social as unknown as SeedFile).data.delegations).toEqual({ dlg_1: { id: 'dlg_1', version: 1, updatedAt: '2026-08-13T14:30:00.000Z',
     who: 'CP-1001', to: 'CP-1002', from: '2026-08-24', until: '2026-08-31', modules: ['Timesheet', 'Leave'] } });
-  expect((qnipay as unknown as SeedFile).data.delegations).toEqual({});
-  for (const s of [social, qnipay]) expect((s as unknown as SeedFile).data.approvalChains).toBeUndefined();
+  expect((calmly as unknown as SeedFile).data.delegations).toEqual({});
+  for (const s of [social, calmly]) expect((s as unknown as SeedFile).data.approvalChains).toBeUndefined();
 });
 test('both tenants carry the prototype\'s four notices with textVersion, ISO stamps and acknowledgements by employee code (D10)', () => {
-  for (const raw of [social, qnipay]) {
+  for (const raw of [social, calmly]) {
     const seed = raw as unknown as SeedFile;
     const notices = Object.values(seed.data.notices ?? {}) as { id: string; textVersion: number; at: string; acks: { personCode: string; textVersion: number; at: string }[]; history: { textVersion: number }[] }[];
     const codes = new Set(Object.values(seed.data.people ?? {}).map(p => (p as { code: string }).code));
@@ -73,7 +73,7 @@ test('both tenants carry the prototype\'s four notices with textVersion, ISO sta
   }
 });
 test('each tenant carries the prototype\'s seven documents for its first employee account, with ISO dates, and the three payroll documents (D12)', () => {
-  for (const [raw, owner] of [[social, 'CP-1042'], [qnipay, 'EMP002']] as const) {
+  for (const [raw, owner] of [[social, 'CP-1042'], [calmly, 'EMP002']] as const) {
     const seed = raw as unknown as SeedFile;
     const docs = Object.values(seed.data.documents ?? {}) as { personCode: string; name: string; date: string; source: string }[];
     expect(docs.map(d => d.name)).toEqual(['Contract of employment', 'Job description · Support Worker', 'DBS certificate', 'Safeguarding L2 certificate',

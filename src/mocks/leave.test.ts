@@ -18,7 +18,7 @@ beforeEach(() => resetTo('social'));
 type Call = ReturnType<typeof caller>;
 const as = async (p: Persona) => caller(await tokenFor(p));
 async function asEmail(email: string): Promise<Call> {
-  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'Qnipay@123' }) });
+  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'calm.ly@123' }) });
   const { token } = (await r.json()) as { token: string };
   return caller(token);
 }
@@ -272,8 +272,8 @@ describe('leave reaches the rota through the week path (Review Focus 4, D7)', ()
     expect(d.rota).toEqual({ written: 0, weeks: [], amended: false, covers: [] });
     expect(snapshot('rotaWeeks', 'coverRequests')).toEqual(before);
   });
-  test('on qnipay (Rota off) approval writes no rota at all', async () => {
-    resetTo('qnipay');
+  test('on calm.ly (Rota off) approval writes no rota at all', async () => {
+    resetTo('calm.ly');
     const before = snapshot('rotaWeeks', 'coverRequests');
     const d = LeaveDecided.parse((await approve(await asEmail(PUKAR), 'lr_1')).body);
     expect(d.record.state).toBe('approved');
@@ -287,8 +287,8 @@ describe('leave reaches the rota through the week path (Review Focus 4, D7)', ()
 describe('the timesheet reads leave records (Review Focus 5, D8)', () => {
   const save = (call: Call, code: string, date: string, extra: Record<string, unknown> = {}) =>
     call('PUT', `/api/v1/timesheets/${code}/days/${date}`, { entries: [{ start: '07:00', finish: '15:00', breaks: [{ start: '11:00', end: '11:30' }] }], shift: 'E', ...extra }, 0);
-  test('on qnipay, with no rota, approved leave and sickness show on the week', async () => {
-    resetTo('qnipay');
+  test('on calm.ly, with no rota, approved leave and sickness show on the week', async () => {
+    resetTo('calm.ly');
     const w = TimesheetWeek.parse((await (await asEmail(BIGYAN))('GET', '/api/v1/timesheets/EMP004/weeks/2026-08-17')).body);
     expect(w.days.map(d => d.absence ?? '')).toEqual(['leave', 'leave', '', '', '', '', '']);
     resetTo('social');
@@ -348,7 +348,7 @@ describe('the timesheet reads leave records (Review Focus 5, D8)', () => {
     expect(out.submitted.map(d => [d.date, d.state, d.workedAnyway])).toEqual([['2026-08-11', 'pend', true]]);
   });
   test('multi-week catch-up holds back a week whose stored time falls on sickness; the other week still goes', async () => {
-    resetTo('qnipay');
+    resetTo('calm.ly');
     const ts = store.coll<{ rules: { enforceLock: boolean } }>('timesheetConfig').timesheetConfig;
     if (ts) ts.rules.enforceLock = false;
     expect((await sick(await asEmail(PUKAR), 'EMP004', '2026-08-05')).status).toBe(200);
@@ -467,7 +467,7 @@ describe('team reads', () => {
     expect(await f('q=priya')).toEqual(['lr_1']);
   });
   test('leaver reconciliation states days and the direction, never money; it is refused with LV_LEAVER off', async () => {
-    resetTo('qnipay');
+    resetTo('calm.ly');
     const call = await asEmail(PUKAR);
     const l = Leavers.parse((await call('GET', '/api/v1/leave/leavers')).body);
     expect(l.rows.map(r => r.personCode)).toEqual(['EMP008']);

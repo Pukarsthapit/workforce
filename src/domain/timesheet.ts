@@ -1,4 +1,4 @@
-/* Timesheet rules. Ported from the prototype (qnipay-workforce-v15.html,
+/* Timesheet rules. Ported from the prototype (calm.ly-workforce-v15.html,
    "9a-i. TIMESHEET STATE MACHINE", "9a-ii. CAPTURE RULES + PAY-PERIOD LOCK",
    "RATE DERIVATION", weekModel, readDayTimes, submitWeekGrid, bulkApprovalSet,
    restGap). Every function is pure: the rules, the clock and any rota line come

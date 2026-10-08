@@ -8,7 +8,7 @@ import {
 } from '@/domain/onboarding';
 import type { OnbFeatures } from '@/api/onboarding';
 
-/* The prototype's onbFieldRow (qnipay-workforce-v15.html:4322-4353) and the
+/* The prototype's onbFieldRow (calm.ly-workforce-v15.html:4322-4353) and the
    first four step bodies, onbPersonal, onbContact, onbEmergency and
    onbAdditional (4354-4421). A field carries the type its data actually is:
    a date opens a date picker, a phone number gets the dialling keypad, the

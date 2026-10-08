@@ -29,8 +29,8 @@ async function tabsOf(p: Persona): Promise<string[]> {
   setToken(await tokenFor(p));
   window.history.pushState({}, '', p === 'employee' ? '/work/home' : '/team/thome');
   render(<App />);
-  const strip = await screen.findByRole('navigation', { name: 'Pages' });
-  return within(strip).queryAllByTestId(/^nav-tab-/).map(a => (a.getAttribute('data-testid') ?? '').replace('nav-tab-', ''));
+  const navigation = await screen.findByRole('navigation', { name: 'Main navigation' });
+  return within(navigation).queryAllByTestId(/^nav-tab-/).map(a => (a.getAttribute('data-testid') ?? '').replace('nav-tab-', ''));
 }
 
 /* Suite TIMESHEET AS ONE MODULE: one capture method on keeps the employee's

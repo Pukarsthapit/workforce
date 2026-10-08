@@ -2,7 +2,7 @@ import { TriangleAlert } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/ui/shadcn/tooltip';
 
 /* The prototype sizes its three header affordances so a header reads
-   consistently (qnipay-workforce-v15.html:10065-10073):
+   consistently (calm.ly-workforce-v15.html:10065-10073):
      ⚠  a caution that is always true of this area   (Caution, .warnbtn)
      ?  a guide you can open                          (HelpButton, .helpbtn)
      i  an inline explanation of the thing beside it  (Tip, .tip)

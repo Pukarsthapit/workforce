@@ -118,7 +118,7 @@ test('a template is saved from this tenant, another is previewed and applied, an
   expect(await auditRows(page, 'tenant', 'userType', 'employeeType', 'approvalChain')).toEqual([]);
 });
 
-test('renamed roles show in the view-as switcher, the role pill (also while viewing as someone), the permission matrix and the audit log; what each may do is unchanged', async ({ page, api }) => {
+test('renamed roles show in the view-as switcher, permission matrix and audit log; what each may do is unchanged', async ({ page, api }) => {
   test.setTimeout(90_000);
   await signInEmail(page, DEE);
   const capsOf = async () => Object.fromEntries(((await api.get('/api/v1/user-types')).body as { id: string; capabilities: string[] }[]).map(t => [t.id, t.capabilities]));
@@ -132,21 +132,19 @@ test('renamed roles show in the view-as switcher, the role pill (also while view
   await expect(info(page, 'Roles renamed: Support Worker, Manager, Setup lead.')).toBeVisible();
   await expect(page.getByTestId(tid.modal.root)).toHaveCount(0);
 
-  /* the matrix and the pill */
+  /* the matrix and switcher */
   await expect(page.getByTestId(tid.access.userTypeName('employee'))).toContainText('Support Worker');
   await expect(page.getByTestId(tid.access.userTypeName('admin'))).toContainText('Setup lead');
-  await expect(page.getByTestId(tid.shell.rolePill)).toHaveText('Setup lead');
   expect(await capsOf()).toEqual(caps);
 
-  /* the switcher names Amara's role by its new name, and so does the pill while looking as her */
+  /* the switcher names Amara's role by its new name */
   await page.getByTestId(tid.shell.account).click();
   await expect(page.getByTestId(tid.shell.menuRole)).toContainText('Setup lead');
   await expect(page.getByTestId(tid.shell.viewAs('CP-1042'))).toContainText('Support Worker');
   await page.getByTestId(tid.shell.viewAs('CP-1042')).click();
   await expect(page.getByTestId(tid.shell.viewAsEnd)).toBeVisible();
-  await expect(page.getByTestId(tid.shell.rolePill)).toHaveText('Support Worker');
   await page.getByTestId(tid.shell.viewAsEnd).click();
-  await expect(page.getByTestId(tid.shell.rolePill)).toHaveText('Setup lead');
+  await expect(page.getByTestId(tid.shell.viewAsEnd)).toHaveCount(0);
 
   /* the audit log: one row per user type renamed */
   await page.goto('/setup/iaudit');
@@ -158,7 +156,8 @@ test('renamed roles show in the view-as switcher, the role pill (also while view
 
   /* and Amara herself sees it */
   await signInEmail(page, AMARA);
-  await expect(page.getByTestId(tid.shell.rolePill)).toHaveText('Support Worker');
+  await page.getByTestId(tid.shell.account).click();
+  await expect(page.getByTestId(tid.shell.menuRole)).toContainText('Support Worker');
 });
 
 test('an approval chain is edited whole and saved once; a delegation is added, and one back the other way is refused as a loop with nothing added', async ({ page, api }) => {

@@ -1,5 +1,5 @@
 import socialSeed from './seed/social.json';
-import qnipaySeed from './seed/qnipay.json';
+import calmlySeed from './seed/calmly.json';
 import { createStore, contentHash, STORE_KEY, STORE_REV_KEY, SEED_VERSION, DEFAULT_TENANT } from './store';
 
 const seed = { version: SEED_VERSION, tenant: 'social', data: { things: { a: { id: 'a', version: 1, updatedAt: '2026-08-13T14:30:00.000Z' } } } };
@@ -21,14 +21,14 @@ test('loads a seed and persists it under the seed version', () => {
    date, and it must be stable for the same content. */
 test('the seed version is derived from the seed content', () => {
   expect(SEED_VERSION).toMatch(/^\d+\.[0-9a-f]{16}$/);
-  const content = JSON.stringify([['social', socialSeed], ['qnipay', qnipaySeed]]);
+  const content = JSON.stringify([['social', socialSeed], ['calm.ly', calmlySeed]]);
   expect(SEED_VERSION.split('.')[1]).toBe(contentHash(content));
   /* one changed character anywhere in a seed changes the version */
   const edited = structuredClone(socialSeed) as { data: { people: Record<string, { name: string }> } };
   const first = Object.values(edited.data.people)[0];
   if (!first) throw new Error('the social seed has no people');
   first.name += 'x';
-  expect(contentHash(JSON.stringify([['social', edited], ['qnipay', qnipaySeed]]))).not.toBe(contentHash(content));
+  expect(contentHash(JSON.stringify([['social', edited], ['calm.ly', calmlySeed]]))).not.toBe(contentHash(content));
 });
 
 test('a store saved at the current version is loaded as saved', () => {

@@ -32,26 +32,25 @@ test('an employee gets My Work only, in prototype order', () => {
   }
   expect(g.flatMap(x => x.tabs).filter(t => t.subProject?.includes('plan 1c'))).toEqual([]);
 });
-test('a manager also gets My Team, with Team Home and Approvals in the strip and the rest under headings', () => {
-  const g = buildNav({ caps: caps('own_home', 'team_ts', 'team_rota', 'team_cover', 'team_leave', 'team_sick', 'team_hours', 'team_people', 'onb_track', 'notice_post'), modules: ALL_MODULES, flags, onboarding: false });
+test('a manager also gets My Team, with every page directly listed in order', () => {
+  const g = buildNav({ caps: caps('own_home', 'team_ts', 'team_rota', 'team_cover', 'team_leave', 'team_sick', 'team_hours', 'team_people', 'rota_shift', 'rota_pattern', 'onb_track', 'notice_post'), modules: ALL_MODULES, flags, onboarding: false });
   const team = must(g.find((x): x is NavGroup => x.key === 'team'));
-  expect(team.tabs.filter(t => !t.group).map(t => t.label)).toEqual(['Team Home', 'Approvals']);
-  expect([...new Set(team.tabs.filter(t => t.group).map(t => t.group))]).toEqual(['Scheduling', 'Requests', 'People']);
+  expect(team.tabs.map(t => t.label)).toEqual(['Team Home', 'Approvals', 'Hours position', 'Rota', 'Cover requests', 'Shift catalogue', 'Working patterns', 'Requests', 'Sickness', 'Exceptions', 'People', 'Onboarding', 'Notices']);
   /* module 2 builds Team timesheets */
   expect(must(team.tabs.find(t => t.view === 'tteam'))).toMatchObject({ built: true, path: '/team/tteam' });
   expect(must(team.tabs.find(t => t.view === 'tteam')).subProject).toBeUndefined();
   /* module 3 builds Team rota and Cover requests */
-  expect(must(team.tabs.find(t => t.view === 'trota'))).toMatchObject({ built: true, path: '/team/trota', group: 'Scheduling' });
+  expect(must(team.tabs.find(t => t.view === 'trota'))).toMatchObject({ built: true, path: '/team/trota' });
   expect(must(team.tabs.find(t => t.view === 'trota')).subProject).toBeUndefined();
-  expect(must(team.tabs.find(t => t.view === 'tcover'))).toMatchObject({ built: true, path: '/team/tcover', group: 'Scheduling' });
+  expect(must(team.tabs.find(t => t.view === 'tcover'))).toMatchObject({ built: true, path: '/team/tcover' });
   expect(must(team.tabs.find(t => t.view === 'tcover')).subProject).toBeUndefined();
   /* module 4 builds Team leave and Sickness */
-  expect(must(team.tabs.find(t => t.view === 'tleave'))).toMatchObject({ built: true, path: '/team/tleave', group: 'Requests', label: 'Requests' });
+  expect(must(team.tabs.find(t => t.view === 'tleave'))).toMatchObject({ built: true, path: '/team/tleave', label: 'Requests' });
   expect(must(team.tabs.find(t => t.view === 'tleave')).subProject).toBeUndefined();
-  expect(must(team.tabs.find(t => t.view === 'tsick'))).toMatchObject({ built: true, path: '/team/tsick', group: 'Requests', label: 'Sickness' });
+  expect(must(team.tabs.find(t => t.view === 'tsick'))).toMatchObject({ built: true, path: '/team/tsick', label: 'Sickness' });
   expect(must(team.tabs.find(t => t.view === 'tsick')).subProject).toBeUndefined();
-  /* 1c group 6 builds My team → Notices, under People */
-  expect(must(team.tabs.find(t => t.view === 'tnotices'))).toMatchObject({ built: true, path: '/team/tnotices', group: 'People', label: 'Notices' });
+  /* 1c group 6 builds My team → Notices */
+  expect(must(team.tabs.find(t => t.view === 'tnotices'))).toMatchObject({ built: true, path: '/team/tnotices', label: 'Notices' });
   expect(must(team.tabs.find(t => t.view === 'tnotices')).subProject).toBeUndefined();
   /* 1c group 7 builds Team Home */
   expect(must(team.tabs.find(t => t.view === 'thome'))).toMatchObject({ built: true, path: '/team/thome' });
@@ -60,8 +59,8 @@ test('a manager also gets My Team, with Team Home and Approvals in the strip and
 test('a manager who builds the rota gets the Shift catalogue and Working patterns, built, in the prototype order', () => {
   const g = buildNav({ caps: caps('own_home', 'team_rota', 'team_cover', 'rota_shift', 'rota_pattern'), modules: ALL_MODULES, flags, onboarding: false });
   const team = must(g.find((x): x is NavGroup => x.key === 'team'));
-  expect(team.tabs.filter(t => t.group === 'Scheduling').map(t => t.label)).toEqual(['Rota', 'Cover requests', 'Shift catalogue', 'Working patterns']);
-  expect(team.tabs.filter(t => t.group === 'Scheduling').every(t => t.built && !t.subProject)).toBe(true);
+  expect(team.tabs.map(t => t.label)).toEqual(['Team Home', 'Rota', 'Cover requests', 'Shift catalogue', 'Working patterns']);
+  expect(team.tabs.every(t => t.built && !t.subProject)).toBe(true);
   expect(must(team.tabs.find(t => t.view === 'tshifts')).path).toBe('/team/tshifts');
   expect(must(team.tabs.find(t => t.view === 'tpat')).path).toBe('/team/tpat');
 });
@@ -85,17 +84,6 @@ test('views outside plan 1a are marked not built and name their sub-project', ()
   expect(hours).toMatchObject({ built: false, subProject: 'Payroll and Business Central' });
   /* module 2 builds My timesheet */
   expect(must(must(g[0]).tabs.find(t => t.view === 'ts'))).toMatchObject({ built: true });
-});
-
-test('team tabs carry a stable groupKey distinct from their display label (never derived from it)', () => {
-  const g = buildNav({ caps: caps('own_home', 'team_rota', 'rota_pattern', 'rota_shift', 'team_leave', 'team_sick', 'team_hours'), modules: ALL_MODULES, flags, onboarding: false });
-  const team = must(g.find((x): x is NavGroup => x.key === 'team'));
-  const scheduling = team.tabs.filter(t => t.group === 'Scheduling');
-  const requests = team.tabs.filter(t => t.group === 'Requests');
-  expect(scheduling.length).toBeGreaterThan(0);
-  expect(scheduling.every(t => t.groupKey === 'scheduling')).toBe(true);
-  expect(requests.length).toBeGreaterThan(0);
-  expect(requests.every(t => t.groupKey === 'requests')).toBe(true);
 });
 
 test('setup pages are grouped into the prototype\'s five sections (SETUP_SECTIONS), in order', () => {
@@ -185,10 +173,10 @@ test('re-enabling a module brings its tabs back', () => {
 });
 
 /* MANAGER NAV GROUPED BY MODULE: "Admin has no duplicate Rota group — it uses
-   Qnipay setup". An admin's capability set holds no team_* capability at all
+   calm.ly setup". An admin's capability set holds no team_* capability at all
    (seed/social.json), so buildNav never produces a 'team' group for one; rota
    configuration is reached through the setup group's Modules section instead. */
-test('an admin capability set produces no team rota group; rota setup lives under Qnipay setup instead', () => {
+test('an admin capability set produces no team rota group; rota setup lives under calm.ly setup instead', () => {
   const g = buildNav({
     caps: caps('perm_cfg', 'master_data', 'mod_cfg', 'type_cfg', 'framework', 'integration'),
     modules: ALL_MODULES, flags: { ...flags, ITACCESS: true }, onboarding: false,

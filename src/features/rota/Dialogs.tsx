@@ -14,7 +14,7 @@ import type { PlanItem } from '@/contract/rota';
 import { DAY_INDEXES, MONTH_NAMES, longDay, shortDay, weekRange } from './week';
 
 /* The dialogs Team rota opens: addShiftBox, gapBox, shiftBox, adhocBox,
-   horizonBox and the clear and repeat confirmations (qnipay-workforce-v15.html:
+   horizonBox and the clear and repeat confirmations (calm.ly-workforce-v15.html:
    9814-9914, 10447-10469, 12082-12166). Every assignment in them goes through
    the page's one assignment path. */
 

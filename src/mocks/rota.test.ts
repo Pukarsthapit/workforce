@@ -14,7 +14,7 @@ beforeEach(() => resetTo('social'));
 type Call = ReturnType<typeof caller>;
 const as = async (p: Persona) => caller(await tokenFor(p));
 async function asEmail(email: string): Promise<Call> {
-  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'Qnipay@123' }) });
+  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'calm.ly@123' }) });
   const { token } = (await r.json()) as { token: string };
   return caller(token);
 }
@@ -180,8 +180,8 @@ describe('scope (Review Focus 1)', () => {
     expect(r.status).toBe(403);
     expect(refusal(r)).toMatchObject({ code: 'capability', message: 'Claiming open shifts is not permitted for this persona.' });
   });
-  test('with Rota off (qnipay) every rota endpoint refuses', async () => {
-    resetTo('qnipay');
+  test('with Rota off (calm.ly) every rota endpoint refuses', async () => {
+    resetTo('calm.ly');
     const r = await (await as('manager'))('GET', '/api/v1/rota/shift-types');
     expect(r.status).toBe(403);
     expect(refusal(r)).toMatchObject({ code: 'module-off', message: 'Rota is switched off for this organisation.' });
@@ -591,13 +591,13 @@ describe('the timesheet reads the real rota line (Review Focus 7, D13)', () => {
     const r = DaySaved.parse((await save(await as('employee'), 'CP-1042', '2026-08-13', '07:00', '19:00')).body);
     expect(r.warnings.some(x => x.includes('against the rota line'))).toBe(false);
   });
-  test('on qnipay (Rota off) no rota warning fires, even with a line in the store', async () => {
-    resetTo('qnipay');
-    /* an employee who has started: qnipay's first employee accounts are new starters, kept to the onboarding portal */
+  test('on calm.ly (Rota off) no rota warning fires, even with a line in the store', async () => {
+    resetTo('calm.ly');
+    /* an employee who has started: calm.ly's first employee accounts are new starters, kept to the onboarding portal */
     const people = Object.values(store.coll<{ code: string; location: string; state: string }>('people'));
     const acc = Object.values(store.coll<{ email: string; personCode: string; userType: string }>('accounts'))
       .find(a => a.userType === 'employee' && people.find(x => x.code === a.personCode)?.state === 'active');
-    if (!acc) throw new Error('the qnipay seed has no active employee account');
+    if (!acc) throw new Error('the calm.ly seed has no active employee account');
     const me = acc.personCode, p = people.find(x => x.code === me);
     store.coll('shiftTypes').sht_N = { id: 'sht_N', version: 1, updatedAt: FROZEN, code: 'N', name: 'Night', from: '22:00', to: '07:00', breakMinutes: 0, hours: 9, cross: true, night: true, start: 22, end: 31, tone: 'N' };
     plant(p?.location ?? '', '2026-08-10', { [me]: ['N', 'N', 'N', 'N', 'N', '', ''] }, 'published');
@@ -689,7 +689,7 @@ describe('GET /api/v1/rota/it-requests (the IT service desk, admIT)', () => {
     const r = await (await as('admin'))('GET', IT);
     expect(r.status).toBe(403);
     expect(refusal(r)).toEqual({ code: 'feature-off', message: 'IT access requests are switched off for this organisation.',
-      next: 'An administrator can switch them on in Qnipay setup → Modules → Rota → Rota setup.' });
+      next: 'An administrator can switch them on in calm.ly setup → Modules → Rota → Rota setup.' });
   });
   test('the requests a confirmation raised are listed, newest first, in the contract shape', async () => {
     const admin = await as('admin');

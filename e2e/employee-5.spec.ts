@@ -4,13 +4,13 @@ import { pick } from './support/read';
 import { signInEmail } from './support/timesheet';
 import { POLICIES, TOM, myCase, onbAudit, onbNotes, pdf, png, uploadDoc } from './support/onboarding';
 
-/* Module 5, the new starter's journey on qnipay (brief group 6, D3, D8):
+/* Module 5, the new starter's journey on calm.ly (brief group 6, D3, D8):
    Tom Achterberg, preboarding, signs in and lands on his portal, the only
    page he has. He completes every step, uploads his three documents (the
    photograph as an image, which keeps a small preview; the others as PDFs),
    acknowledges every policy, signs and submits, and sees the thank-you page
    with his reference. Every outcome is read back from the server. */
-test.beforeEach(async ({ api }) => { await api.seed('qnipay'); await api.setClock(FROZEN); });
+test.beforeEach(async ({ api }) => { await api.seed('calm.ly'); await api.setClock(FROZEN); });
 const info = (page: import('@playwright/test').Page, text: string | RegExp) => page.getByTestId(tid.toast.info).filter({ hasText: text });
 
 test('a new starter lands on the portal alone, completes every step, uploads, acknowledges, signs and submits, and sees the reference', async ({ page, api }) => {
@@ -18,9 +18,9 @@ test('a new starter lands on the portal alone, completes every step, uploads, ac
   await signInEmail(page, TOM);
   /* D8: the portal and nothing else */
   await expect(page).toHaveURL(/\/work\/onb$/);
-  await expect(page.locator('nav[aria-label="Pages"] a[data-testid^="nav-tab-"]')).toHaveCount(1);
+  await expect(page.locator('nav[aria-label="Main navigation"] a[data-testid^="nav-tab-"]')).toHaveCount(1);
   await expect(page.getByTestId(tid.nav.tab('onb'))).toBeVisible();
-  for (const g of ['team', 'setup']) await expect(page.getByTestId(tid.nav.group(g))).toHaveCount(0);
+  for (const view of ['tpeople', 'asetup', 'apeople']) await expect(page.getByTestId(tid.nav.tab(view))).toHaveCount(0);
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Welcome, Tom');
   await expect(page.getByTestId(tid.onb.progress)).toHaveText('0 of 7 done');
   const next = page.getByTestId(tid.onb.next);

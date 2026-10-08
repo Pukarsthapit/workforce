@@ -1,4 +1,4 @@
-/* The page guides behind `?`: the prototype's GUIDES (qnipay-workforce-v15.html:
+/* The page guides behind `?`: the prototype's GUIDES (calm.ly-workforce-v15.html:
    9930-10060). What belongs here is how a page fits together, what it will
    and will not do. Anything about current state or the consequence of an
    action stays on the page, where it can be seen. Copy is the prototype's,
@@ -39,7 +39,7 @@ export const GUIDES: Readonly<Record<string, Guide>> = {
     ['3 · You add, change and remove shifts',
       'Tap an empty cell on any row to add a shift for that person. Tap a shift to change or remove it. Drag a shift from the palette onto a cell, or pick one up with Enter and put it down on a cell with Enter. Use “Add an extra shift” when you need more people than the minimum.'],
     ['4 · Filling a gap: assign, suggest, or advertise',
-      'Assign someone directly, ask Qnipay to suggest who fits, or open a cover request so eligible colleagues and bank workers are notified in configured stages.'],
+      'Assign someone directly, ask calm.ly to suggest who fits, or open a cover request so eligible colleagues and bank workers are notified in configured stages.'],
     ['5 · Leave and sickness feed straight in',
       'Approved leave and sickness show on the rota and count against the day’s cover. Change them on Team leave or the Sickness tab, not here.'],
     ['Removing a shift that takes a day below the minimum opens a cover request by itself',

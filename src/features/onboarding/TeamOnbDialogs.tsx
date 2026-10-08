@@ -8,7 +8,7 @@ import { FileRecordView } from './OnbDocuments';
 
 /* The dialogs the tracker opens. */
 
-/* onb-review, onb-verify and onb-reject (qnipay-workforce-v15.html:11632-
+/* onb-review, onb-verify and onb-reject (calm.ly-workforce-v15.html:11632-
    11690): a decision made without looking at the document is not a check, so
    the document is put in front of the person deciding, with whether it is
    needed and whether it stops them starting, and the decision is made from

@@ -17,7 +17,7 @@ function useAppTheme(): ToasterProps["theme"] {
   return (document.documentElement.dataset.theme === "dark" ? "dark" : "light")
 }
 
-/* The prototype's #toasts (qnipay-workforce-v15.html:627-640, 1566-1567):
+/* The prototype's #toasts (calm.ly-workforce-v15.html:627-640, 1566-1567):
    bottom centre, 20px up, at most 520px wide; on a phone it clears the
    bottom bar and the home indicator under it, 12px in from each edge. The
    toasts themselves are drawn by src/ui/toast.tsx. */

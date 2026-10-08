@@ -1,6 +1,6 @@
-# Qnipay Workforce — React app
+# calm.ly Workforce — React app
 
-The React build of Qnipay Workforce, workforce management for Microsoft Dynamics
+The React build of calm.ly Workforce, workforce management for Microsoft Dynamics
 365 Business Central. Timesheet, rota, leave and onboarding all work from one
 shared workforce record.
 
@@ -39,7 +39,7 @@ changed.
 
 The sign-in screen has a shortcut for one employee, one manager and one admin.
 Anybody on the demo roster can also sign in with their own email address. Every
-account uses the password `Qnipay@123`.
+account uses the password `calm.ly@123`.
 
 Each role sees a different app:
 
@@ -47,7 +47,7 @@ Each role sees a different app:
   and notices.
 - A **manager** sees approvals and their team, as well as their own work.
 - An **admin** sees configuration, modules, permissions and the audit log under
-  Qnipay setup.
+  calm.ly setup.
 - A **new starter** (a candidate or preboarding person) sees only their
   onboarding portal until they start.
 
@@ -59,7 +59,7 @@ out.
 Everything you do is saved in your browser, so it is still there after a reload.
 Other people and other browsers do not see your changes.
 
-To go back to the data the app ships with, open Qnipay setup → Calendar and
+To go back to the data the app ships with, open calm.ly setup → Calendar and
 choose **Start again**. The cleared session is kept, so you can bring it back
 once.
 
@@ -83,8 +83,8 @@ once.
 | Browser tests and screenshot baselines | `e2e/` |
 | Design for sub-project 1 | `docs/specs/2026-09-25-react-app-foundation-core-design.md` |
 | Implementation plans | `docs/plans/` |
-| The reference prototype and its 965-assertion suite | `../Qnipay workforce cc/mockup/` (outside this repository) |
-| Product requirements, handover, backlog and design system notes | `../Qnipay workforce cc/docs/` and `../Qnipay workforce cc/CLAUDE.md` (outside this repository) |
+| The reference prototype and its 965-assertion suite | `../calm.ly workforce cc/mockup/` (outside this repository) |
+| Product requirements, handover, backlog and design system notes | `../calm.ly workforce cc/docs/` and `../calm.ly workforce cc/CLAUDE.md` (outside this repository) |
 
 The prototype is the behavioural reference. This repository reads it and never
 edits it. You do not need the prototype to run the app.

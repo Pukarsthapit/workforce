@@ -1,6 +1,6 @@
 /* What Team rota prints about a week, its days and its cells: the prototype's
    DOW_SHORT, weekDates, SHNAME, TIME, SHORTT, shLetter and toneOf as the grid,
-   the day view and the dialogs use them (qnipay-workforce-v15.html:1884-1917,
+   the day view and the dialogs use them (calm.ly-workforce-v15.html:1884-1917,
    7176-7348). The rules themselves are the domain's. */
 import { DOW_SHORT, addDays, formatDmy, parseIso } from '@/domain/time';
 import { isAbsence, isWorking, shiftBy, toneOf, type ShiftType } from '@/domain/rota';

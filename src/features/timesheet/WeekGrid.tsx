@@ -10,7 +10,7 @@ import { selectValues } from './capture';
 import { MAX_ALLOCS, MAX_LINES, blankAlloc, blankCell, cellMinutes, defaultCtx, gridTotals, type Alloc, type Cell, type GridState, type Line } from './week';
 
 /* The weekly grid in the tenant's layout (renderWeekGrid, renderWeekClassic,
-   renderWeekDays; qnipay-workforce-v15.html:6441-6588 and the rules at
+   renderWeekDays; calm.ly-workforce-v15.html:6441-6588 and the rules at
    976-1083). Controlled: the parent holds the state and submits it. Shared by
    My timesheet and proxy entry, which passes `who` so the grid says whose it is.
    - classic: allocation stacked in the first column, days across.

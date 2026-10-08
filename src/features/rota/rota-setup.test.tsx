@@ -159,7 +159,7 @@ describe('Rota setup', () => {
     try {
       await userEvent.click(within(dialog).getByTestId(tid.patUpload.download));
       await expectToast('Downloaded · 4 errors and 2 warnings as CSV');
-      expect(names).toEqual(['qnipay-upload-errors.csv']);
+      expect(names).toEqual(['calm.ly-upload-errors.csv']);
       const csv = await blobs[0]?.text();
       expect(csv?.split('\r\n')[0]).toBe('Row,Field,Reason');
       expect(csv?.split('\r\n')).toHaveLength(7);
@@ -176,7 +176,7 @@ describe('Rota setup', () => {
   });
 
   test('with Rota off the page says so and offers nothing else', async () => {
-    resetTo('qnipay');
+    resetTo('calm.ly');
     await signInAs('admin');
     renderPage(<RotaSetupPage />, '/setup/mrota');
     expect(await screen.findByTestId(tid.mrota.off)).toHaveTextContent('The Rota module is off for this tenant. Turn it on under Modules & features.');

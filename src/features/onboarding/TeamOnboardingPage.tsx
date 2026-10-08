@@ -12,7 +12,7 @@ import { StatePill } from '@/features/people/StatePill';
 import { FileCell } from './OnbDocuments';
 import { CheckDialog, NotReadyDialog } from './TeamOnbDialogs';
 
-/* My team → Onboarding: the prototype's mgrOnboarding (qnipay-workforce-v15.html:
+/* My team → Onboarding: the prototype's mgrOnboarding (calm.ly-workforce-v15.html:
    4729-4765) with the onb-invite, onb-review, onb-verify, onb-reject,
    onb-activate and onb-chase handlers (11632-11723). The new starters at the
    manager's own location (every location with Configure onboarding, D5),

@@ -6,13 +6,13 @@ import { EDDIE, PUKAR, TOM, completeMine, onbAudit, onbStore, openPortal, openTr
 
 /* Module 5 Review Focus 5: a 500 on any onboarding write shows the refusal,
    keeps the screen as it was, and leaves no case change, notification or
-   audit row. One journey on qnipay. Tom has done every step but the review:
+   audit row. One journey on calm.ly. Tom has done every step but the review:
    a step save, a document upload, taking a policy tick back and the
    submission; Pukar verifying and rejecting a document, inviting Priya and
    chasing Tom; Eddie saving Onboarding setup and uploading a new policy. A
    fault is registered after the page it fires on has loaded, because faults
    live in the page (fixtures.ts). */
-test.beforeEach(async ({ api }) => { await api.seed('qnipay'); await api.setClock(FROZEN); });
+test.beforeEach(async ({ api }) => { await api.seed('calm.ly'); await api.setClock(FROZEN); });
 /* every collection a write could touch, the audit log read as onboarding's own rows (signing in writes its own) */
 const held = async (page: Page) => {
   const s = await onbStore(page);

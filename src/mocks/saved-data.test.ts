@@ -36,7 +36,7 @@ test('reset returns to the seed, sets the session aside, keeps the caller signed
 
 test('the export holds every collection but the sign-in sessions, and an employee cannot read it', async () => {
   const file = SavedDataExport.parse((await caller(await tokenFor('admin'))('GET', `${S}/export`)).body);
-  expect(file).toMatchObject({ kind: 'qnipay.state', v: 1, tenant: 'social' });
+  expect(file).toMatchObject({ kind: 'calm.ly.state', v: 1, tenant: 'social' });
   expect(file.data.tenant).toBeDefined();
   expect(file.data.sessions).toBeUndefined();
   expect((await caller(await tokenFor('employee'))('GET', `${S}/export`)).status).toBe(403);

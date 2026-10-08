@@ -5,7 +5,7 @@ import { writeAudit } from './audit';
 import { accountBy, accountForPerson, actor, locationNameOf, personBy, roleNameOf, sessionView, sessions, type Account, type Person, type ServerSession } from './auth';
 import { createSession, getSession, deleteSession, startViewAs, listViewAsPeople, endViewAs, listAccounts, type ViewAsPerson } from '@/contract/session';
 
-export const DEMO_PASSWORD = 'Qnipay@123';   // stub: shared demo password, replaced by Entra ID
+export const DEMO_PASSWORD = 'calm.ly@123';   // stub: shared demo password, replaced by Entra ID
 const ONBOARDING = new Set(['candidate', 'preboard']);
 const GONE = new Set(['leaver', 'archived']);
 

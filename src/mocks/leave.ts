@@ -56,10 +56,10 @@ const flagOn = (k: string) => Boolean(tenant().flags[k]);
 const flags = () => Object.fromEntries(Object.entries(tenant().flags).map(([k, v]) => [k, Boolean(v)]));
 /* With the Leave module off the whole module is hidden, and so refused here. */
 function requireLeave() {
-  if (!tenant().modules.L) refuse(403, { code: 'module-off', message: 'Leave is switched off for this organisation.', next: 'An administrator can switch the Leave module on in Qnipay setup.' });
+  if (!tenant().modules.L) refuse(403, { code: 'module-off', message: 'Leave is switched off for this organisation.', next: 'An administrator can switch the Leave module on in calm.ly setup.' });
 }
 function requireFlag(flag: string, what: string) {
-  if (!flagOn(flag)) refuse(403, { code: 'feature-off', message: `${what} is switched off for this organisation.`, next: 'An administrator can switch it on in Qnipay setup.' });
+  if (!flagOn(flag)) refuse(403, { code: 'feature-off', message: `${what} is switched off for this organisation.`, next: 'An administrator can switch it on in calm.ly setup.' });
 }
 function config(): LeaveConfigRecord {
   const c = recordAt(store.coll<LeaveConfigRecord>('leaveConfig'), 'leaveConfig');

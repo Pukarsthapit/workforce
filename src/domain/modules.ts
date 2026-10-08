@@ -1,4 +1,4 @@
-/* Modules and features. Ported from the prototype (qnipay-workforce-v15.html:
+/* Modules and features. Ported from the prototype (calm.ly-workforce-v15.html:
    MODULES, MOD_SUBS, FLAGS, moduleLive, flagsFor, modOn, flagOn, MOD_IMPACT,
    MOD_RESTORE, rotaShiftsOff and rotaShiftsOn, the data-mod, data-flag,
    data-brk, data-veh, data-weekgrid and data-weeklayout handlers, and the

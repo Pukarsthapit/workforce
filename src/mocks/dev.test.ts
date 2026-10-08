@@ -62,9 +62,9 @@ test('POST /api/_dev/seed refuses a tenant this build has no seed for, and chang
   expect(store.tenant).toBe('social');
 });
 test('POST /api/_dev/seed loads a known tenant', async () => {
-  const r = await fetch('/api/_dev/seed/qnipay', { method: 'POST' });
+  const r = await fetch('/api/_dev/seed/calm.ly', { method: 'POST' });
   expect(r.status).toBe(204);
-  expect(store.tenant).toBe('qnipay');
+  expect(store.tenant).toBe('calm.ly');
   await fetch('/api/_dev/seed/social', { method: 'POST' });
 });
 /* M7: the client encodes path parameters (an email's @ becomes %40), so a

@@ -27,7 +27,7 @@ const anyAccount = (type: string) => {
 async function signInAndGetToken(email: string): Promise<string> {
   const r = await fetch('/api/v1/session', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password: 'Qnipay@123' }),
+    body: JSON.stringify({ email, password: 'calm.ly@123' }),
   });
   const s = (await r.json()) as { token: string };
   return s.token;
@@ -68,7 +68,7 @@ test('retrying after a failed tenant load renders the shell once the server reco
 
   await userEvent.click(screen.getByTestId(tid.shell.retry));
 
-  expect(await screen.findByTestId(tid.shell.rolePill)).toBeInTheDocument();
+  expect(await screen.findByTestId(tid.shell.account)).toBeInTheDocument();
 });
 
 test('a 401 answering the tenant load signs out instead of leaving a dead end', async () => {

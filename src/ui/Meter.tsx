@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
-/* The prototype's .bars and .bar2 (qnipay-workforce-v15.html, mgrSick): a
+/* The prototype's .bars and .bar2 (calm.ly-workforce-v15.html, mgrSick): a
    figure, then a 6px pill track on the tint surface filled to `pct` in the
    status colour. The figure carries the meaning; the bar only repeats it, so
    it is hidden from screen readers. */

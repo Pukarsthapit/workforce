@@ -1,6 +1,6 @@
 /* Timesheet setup (mts): the rules the screen applies to its draft before a
    save. Ported from the prototype's typeFieldRows, the data-fvis, data-fmand,
-   data-allow, allow-add and rule-add handlers (qnipay-workforce-v15.html:
+   data-allow, allow-add and rule-add handlers (calm.ly-workforce-v15.html:
    8175-8198, 11143-11171, 12521-12531). The prototype wrote each change as it
    was made; here they edit a draft that one Save sends (D12). */
 import type { CaptureRules, TimesheetConfig, TimesheetField, TypeCapture, UpdateTimesheetConfig } from '@/contract/timesheets';

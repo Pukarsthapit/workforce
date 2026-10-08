@@ -1,12 +1,8 @@
-/* Ported from the prototype's NAV() (qnipay-workforce-v15.html, "function NAV()").
-   Order is screen order; a run of tabs sharing `group` becomes one menu. */
+/* Ported from the prototype's NAV() (calm.ly-workforce-v15.html, "function NAV()").
+   Order is the display order inside each area's sidebar section. */
 export interface NavInput { caps: Pick<ReadonlySet<string>, 'has'>; modules: Record<string, boolean>; flags: Record<string, boolean>; onboarding: boolean }
 export interface NavTab {
   view: string; label: string; path: string; built: boolean; subProject?: string;
-  /* team tabs: a run sharing `group` becomes one dropdown menu in the strip.
-     `groupKey` is the stable, copy-independent id behind that display label
-     (never derived from it: a copy change must not silently change a test id). */
-  group?: string; groupKey?: string;
   /* setup tabs: which of the five setup sections a page belongs to. `section`
      is the display label, `sectionKey` its stable id, same reasoning as above. */
   section?: string; sectionKey?: string;
@@ -33,7 +29,7 @@ const LATER: Record<string, string> = {
 const tab = (group: NavGroup['key'], view: string, label: string, extra: Partial<NavTab> = {}): NavTab =>
   ({ view, label, path: `/${group}/${view}`, built: !(view in LATER), ...(view in LATER ? { subProject: LATER[view] } : {}), ...extra });
 
-/* The prototype's SETUP_SECTIONS (qnipay-workforce-v15.html:3975-3991): the
+/* The prototype's SETUP_SECTIONS (calm.ly-workforce-v15.html:3975-3991): the
    fixed order and grouping an administrator sees setup in. Its "Modules"
    section there only lists 'amods'; mts/mrota/mleave are reached one level
    deeper, after choosing a specific module (its MODULE_SEC drill-down, e.g.
@@ -95,17 +91,17 @@ export function buildNav({ caps, modules, flags, onboarding }: NavInput): NavGro
   const team: [boolean, NavTab][] = [
     [teamHome, tab('team', 'thome', 'Team Home')],
     [can('team_ts') && ts, tab('team', 'tteam', 'Approvals')],
-    [can('team_hours') && ts, tab('team', 'thours', 'Hours position', { group: 'Scheduling', groupKey: 'scheduling' })],
-    [can('team_rota') && on('R'), tab('team', 'trota', 'Rota', { group: 'Scheduling', groupKey: 'scheduling' })],
-    [can('team_cover') && on('R') && flag('FULFIL'), tab('team', 'tcover', 'Cover requests', { group: 'Scheduling', groupKey: 'scheduling' })],
-    [can('rota_shift') && can('team_rota') && on('R'), tab('team', 'tshifts', 'Shift catalogue', { group: 'Scheduling', groupKey: 'scheduling' })],
-    [can('rota_pattern') && can('team_rota') && on('R'), tab('team', 'tpat', 'Working patterns', { group: 'Scheduling', groupKey: 'scheduling' })],
-    [can('team_leave') && on('L'), tab('team', 'tleave', 'Requests', { group: 'Requests', groupKey: 'requests' })],
-    [can('team_sick') && on('L'), tab('team', 'tsick', 'Sickness', { group: 'Requests', groupKey: 'requests' })],
-    [can('team_hours'), tab('team', 'texc', 'Exceptions', { group: 'Requests', groupKey: 'requests' })],
-    [can('team_people'), tab('team', 'tpeople', 'People', { group: 'People', groupKey: 'people' })],
-    [(can('onb_track') || can('onb_verify')) && on('ON'), tab('team', 'tonb', 'Onboarding', { group: 'People', groupKey: 'people' })],
-    [can('notice_post') && flag('NOTICES'), tab('team', 'tnotices', 'Notices', { group: 'People', groupKey: 'people' })],
+    [can('team_hours') && ts, tab('team', 'thours', 'Hours position')],
+    [can('team_rota') && on('R'), tab('team', 'trota', 'Rota')],
+    [can('team_cover') && on('R') && flag('FULFIL'), tab('team', 'tcover', 'Cover requests')],
+    [can('rota_shift') && can('team_rota') && on('R'), tab('team', 'tshifts', 'Shift catalogue')],
+    [can('rota_pattern') && can('team_rota') && on('R'), tab('team', 'tpat', 'Working patterns')],
+    [can('team_leave') && on('L'), tab('team', 'tleave', 'Requests')],
+    [can('team_sick') && on('L'), tab('team', 'tsick', 'Sickness')],
+    [can('team_hours'), tab('team', 'texc', 'Exceptions')],
+    [can('team_people'), tab('team', 'tpeople', 'People')],
+    [(can('onb_track') || can('onb_verify')) && on('ON'), tab('team', 'tonb', 'Onboarding')],
+    [can('notice_post') && flag('NOTICES'), tab('team', 'tnotices', 'Notices')],
   ];
   const keep = (xs: [boolean, NavTab][]) => xs.filter(([ok]) => ok).map(([, t]) => t);
   const sections = setupSections(can, on, flag, ts)
@@ -115,7 +111,7 @@ export function buildNav({ caps, modules, flags, onboarding }: NavInput): NavGro
   const groups: NavGroup[] = [
     { key: 'work', label: 'My Work', tabs: keep(work) },
     { key: 'team', label: 'My Team', tabs: onboarding ? [] : keep(team) },
-    { key: 'setup', label: 'Qnipay setup', tabs: onboarding || !setupTabs.length ? [] : [tab('setup', 'asetup', 'Qnipay setup'), ...setupTabs] },
+    { key: 'setup', label: 'calm.ly setup', tabs: onboarding || !setupTabs.length ? [] : [tab('setup', 'asetup', 'calm.ly setup'), ...setupTabs] },
   ];
   return groups.filter(g => g.tabs.length);
 }

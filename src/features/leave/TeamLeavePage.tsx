@@ -16,7 +16,7 @@ import { useCaps } from '@/shell/useCaps';
 import { useTenant } from '@/shell/shellData';
 import { DeclineDialog, PersonEntitlement } from './TeamLeaveDialogs';
 
-/* Team leave: the prototype's mgrLeave (qnipay-workforce-v15.html:7838-7912).
+/* Team leave: the prototype's mgrLeave (calm.ly-workforce-v15.html:7838-7912).
    The requests waiting on this manager at the locations they decide for (the
    server leaves out their own, D5), each with the colleague's balance and how
    it was worked out, the effect on cover, the workflow stage and the SLA, and
@@ -225,6 +225,6 @@ function AwayCard() {
           <span><strong>{d.whoName}</strong> → {d.toName}</span>
           <span className="text-xs text-text-muted tabular-nums">{formatDmy(d.from)} – {formatDmy(d.until)} · {d.modules.join(', ')}</span>
         </EssRow>))}
-      {!caps.has('framework') && <Small className="mt-sm">Cover is set by an administrator in Qnipay setup, under Approvals.</Small>}
+      {!caps.has('framework') && <Small className="mt-sm">Cover is set by an administrator in calm.ly setup, under Approvals.</Small>}
     </Card>);
 }

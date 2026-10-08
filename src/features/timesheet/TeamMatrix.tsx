@@ -8,7 +8,7 @@ import { usePeople } from '@/api/people';
 import { addDays, formatDay, isoWeek, periodStart, queueChecksum } from '@/domain/timesheet';
 import { PIP, isPending, pipFor } from './team';
 
-/* mgrTeamMatrix (qnipay-workforce-v15.html:7076-7097) and approve-matrix
+/* mgrTeamMatrix (calm.ly-workforce-v15.html:7076-7097) and approve-matrix
    (11904-11920): everyone at the approver's location against the days of
    one week. Approve selected sends the chosen people's pending days on this
    week, with queueChecksum over exactly those rows (D7). A weekStart read

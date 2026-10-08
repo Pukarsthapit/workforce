@@ -14,7 +14,7 @@
     "CONTROLS LOOK LIKE THEIR NEIGHBOURS": "ui",
     "EMPLOYEE CRUD + LIFECYCLE (IMP-013)": "1b", "DIMENSION CRUD (IMP-019)": "1b", "EMPLOYEE TYPE CRUD (pre-existing, now covered)": "1b",
     "PEOPLE, CONTRACTS AND DIMENSIONS": "1b", "EMPLOYEE IDENTIFIERS": "1b", "TENANT DATA FROM THE BC EXPORT": "1b",
-    "MODULES — index, then drill in (mirrors Qnipay setup)": "1c", "TIMESHEET IS LICENSABLE, CORE IS THE BASE APP": "1c",
+    "MODULES — index, then drill in (mirrors calm.ly setup)": "1c", "TIMESHEET IS LICENSABLE, CORE IS THE BASE APP": "1c",
     "FEATURE OWNERSHIP": "1c", "MODULE PAGES ARE THE SAME SHAPE": "1c", "ONE HOME PER PAGE": "1c", "GUIDES — explanation moved off the page": "1c",
     "SAVING A TENANT AS A TEMPLATE": "1c", "FUSION3 CONFIGURED THROUGH THE TEMPLATE": "1c", "A MODULE THAT IS OFF SAYS NOTHING": "1c",
     "SETUP CONTROLS DO ONE THING": "1c", "ITEM 4 — actionable notifications and deep links": "1c", "NOTICE BOARD (Workforce core)": "1c",

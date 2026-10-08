@@ -11,7 +11,7 @@ import { NewPatternDialog, PatternEditor, PatternPeopleDialog, activePill, useGe
 import { PatternUploadDialog } from './PatternUpload';
 
 /* Working patterns: the prototype's mgrPatternsPage and mgrPatternsBody
-   (qnipay-workforce-v15.html:7238-7246, 7119-7141). The patterns that cover
+   (calm.ly-workforce-v15.html:7238-7246, 7119-7141). The patterns that cover
    the manager's location, how many of their people each one carries, and
    from each: open it, add people, or generate the rota. The server scopes
    the list and every write to the manager's location, and Rota setup can

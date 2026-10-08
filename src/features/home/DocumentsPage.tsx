@@ -6,7 +6,7 @@ import { ApiError } from '@/api/client';
 import { useMyDocuments, type MyDocuments } from '@/api/home';
 import { formatDmy } from '@/domain/time';
 
-/* My documents: the prototype's essDocs (qnipay-workforce-v15.html:5673-5696).
+/* My documents: the prototype's essDocs (calm.ly-workforce-v15.html:5673-5696).
    The documents Workforce holds for this person, and the payroll ones, which
    are payroll's and read "Not yet connected" (D12). There is no Open action:
    opening documents is not built yet, and an Open that opened nothing would

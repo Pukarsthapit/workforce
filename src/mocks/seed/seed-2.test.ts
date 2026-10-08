@@ -1,5 +1,5 @@
 import social from './social.json';
-import qnipay from './qnipay.json';
+import calmly from './calmly.json';
 import meta from './meta.json';
 import {
   RATE_TRIGGERS, TS_STATES, WEEK_GRIDS, WEEK_LAYOUTS, clockFromIso, entryMinutes, tsCan, validateTimes, weekLabel, weekTotals,
@@ -22,7 +22,7 @@ const configOf = (s: SeedFile) => s.data.timesheetConfig?.timesheetConfig as Con
 /* The prototype's frozen clock: 13/08/2026 09:12 London. */
 const NOW = clockFromIso('2026-08-13T08:12:00.000Z');
 
-for (const [name, raw] of Object.entries({ social, qnipay })) {
+for (const [name, raw] of Object.entries({ social, 'calm.ly': calmly })) {
   const seed = raw as unknown as SeedFile;
   describe(`seed ${name} for module 2`, () => {
     test('every timesheet day belongs to a person, is in a known state and has a history that got it there', () => {
@@ -91,8 +91,8 @@ for (const [name, raw] of Object.entries({ social, qnipay })) {
   });
 }
 
-test('qnipay maps the six submissions to Manish Nepal\'s six active reports at his location (D10)', () => {
-  const s = qnipay as unknown as SeedFile;
+test('calmly maps the six submissions to Manish Nepal\'s six active reports at his location (D10)', () => {
+  const s = calmly as unknown as SeedFile;
   const subs = vals<Day>(s, 'timesheetDays').filter(d => d.state !== 'draft');
   expect(subs.map(d => d.personCode)).toEqual(['EMP004', 'EMP005', 'EMP007', 'EMP009', 'EMP010', 'EMP011']);
   expect(subs[5]?.enteredBy).toBe('EMP014');

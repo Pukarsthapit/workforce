@@ -46,7 +46,7 @@ const NOT_FOUND = (message: string, next = 'Reload the page.'): never => refuse(
 
 /* With the Onboarding module off the whole module is hidden, and so refused here. */
 function requireOnboarding() {
-  if (!onbModuleOn()) refuse(403, { code: 'module-off', message: 'Onboarding is switched off for this organisation.', next: 'An administrator can switch the Onboarding module on in Qnipay setup.' });
+  if (!onbModuleOn()) refuse(403, { code: 'module-off', message: 'Onboarding is switched off for this organisation.', next: 'An administrator can switch the Onboarding module on in calm.ly setup.' });
 }
 /* A domain refusal, with the status its code carries. */
 const STATUS: Record<string, number> = { NOT_FOUND: 404, SUBMITTED: 409, OUTSTANDING: 409, STALE: 409, FIXED: 409, FLAG_OFF: 409, NOT_READY: 409 };

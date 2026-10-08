@@ -1,4 +1,4 @@
-/* Module 5 journeys. They run on qnipay at the frozen clock, where the
+/* Module 5 journeys. They run on calm.ly at the frozen clock, where the
    Onboarding module and every ONB_* feature are on: Tom Achterberg (EMP003)
    is preboarding from 14/09/2026 and Priya Raman (EMP002) is a candidate from
    28/09/2026, both at Manchester with empty cases; Pukar Sthapit (EMP001)

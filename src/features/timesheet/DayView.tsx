@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import { AlarmClock, CalendarDays, Check, Clock, History, Lock, Minus, RotateCw, X } from 'lucide-react';
 import { tid } from '@/testids';
-import { Banner, Button, CalNav, Card, CardHead, CheckboxField, CheckRow, Field, NavLink, Pill, SelectBox, Small, SwitchField, TextInput, Tip, toastInfo, type Tone } from '@/ui';
+import { Banner, Button, CalNav, Card, CardHead, CheckboxField, CheckRow, Field, FormExpander, NavLink, Pill, SelectBox, Small, SwitchField, TextInput, Tip, toastInfo, type Tone } from '@/ui';
 import { buttonVariants } from '@/ui/shadcn/button';
 import { useMyClock, type ClockRecord, type MyClock } from '@/api/clock';
 import type { DaySaved, TimesheetWeek, WeekDay } from '@/contract/timesheets';
@@ -12,7 +12,7 @@ import { ClockCard, ForgottenClock, clockedStart } from './ClockCard';
 import { DayFields, DayStatsCard, hasClosedGroups } from './DayForm';
 import { DayChecks, holdFocus, useDayEntry } from './useDayEntry';
 
-/* The day chip: the prototype's stMap in essTimesheet (qnipay-workforce-v15.html:6263-6266),
+/* The day chip: the prototype's stMap in essTimesheet (calm.ly-workforce-v15.html:6263-6266),
    with the glyphs from the shared icon set. A resubmission reads as awaiting approval, as dayInfo maps it. */
 const CHIP: Record<string, { label: string; tone: Tone; glyph: ReactNode }> = {
   ok: { label: 'Approved', tone: 'ok', glyph: <Check /> },
@@ -33,7 +33,7 @@ export function dayChip(day: WeekDay) {
   return CHIP[key] ?? NONE_CHIP;
 }
 
-/* The day view: tsDayView (qnipay-workforce-v15.html:6277-6336). The panel
+/* The day view: tsDayView (calm.ly-workforce-v15.html:6277-6336). The panel
    is keyed by the day and its version, so after a save the form starts again
    from what the server stored, never from what was typed (no optimistic
    updates); a clock out writes the day, so its times appear the same way.
@@ -143,7 +143,7 @@ function DayPanel({ week, day, today, onDate, personId, clock }: {
         {recorded > 0 && <> Recorded so far: {Number(recorded.toFixed(2))}h ({varianceText(rec?.minutes ?? 0, line.hours)}h against the rota).</>}</Banner>}
       {day.absence && <Banner testId={tid.ts.banner('absence')} tone="warn" icon={<Lock />}
         title={`${day.absence === 'leave' ? 'Annual leave' : 'Sickness'} is recorded for this day`}>
-        Approved absence blocks timesheet capture while “Leave blocks timesheet capture” is on under Qnipay setup · Leave. If you did work,
+        Approved absence blocks timesheet capture while “Leave blocks timesheet capture” is on under calm.ly setup · Leave. If you did work,
         mark the day non-working and tick “Called in and worked anyway”.</Banner>}
       {nonwork && <Card>
         <CardHead title="Why this day is non-working" />
@@ -168,7 +168,7 @@ function DayPanel({ week, day, today, onDate, personId, clock }: {
           {clock.card && <ClockCard clock={clock.card} readAt={clock.readAt} />}
           <Card>
             <CardHead title={<>Timesheet entry<Tip testId={tid.ts.entryTip} text={entryTip(week, Boolean(clock.card))} /></>} />
-            <DayFields {...fields} readOnly={locked} which={side ? 'open' : 'all'} />
+            <DayFields {...fields} readOnly={locked} which="open" />
             <DayChecks checked={entry.checked} refusal={entry.refusal} />
             <div className="mt-lg flex flex-wrap items-center justify-end gap-sm">
               {running && <span data-testid={tid.clock.outFirst} className="text-xs text-text-muted">{CLOCK_OUT_FIRST}</span>}
@@ -179,6 +179,10 @@ function DayPanel({ week, day, today, onDate, personId, clock }: {
         </div>
         <div className="lg:sticky lg:top-[150px]">
           <DayStatsCard capture={c} stats={stats} scheduled={line?.hours} />
+          {formGroups(c).some(g => g.group.key === 'allow' && g.fields.length > 0) && <FormExpander testId={tid.dayForm.group('allow')}
+            title="Allowances" note="Tick those that apply" defaultOpen={false}>
+            <DayFields {...fields} readOnly={locked} which="allowances" />
+          </FormExpander>}
           {side && <Card>
             <CardHead title="Shift details" actions={<span className="text-xs text-text-muted">Add only what applies</span>} />
             <DayFields {...fields} readOnly={locked} which="closed" />

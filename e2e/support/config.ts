@@ -38,7 +38,7 @@ export const auditRows = async (page: Page, ...entities: string[]) =>
    refused must leave all of it exactly as it was. */
 export const wholeStore = (page: Page): Promise<Record<string, unknown>> =>
   page.evaluate(() => {
-    const raw = localStorage.getItem('qnipay.app.store');
+    const raw = localStorage.getItem('calm.ly.app.store');
     const db = raw ? (JSON.parse(raw) as { data: Record<string, unknown> }).data : {};
     delete db.sessions;
     return Object.fromEntries(Object.entries(db).filter(([, v]) => !(v && typeof v === 'object' && !Object.keys(v).length)));

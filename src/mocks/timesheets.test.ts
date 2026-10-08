@@ -15,7 +15,7 @@ beforeEach(() => resetTo('social'));
 type Call = ReturnType<typeof caller>;
 const as = async (p: Persona) => caller(await tokenFor(p));
 async function asEmail(email: string): Promise<Call> {
-  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'Qnipay@123' }) });
+  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'calm.ly@123' }) });
   const { token } = (await r.json()) as { token: string };
   return caller(token);
 }
@@ -109,8 +109,8 @@ describe('the published rota on the timesheet reads (module 3 D13, D14, D16)', (
     const plain = ApprovalQueue.parse((await (await as('manager'))('GET', '/api/v1/approvals/timesheets')).body);
     expect(plain.rota).toBeUndefined();
   });
-  test('qnipay (Rota off): no rota line, no catalogue and no matrix rota', async () => {
-    resetTo('qnipay');
+  test('calm.ly (Rota off): no rota line, no catalogue and no matrix rota', async () => {
+    resetTo('calm.ly');
     const call = await as('employee');
     const me = accountOf('employee').personCode;
     const w = TimesheetWeek.parse((await call('GET', `/api/v1/timesheets/${me}/weeks/2026-08-10`)).body);
@@ -187,7 +187,7 @@ describe('PUT /api/v1/timesheets/:personId/days/:date (Review Focus 2)', () => {
 describe('project and job task', () => {
   const charged = (fields: Record<string, string>) => ({ entries: [{ ...entry('07:00', '15:00', [['11:00', '11:30']]), fields }], shift: 'E' });
   test('the capture setup carries the tenant’s open projects, each with its own tasks', async () => {
-    resetTo('qnipay');
+    resetTo('calm.ly');
     const w = TimesheetWeek.parse((await (await asEmail('bigyan.poudel@dogmagroup.co.uk'))('GET', '/api/v1/timesheets/EMP004/weeks/2026-08-10')).body);
     expect(w.capture.projects.map(x => x.name)).toContain('Go fibre BC implementation Project');
     expect(w.capture.projects.map(x => x.name)).not.toContain('Northgate Fit-out');
@@ -360,7 +360,7 @@ describe('POST /api/v1/timesheets/:personId/multiweek/submit', () => {
     expect(snapshot(...WRITES)).toEqual(before);
   });
   test('with the lock off, each week routes separately and the days become pending records', async () => {
-    resetTo('qnipay');
+    resetTo('calm.ly');
     const admin = await as('admin');
     const cfg = TimesheetSetup.parse((await admin('GET', '/api/v1/timesheet-config')).body).config;
     expect((await admin('PATCH', '/api/v1/timesheet-config', { rules: { enforceLock: false } }, cfg.version)).status).toBe(200);

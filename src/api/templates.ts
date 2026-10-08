@@ -3,7 +3,7 @@
    answered and what it changed has been read again. Applying a template can
    change any module's settings, employee types, role names and structure, so
    it reads everything again, the session included (a role name is in the
-   role pill). */
+   account area). */
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { api } from './client';

@@ -7,16 +7,17 @@ import { useTenant } from '@/api/tenant';
 import { MAX_BREAKS, MAX_VEHICLES, breakIndex, fieldOptions, formGroups, hm, isAllowance, varianceText, type DayStats as Stats, type FormField, type FormValues } from './capture';
 
 /* The day form: the prototype's buildForm and fieldControl
-   (qnipay-workforce-v15.html:6097-6125, 6177-6205). One renderer for every
-   entry surface: My timesheet's day view (open groups in the entry card, the
-   closed ones in the side column's "Shift details") and proxy entry (all of
-   it in one column). A field renders as the thing it holds: a time gets a
-   time control, an amount a numeric keypad. */
+   (calm.ly-workforce-v15.html:6097-6125, 6177-6205). One renderer for every
+   entry surface: My timesheet's day view (open groups in the entry card,
+   allowances in their side-column expander, the other closed groups in
+   "Shift details") and proxy entry (all of it in one column). A field renders
+   as the thing it holds: a time gets a time control, an amount a numeric
+   keypad. */
 export interface DayFieldsProps {
   capture: CaptureSetup; values: FormValues; errorFor: (code: string) => string | undefined;
   onChange: (code: string, value: string | boolean) => void; onBlur: (code: string) => void;
   breaks: number; onAddBreak: () => void;
-  which: 'open' | 'closed' | 'all'; single?: boolean; disabled?: boolean;
+  which: 'open' | 'closed' | 'allowances' | 'all'; single?: boolean; disabled?: boolean;
   /* fields the clock owns while a shift runs (lockShiftTimes, v15:6920-6926): shown, read-only */
   readOnly?: readonly string[];
 }
@@ -86,9 +87,14 @@ export function DayFields(p: DayFieldsProps) {
   })).map(g => g.group.key)));
   if (!groups.length) return p.which === 'closed' ? null
     : <Empty testId={tid.dayForm.empty}>No fields are enabled for this employee type yet. Turn a capability on under Employee types.</Empty>;
-  const shown = groups.filter(g => p.which === 'all' || (p.which === 'open') === g.group.open);
+  const shown = groups.filter(g => {
+    if (p.which === 'all') return true;
+    if (p.which === 'allowances') return g.group.key === 'allow';
+    if (g.group.key === 'allow') return false;
+    return (p.which === 'open') === g.group.open;
+  });
   return <>{shown.map(({ group, fields }) => group.open
-    ? <div key={group.key}><FormGroupLabel>{group.name}</FormGroupLabel><GroupBody fields={fields} p={p} /></div>
+    ? <div key={group.key}>{p.which !== 'allowances' && <FormGroupLabel>{group.name}</FormGroupLabel>}<GroupBody fields={fields} p={p} /></div>
     : <FormExpander key={group.key} testId={tid.dayForm.group(group.key)} title={group.name} note={group.tip} defaultOpen={opened.has(group.key)}>
         <GroupBody fields={fields} p={p} />
       </FormExpander>)}</>;

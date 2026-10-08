@@ -21,7 +21,7 @@ const anyAccount = (type: string) => {
 async function signInAndGetToken(email: string): Promise<string> {
   const r = await fetch('/api/v1/session', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password: 'Qnipay@123' }),
+    body: JSON.stringify({ email, password: 'calm.ly@123' }),
   });
   const s = (await r.json()) as { token: string };
   return s.token;
@@ -67,7 +67,7 @@ test('a 401 answering a request after the shell is up signs out and shows why', 
   setToken(token);
 
   render(<App />);
-  await screen.findByTestId(tid.shell.rolePill); // the shell is up: tenant already loaded fine once
+  await screen.findByTestId(tid.shell.account); // the shell is up: tenant already loaded fine once
 
   await fetch('/api/_dev/faults', {
     method: 'POST', body: JSON.stringify({ method: 'GET', path: '/api/v1/tenant', status: 401, times: 1 }),
@@ -87,7 +87,7 @@ test('a 5xx answering a request after the shell is up keeps the token', async ()
   setToken(token);
 
   render(<App />);
-  await screen.findByTestId(tid.shell.rolePill);
+  await screen.findByTestId(tid.shell.account);
   /* and the landing page (My home) has settled: a part of it mounting later
      would read the failed tenant afresh and refetch it, racing the error state */
   await screen.findByTestId(tid.home.grid);

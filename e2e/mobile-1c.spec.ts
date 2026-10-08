@@ -22,17 +22,20 @@ const rulesMatching = (page: Page, selector: string, needle: string) => page.eva
   return out;
 }, [selector, needle] as const);
 
-test('MOB a viewport is declared, the tab strip gives way to the bottom bar, the area switcher scrolls, and the bar keeps clear of the home indicator', async ({ page, signInAs }) => {
+test('MOB a viewport is declared, the drawer preserves navigation and the quick-page bar keeps clear of the home indicator', async ({ page, signInAs }) => {
   await signInAs('employee');
   await page.goto('/work/home');
   await page.getByTestId(tid.home.grid).waitFor();
   await expect(page.locator('meta[name="viewport"]')).toHaveAttribute('content', /width=device-width/);
   await expect(page.locator('meta[name="viewport"]')).toHaveAttribute('content', /viewport-fit=cover/);
-  await expect(page.getByRole('navigation', { name: 'Pages', exact: true })).toBeHidden();
+  await expect(page.getByRole('navigation', { name: 'Main navigation' })).toBeHidden();
   await expect(page.getByRole('navigation', { name: 'Quick pages' })).toBeVisible();
-  const areas = page.getByRole('navigation', { name: 'Areas' });
-  await expect(areas).toHaveCSS('overflow-x', 'auto');
-  await expect(areas).toHaveCSS('flex-wrap', 'nowrap');
+  await expect(page.getByTestId('shell-mobile-navigation')).toBeVisible();
+  await page.getByTestId('shell-mobile-navigation').click();
+  const drawer = page.getByRole('dialog');
+  await expect(drawer.getByRole('navigation', { name: 'WORK' })).toBeVisible();
+  await expect(drawer.getByRole('navigation', { name: 'PEOPLE' })).toBeVisible();
+  await expect(drawer.getByRole('link', { name: /Profile/ })).toBeVisible();
   expect(await rulesMatching(page, 'nav[aria-label="Quick pages"]', 'safe-area-inset-bottom')).not.toEqual([]);
 });
 

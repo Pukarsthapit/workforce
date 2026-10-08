@@ -5,7 +5,7 @@ import { rotaLive, rotaState, rotaVisible } from '@/domain/rota';
 import type { RotaWeekView } from '@/contract/rota';
 import { weekRange } from './week';
 
-/* The week bar: Rota's one permitted extra shell row (qnipay-workforce-v15.html:
+/* The week bar: Rota's one permitted extra shell row (calm.ly-workforce-v15.html:
    10662-10692, CSS 365-371 and 1542-1551). It sits under the tab strip, sticky
    at 100px (56px on a phone, where the strip becomes the bottom bar), and reads
    the week's own record: its state, its version and the changes made since it

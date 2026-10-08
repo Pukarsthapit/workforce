@@ -41,7 +41,7 @@ export const shiftsOn = (w: RotaWeekRead) => w.rows.flatMap(r => r.line).filter(
 export interface NoteRow { id: string; personId: string; area: string; title: string; body: string }
 export const stored = <T>(page: Page, coll: string): Promise<T[]> =>
   page.evaluate(c => {
-    const raw = localStorage.getItem('qnipay.app.store');
+    const raw = localStorage.getItem('calm.ly.app.store');
     const db = raw ? (JSON.parse(raw) as { data: Record<string, Record<string, unknown>> }).data : {};
     return Object.values(db[c] ?? {});
   }, coll) as Promise<T[]>;

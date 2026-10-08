@@ -1,4 +1,4 @@
-/* Leave and absence rules. Ported from the prototype (qnipay-workforce-v15.html:
+/* Leave and absence rules. Ported from the prototype (calm.ly-workforce-v15.html:
    LEAVE_CFG, LEAVE_STAGES, LEAVE_TYPES, LEAVE_POLICIES, policyBy, typeLeave,
    yearsService, serviceBonus, entitlement, takenDays, takenHours, balance,
    reconcileLeaver, leaveShape, leaveRecalc, lv-send, lv-cancel, decideLeave,

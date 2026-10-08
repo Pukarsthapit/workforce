@@ -1,5 +1,5 @@
 {
- "generatedFrom": "qnipay-regression-suite.js",
+ "generatedFrom": "calm.ly-regression-suite.js",
  "rows": [
   {
    "id": "BOOT#1",
@@ -39,7 +39,7 @@
    "text": "It boots on the tenant’s own data",
    "area": "1c",
    "status": "ported",
-   "test": "src/mocks/home.test.ts › qnipay (Rota off): it boots on the tenant's own data, with no shifts, but leave and the recorded days still show"
+   "test": "src/mocks/home.test.ts › calm.ly (Rota off): it boots on the tenant's own data, with no shifts, but leave and the recorded days still show"
   },
   {
    "id": "BOOT#6",
@@ -63,7 +63,7 @@
    "text": "Rota is off for this tenant, so the calendar carries no shifts",
    "area": "rota",
    "status": "ported",
-   "test": "e2e/rota-off-3.spec.ts › with Rota off (qnipay), the rota pages are gone from the nav and their addresses, the server refuses them, and the timesheet shows no rota"
+   "test": "e2e/rota-off-3.spec.ts › with Rota off (calm.ly), the rota pages are gone from the nav and their addresses, the server refuses them, and the timesheet shows no rota"
   },
   {
    "id": "IMP-001-A1-approval-QUEUES-rather-than-posts#1",
@@ -2150,200 +2150,200 @@
    "reason": "replaced by Radix: Portal rendering escapes any scrolling ancestor, including a table wrapper"
   },
   {
-   "id": "MODULES-index-then-drill-in-mirrors-Qnipay-setup#1",
-   "section": "MODULES — index, then drill in (mirrors Qnipay setup)",
+   "id": "MODULES-index-then-drill-in-mirrors-calm.ly-setup#1",
+   "section": "MODULES — index, then drill in (mirrors calm.ly setup)",
    "text": "MI The index is a card grid, one per module",
    "area": "1c",
    "status": "ported",
    "test": "src/features/modules/modules.test.tsx › the index is a card per module with its state and counts, a caution, a search, and full test id coverage"
   },
   {
-   "id": "MODULES-index-then-drill-in-mirrors-Qnipay-setup#2",
-   "section": "MODULES — index, then drill in (mirrors Qnipay setup)",
-   "text": "MI It uses the same card pattern as Qnipay setup",
+   "id": "MODULES-index-then-drill-in-mirrors-calm.ly-setup#2",
+   "section": "MODULES — index, then drill in (mirrors calm.ly setup)",
+   "text": "MI It uses the same card pattern as calm.ly setup",
    "area": "1c",
    "status": "ported",
    "test": "src/features/modules/modules.test.tsx › the index is a card per module with its state and counts, a caution, a search, and full test id coverage"
   },
   {
-   "id": "MODULES-index-then-drill-in-mirrors-Qnipay-setup#3",
-   "section": "MODULES — index, then drill in (mirrors Qnipay setup)",
+   "id": "MODULES-index-then-drill-in-mirrors-calm.ly-setup#3",
+   "section": "MODULES — index, then drill in (mirrors calm.ly setup)",
    "text": "MI Each card says what the module is about",
    "area": "1c",
    "status": "ported",
    "test": "src/features/modules/modules.test.tsx › each card says what its module is about, and clearing the search brings every module back"
   },
   {
-   "id": "MODULES-index-then-drill-in-mirrors-Qnipay-setup#4",
-   "section": "MODULES — index, then drill in (mirrors Qnipay setup)",
+   "id": "MODULES-index-then-drill-in-mirrors-calm.ly-setup#4",
+   "section": "MODULES — index, then drill in (mirrors calm.ly setup)",
    "text": "MI Each card previews its features and its setup page",
    "area": "1c",
    "status": "ported",
    "test": "src/features/modules/modules.test.tsx › the index is a card per module with its state and counts, a caution, a search, and full test id coverage"
   },
   {
-   "id": "MODULES-index-then-drill-in-mirrors-Qnipay-setup#5",
-   "section": "MODULES — index, then drill in (mirrors Qnipay setup)",
+   "id": "MODULES-index-then-drill-in-mirrors-calm.ly-setup#5",
+   "section": "MODULES — index, then drill in (mirrors calm.ly setup)",
    "text": "MI The page carries no tenant-wide roll-up — each card states its own",
    "area": "1c",
    "status": "ported",
-   "test": "src/features/modules/modules.test.tsx › each module card carries its own icon and says its count in words, under no Qnipay setup crumb"
+   "test": "src/features/modules/modules.test.tsx › each module card carries its own icon and says its count in words, under no calm.ly setup crumb"
   },
   {
-   "id": "MODULES-index-then-drill-in-mirrors-Qnipay-setup#6",
-   "section": "MODULES — index, then drill in (mirrors Qnipay setup)",
+   "id": "MODULES-index-then-drill-in-mirrors-calm.ly-setup#6",
+   "section": "MODULES — index, then drill in (mirrors calm.ly setup)",
    "text": "MI No feature rows on the index — it is an index",
    "area": "1c",
    "status": "ported",
    "test": "src/features/modules/modules.test.tsx › the index is a card per module with its state and counts, a caution, a search, and full test id coverage"
   },
   {
-   "id": "MODULES-index-then-drill-in-mirrors-Qnipay-setup#7",
-   "section": "MODULES — index, then drill in (mirrors Qnipay setup)",
+   "id": "MODULES-index-then-drill-in-mirrors-calm.ly-setup#7",
+   "section": "MODULES — index, then drill in (mirrors calm.ly setup)",
    "text": "MI A search is offered",
    "area": "1c",
    "status": "ported",
    "test": "src/features/modules/modules.test.tsx › the index is a card per module with its state and counts, a caution, a search, and full test id coverage"
   },
   {
-   "id": "MODULES-index-then-drill-in-mirrors-Qnipay-setup#8",
-   "section": "MODULES — index, then drill in (mirrors Qnipay setup)",
+   "id": "MODULES-index-then-drill-in-mirrors-calm.ly-setup#8",
+   "section": "MODULES — index, then drill in (mirrors calm.ly setup)",
    "text": "MD Drilling in gives a back tab plus two tabs",
    "area": "1c",
    "status": "ported",
    "test": "e2e/nav.spec.ts › NV The Modules card opens the module list; each module drills in to its features and setup, and ‹ All modules returns"
   },
   {
-   "id": "MODULES-index-then-drill-in-mirrors-Qnipay-setup#9",
-   "section": "MODULES — index, then drill in (mirrors Qnipay setup)",
+   "id": "MODULES-index-then-drill-in-mirrors-calm.ly-setup#9",
+   "section": "MODULES — index, then drill in (mirrors calm.ly setup)",
    "text": "MD The tabs are named after the module",
    "area": "1c",
    "status": "ported",
    "test": "e2e/nav.spec.ts › NV The Modules card opens the module list; each module drills in to its features and setup, and ‹ All modules returns"
   },
   {
-   "id": "MODULES-index-then-drill-in-mirrors-Qnipay-setup#10",
-   "section": "MODULES — index, then drill in (mirrors Qnipay setup)",
+   "id": "MODULES-index-then-drill-in-mirrors-calm.ly-setup#10",
+   "section": "MODULES — index, then drill in (mirrors calm.ly setup)",
    "text": "MD It lands on the features tab",
    "area": "1c",
    "status": "ported",
    "test": "e2e/nav.spec.ts › NV The Modules card opens the module list; each module drills in to its features and setup, and ‹ All modules returns"
   },
   {
-   "id": "MODULES-index-then-drill-in-mirrors-Qnipay-setup#11",
-   "section": "MODULES — index, then drill in (mirrors Qnipay setup)",
+   "id": "MODULES-index-then-drill-in-mirrors-calm.ly-setup#11",
+   "section": "MODULES — index, then drill in (mirrors calm.ly setup)",
    "text": "MD The features tab shows only that module’s features",
    "area": "1c",
    "status": "ported",
    "test": "src/domain/modules.test.ts › a flag sits on its own module's drill-in, or under the capability it belongs to"
   },
   {
-   "id": "MODULES-index-then-drill-in-mirrors-Qnipay-setup#12",
-   "section": "MODULES — index, then drill in (mirrors Qnipay setup)",
+   "id": "MODULES-index-then-drill-in-mirrors-calm.ly-setup#12",
+   "section": "MODULES — index, then drill in (mirrors calm.ly setup)",
    "text": "MD The enable switch lives inside the module",
    "area": "1c",
    "status": "ported",
    "test": "src/features/modules/modules.test.tsx › turning a module off asks first with its impact, and the toast says what was kept"
   },
   {
-   "id": "MODULES-index-then-drill-in-mirrors-Qnipay-setup#13",
-   "section": "MODULES — index, then drill in (mirrors Qnipay setup)",
+   "id": "MODULES-index-then-drill-in-mirrors-calm.ly-setup#13",
+   "section": "MODULES — index, then drill in (mirrors calm.ly setup)",
    "text": "MD It explains that a licence decides this in the product",
    "area": "1c",
    "status": "ported",
    "test": "src/domain/modules.test.ts › the enable note says what the switch does, in sentences"
   },
   {
-   "id": "MODULES-index-then-drill-in-mirrors-Qnipay-setup#14",
-   "section": "MODULES — index, then drill in (mirrors Qnipay setup)",
+   "id": "MODULES-index-then-drill-in-mirrors-calm.ly-setup#14",
+   "section": "MODULES — index, then drill in (mirrors calm.ly setup)",
    "text": "MD The crumb says where you are",
    "area": "1c",
    "status": "ported",
    "test": "src/features/modules/modules.test.tsx › a module’s features page names the module in its crumb, and its head has no N of M on pill"
   },
   {
-   "id": "MODULES-index-then-drill-in-mirrors-Qnipay-setup#15",
-   "section": "MODULES — index, then drill in (mirrors Qnipay setup)",
+   "id": "MODULES-index-then-drill-in-mirrors-calm.ly-setup#15",
+   "section": "MODULES — index, then drill in (mirrors calm.ly setup)",
    "text": "MD The setup tab renders the real Rota setup page",
    "area": "1c",
    "status": "ported",
    "test": "e2e/nav.spec.ts › NV The Modules card opens the module list; each module drills in to its features and setup, and ‹ All modules returns"
   },
   {
-   "id": "MODULES-index-then-drill-in-mirrors-Qnipay-setup#16",
-   "section": "MODULES — index, then drill in (mirrors Qnipay setup)",
+   "id": "MODULES-index-then-drill-in-mirrors-calm.ly-setup#16",
+   "section": "MODULES — index, then drill in (mirrors calm.ly setup)",
    "text": "MD Its crumb is rewritten for this route",
    "area": "1c",
    "status": "ported",
    "test": "src/features/rota/rota-setup.test.tsx › every card renders with the module switches shown as they stand, and full test id coverage"
   },
   {
-   "id": "MODULES-index-then-drill-in-mirrors-Qnipay-setup#17",
-   "section": "MODULES — index, then drill in (mirrors Qnipay setup)",
+   "id": "MODULES-index-then-drill-in-mirrors-calm.ly-setup#17",
+   "section": "MODULES — index, then drill in (mirrors calm.ly setup)",
    "text": "MD Turning it off still asks first, with its impact",
    "area": "1c",
    "status": "ported",
    "test": "src/features/modules/modules.test.tsx › turning a module off asks first with its impact, and the toast says what was kept"
   },
   {
-   "id": "MODULES-index-then-drill-in-mirrors-Qnipay-setup#18",
-   "section": "MODULES — index, then drill in (mirrors Qnipay setup)",
+   "id": "MODULES-index-then-drill-in-mirrors-calm.ly-setup#18",
+   "section": "MODULES — index, then drill in (mirrors calm.ly setup)",
    "text": "MD An off module says its features are inert, not hidden",
    "area": "1c",
    "status": "ported",
    "test": "src/features/modules/modules.test.tsx › turning a module off asks first with its impact, and the toast says what was kept"
   },
   {
-   "id": "MODULES-index-then-drill-in-mirrors-Qnipay-setup#19",
-   "section": "MODULES — index, then drill in (mirrors Qnipay setup)",
+   "id": "MODULES-index-then-drill-in-mirrors-calm.ly-setup#19",
+   "section": "MODULES — index, then drill in (mirrors calm.ly setup)",
    "text": "MD Its feature toggles are disabled",
    "area": "1c",
    "status": "ported",
    "test": "src/features/modules/modules.test.tsx › turning a module off asks first with its impact, and the toast says what was kept"
   },
   {
-   "id": "MODULES-index-then-drill-in-mirrors-Qnipay-setup#20",
-   "section": "MODULES — index, then drill in (mirrors Qnipay setup)",
+   "id": "MODULES-index-then-drill-in-mirrors-calm.ly-setup#20",
+   "section": "MODULES — index, then drill in (mirrors calm.ly setup)",
    "text": "MD Turning it back on re-enables them",
    "area": "1c",
    "status": "ported",
    "test": "src/domain/modules.test.ts › a flag is live only while its module is on, and CORE flags whenever they are on"
   },
   {
-   "id": "MODULES-index-then-drill-in-mirrors-Qnipay-setup#21",
-   "section": "MODULES — index, then drill in (mirrors Qnipay setup)",
+   "id": "MODULES-index-then-drill-in-mirrors-calm.ly-setup#21",
+   "section": "MODULES — index, then drill in (mirrors calm.ly setup)",
    "text": "MI The back tab returns to the index",
    "area": "1c",
    "status": "ported",
    "test": "e2e/nav.spec.ts › NV The Modules card opens the module list; each module drills in to its features and setup, and ‹ All modules returns"
   },
   {
-   "id": "MODULES-index-then-drill-in-mirrors-Qnipay-setup#22",
-   "section": "MODULES — index, then drill in (mirrors Qnipay setup)",
+   "id": "MODULES-index-then-drill-in-mirrors-calm.ly-setup#22",
+   "section": "MODULES — index, then drill in (mirrors calm.ly setup)",
    "text": "MI An off module is marked on its card",
    "area": "1c",
    "status": "ported",
    "test": "src/features/modules/modules.test.tsx › an off module is marked on its card, with its features counted but not as on"
   },
   {
-   "id": "MODULES-index-then-drill-in-mirrors-Qnipay-setup#23",
-   "section": "MODULES — index, then drill in (mirrors Qnipay setup)",
+   "id": "MODULES-index-then-drill-in-mirrors-calm.ly-setup#23",
+   "section": "MODULES — index, then drill in (mirrors calm.ly setup)",
    "text": "MI Searching a feature narrows the modules shown",
    "area": "1c",
    "status": "ported",
    "test": "src/features/modules/modules.test.tsx › the index is a card per module with its state and counts, a caution, a search, and full test id coverage"
   },
   {
-   "id": "MODULES-index-then-drill-in-mirrors-Qnipay-setup#24",
-   "section": "MODULES — index, then drill in (mirrors Qnipay setup)",
+   "id": "MODULES-index-then-drill-in-mirrors-calm.ly-setup#24",
+   "section": "MODULES — index, then drill in (mirrors calm.ly setup)",
    "text": "MI No matches says so",
    "area": "1c",
    "status": "ported",
    "test": "src/features/modules/modules.test.tsx › the index is a card per module with its state and counts, a caution, a search, and full test id coverage"
   },
   {
-   "id": "MODULES-index-then-drill-in-mirrors-Qnipay-setup#25",
-   "section": "MODULES — index, then drill in (mirrors Qnipay setup)",
+   "id": "MODULES-index-then-drill-in-mirrors-calm.ly-setup#25",
+   "section": "MODULES — index, then drill in (mirrors calm.ly setup)",
    "text": "MI Clearing restores every module",
    "area": "1c",
    "status": "ported",
@@ -2995,7 +2995,7 @@
    "text": "IC Every module has its own icon",
    "area": "1c",
    "status": "ported",
-   "test": "src/features/modules/modules.test.tsx › each module card carries its own icon and says its count in words, under no Qnipay setup crumb"
+   "test": "src/features/modules/modules.test.tsx › each module card carries its own icon and says its count in words, under no calm.ly setup crumb"
   },
   {
    "id": "ICONS-CRUMBS-AND-REDUNDANT-COUNTS#2",
@@ -3019,15 +3019,15 @@
    "text": "IC The count badge is gone — the card says it in words",
    "area": "1c",
    "status": "ported",
-   "test": "src/features/modules/modules.test.tsx › each module card carries its own icon and says its count in words, under no Qnipay setup crumb"
+   "test": "src/features/modules/modules.test.tsx › each module card carries its own icon and says its count in words, under no calm.ly setup crumb"
   },
   {
    "id": "ICONS-CRUMBS-AND-REDUNDANT-COUNTS#5",
    "section": "ICONS, CRUMBS AND REDUNDANT COUNTS",
-   "text": "CR The crumb no longer claims Modules sits under Qnipay setup",
+   "text": "CR The crumb no longer claims Modules sits under calm.ly setup",
    "area": "1c",
    "status": "ported",
-   "test": "src/features/modules/modules.test.tsx › each module card carries its own icon and says its count in words, under no Qnipay setup crumb"
+   "test": "src/features/modules/modules.test.tsx › each module card carries its own icon and says its count in words, under no calm.ly setup crumb"
   },
   {
    "id": "ICONS-CRUMBS-AND-REDUNDANT-COUNTS#6",
@@ -3432,10 +3432,10 @@
   {
    "id": "MANAGER-NAV-GROUPED-BY-MODULE#10",
    "section": "MANAGER NAV GROUPED BY MODULE",
-   "text": "NV Admin has no duplicate Rota group — it uses Qnipay setup",
+   "text": "NV Admin has no duplicate Rota group — it uses calm.ly setup",
    "area": "1a",
    "status": "ported",
-   "test": "src/domain/nav.test.ts › an admin capability set produces no team rota group; rota setup lives under Qnipay setup instead"
+   "test": "src/domain/nav.test.ts › an admin capability set produces no team rota group; rota setup lives under calm.ly setup instead"
   },
   {
    "id": "MOBILE-FOUNDATION#1",
@@ -3875,7 +3875,7 @@
    "text": "RN Saving reports the new names",
    "area": "1c",
    "status": "ported",
-   "test": "e2e/admin-1c.spec.ts › renamed roles show in the view-as switcher, the role pill (also while viewing as someone), the permission matrix and the audit log; what each may do is unchanged"
+   "test": "e2e/admin-1c.spec.ts › renamed roles show in the view-as switcher, permission matrix and audit log; what each may do is unchanged"
   },
   {
    "id": "CONFIGURABLE-ROLE-NAMES#6",
@@ -3891,7 +3891,7 @@
    "text": "RN The account menu shows the renamed role",
    "area": "1c",
    "status": "ported",
-   "test": "e2e/admin-1c.spec.ts › renamed roles show in the view-as switcher, the role pill (also while viewing as someone), the permission matrix and the audit log; what each may do is unchanged"
+   "test": "e2e/admin-1c.spec.ts › renamed roles show in the view-as switcher, permission matrix and audit log; what each may do is unchanged"
   },
   {
    "id": "CONFIGURABLE-ROLE-NAMES#8",
@@ -3899,7 +3899,7 @@
    "text": "RN The rename is audited",
    "area": "1c",
    "status": "ported",
-   "test": "e2e/admin-1c.spec.ts › renamed roles show in the view-as switcher, the role pill (also while viewing as someone), the permission matrix and the audit log; what each may do is unchanged"
+   "test": "e2e/admin-1c.spec.ts › renamed roles show in the view-as switcher, permission matrix and audit log; what each may do is unchanged"
   },
   {
    "id": "CLEAR-WEEK#1",
@@ -5096,10 +5096,10 @@
   {
    "id": "REVIEW-RUN-SYSTEM-MOBILE-DENSITY-AFFORDANCES#2",
    "section": "REVIEW RUN: SYSTEM, MOBILE, DENSITY, AFFORDANCES",
-   "text": "RV Native title only on disabled controls",
+   "text": "RV Native titles explain disabled controls and label collapsed navigation",
    "area": "1c",
    "status": "ported",
-   "test": "scripts/ui-source.test.ts › a native title is only ever on a control that can be disabled, saying why it is"
+   "test": "scripts/ui-source.test.ts › native titles are limited to disabled-control explanations and collapsed navigation labels"
   },
   {
    "id": "REVIEW-RUN-SYSTEM-MOBILE-DENSITY-AFFORDANCES#3",
@@ -5491,7 +5491,7 @@
    "text": "RO ... and the calendar is now empty of shifts",
    "area": "rota",
    "status": "ported",
-   "test": "e2e/rota-off-3.spec.ts › with Rota off (qnipay), the rota pages are gone from the nav and their addresses, the server refuses them, and the timesheet shows no rota"
+   "test": "e2e/rota-off-3.spec.ts › with Rota off (calm.ly), the rota pages are gone from the nav and their addresses, the server refuses them, and the timesheet shows no rota"
   },
   {
    "id": "ROTA-OFF-EMPTIES-THE-CALENDAR#4",

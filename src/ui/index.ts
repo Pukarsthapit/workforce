@@ -11,7 +11,7 @@ export { Row } from './Row';
 export { NavLink } from './NavLink';
 export type { Tone } from './Pill';
 export { Tip, HelpButton, Caution } from './Affordances';
-export { toastInfo, toastRefusal } from './toast';
+export { toastInfo, toastSuccess, toastWarning, toastRefusal } from './toast';
 export { Page, PageHead, SectionHead, ActionBar } from './Page';
 export { Card, CardHead, IconTile, AdminCard } from './Card';
 export { FilterBar, SearchFilter, SelectFilter, ChipButton } from './Filters';
@@ -29,3 +29,4 @@ export { SugCard, WhyList, SugPanel, RuledOutList, RuledOutRow } from './Suggest
 export { EssCols, EssCard, EssBig, EssRow, EssButton } from './Ess';
 export { Meter } from './Meter';
 export { Stepper } from './Stepper';
+export { Skeleton, Spinner } from './Loading';

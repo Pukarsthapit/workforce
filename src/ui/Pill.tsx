@@ -6,7 +6,7 @@ export type Tone = 'ok' | 'warn' | 'err' | 'info' | 'neu' | 'hi';
 const TONE: Record<Tone, string> = {
   ok: 'bg-ok-surface text-ok', warn: 'bg-warn-surface text-warn', err: 'bg-err-surface text-err',
   info: 'bg-info-surface text-info', neu: 'bg-neu-surface text-neu', hi: 'bg-brand-accent text-text-on-accent' };
-/* The prototype's .pill (qnipay-workforce-v15.html:462-470): 2px 9px,
+/* The prototype's .pill (calm.ly-workforce-v15.html:462-470): 2px 9px,
    12px/600, line-height 1.6, the status surface with its own ink. A status
    pill carries a glyph as well as its label, so colour never carries the
    meaning on its own. */

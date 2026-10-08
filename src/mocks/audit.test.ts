@@ -8,7 +8,7 @@ beforeEach(async () => {
   store.reset('social'); store.setClock('2026-08-13T14:30:00.000Z');
   const admin = Object.values(store.db.accounts as Record<string, { email: string; userType: string }>).find(a => a.userType === 'admin');
   if (!admin) throw new Error('no seeded admin account');
-  token = (await (await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: admin.email, password: 'Qnipay@123' }) })).json()).token;
+  token = (await (await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: admin.email, password: 'calm.ly@123' }) })).json()).token;
 });
 const get = async (q = '') => (await fetch('/api/v1/audit' + q, { headers: { Authorization: `Bearer ${token}` } })).json();
 

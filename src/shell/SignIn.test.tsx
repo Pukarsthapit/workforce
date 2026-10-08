@@ -17,7 +17,7 @@ afterEach(() => setToken(null));
 const mount = () => render(<QueryClientProvider client={queryClient}><SessionProvider><SignIn /></SessionProvider></QueryClientProvider>);
 
 /* BOOT: "App opens at the sign-in screen" / "Sign-in asks for an email
-   address and a password" (qnipay-regression-suite.js: #lg-em, #lg-pw). */
+   address and a password" (calm.ly-regression-suite.js: #lg-em, #lg-pw). */
 test('the sign-in screen asks for an email address and a password', () => {
   mount();
   expect(screen.getByTestId(tid.page('sign-in'))).toBeInTheDocument();
@@ -84,7 +84,7 @@ test('pressing Enter in the password field submits the form', async () => {
 
   mount();
   await userEvent.type(screen.getByTestId(tid.signIn.email), acc.email);
-  await userEvent.type(screen.getByTestId(tid.signIn.password), 'Qnipay@123{Enter}');
+  await userEvent.type(screen.getByTestId(tid.signIn.password), 'calm.ly@123{Enter}');
 
   await waitFor(() => expect(getToken()).not.toBeNull());
 });

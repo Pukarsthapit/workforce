@@ -25,7 +25,7 @@ function demoShortcut<T extends { userType: 'employee' | 'manager' | 'admin' }>(
    demo password out of a production bundle too; npm run build:check fails
    the build if it ever appears there. */
 
-/* The prototype's loginScreen (qnipay-workforce-v15.html:5078-5115) and its
+/* The prototype's loginScreen (calm.ly-workforce-v15.html:5078-5115) and its
    CSS (.login, .login-card, .login-brand, .acct; v15:760-794): the top bar
    with the logo alone, then a 420px card (border, radius 12, 24px in,
    shadow-md) opening on the logo on an inverse strip. On a phone the card
@@ -48,7 +48,7 @@ export function SignIn() {
       <main data-testid={tid.page('sign-in')} className="mx-auto w-full max-w-[1360px] px-xl max-lg:px-md">
         <div className="grid min-h-[calc(100dvh-120px)] place-items-center py-xl max-md:min-h-0 max-md:py-lg">
           <div className="w-[min(420px,100%)] rounded-card border bg-surface-card p-xl shadow-md max-md:border-0 max-md:px-0 max-md:py-md max-md:shadow-none">
-            <div className="mb-lg flex rounded-sm bg-surface-inverse px-[14px] py-md"><Logo className="max-md:h-5" /></div>
+            <div className="mb-lg flex rounded-sm bg-surface-inverse px-[14px] py-md"><Logo /></div>
             <h1 className="mb-[2px]">Sign in</h1>
             <p className="mb-lg text-text-secondary">Simulated sign-in. Production uses your Microsoft work account.</p>
             <form data-testid={tid.signIn.form} onSubmit={submit} noValidate>
@@ -68,13 +68,13 @@ export function SignIn() {
                   {demoShortcut(accounts.data ?? []).map(a => <li key={a.email}>
                     <button type="button" data-testid={tid.signIn.account(a.email)}
                       className="block w-full rounded-control border bg-surface-card px-md py-sm text-left transition-colors hover:border-border-strong hover:bg-surface-tint focus-visible:border-brand"
-                      onClick={() => { setEmail(a.email); setPassword('Qnipay@123'); }}>
+                      onClick={() => { setEmail(a.email); setPassword('calm.ly@123'); }}>
                       <span className="flex flex-wrap items-center gap-sm"><b className="text-sm font-[650]">{a.name}</b><Pill tone="neu">{ROLE[a.userType]}</Pill></span>
                       <span className="mt-[2px] block truncate text-xs text-text-secondary tabular-nums">{a.email}</span>
                       <span className="mt-[2px] block text-xs text-text-muted">{NOTE[a.userType]}</span>
                     </button></li>)}
                 </ul>
-                <p className="text-xs text-text-muted">A shortcut, not the whole list: anybody on the roster signs in with their own address. Every account uses <b className="tabular-nums">Qnipay@123</b> until it is changed.</p>
+                <p className="text-xs text-text-muted">A shortcut, not the whole list: anybody on the roster signs in with their own address. Every account uses <b className="tabular-nums">calm.ly@123</b> until it is changed.</p>
               </>}
               {/* Ported from the prototype's login note (v15:5111-5114). Only true, and
                   so only shown, while the fake server holds the data in this browser. */}

@@ -12,9 +12,9 @@ import { weekChip } from './WeekView';
 withFakeServer();
 let week: TimesheetWeek;
 beforeAll(async () => {
-  resetTo('qnipay');
+  resetTo('calm.ly');
   const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email: 'bigyan.poudel@dogmagroup.co.uk', password: 'Qnipay@123' }) });
+    body: JSON.stringify({ email: 'bigyan.poudel@dogmagroup.co.uk', password: 'calm.ly@123' }) });
   const { token } = (await r.json()) as { token: string };
   week = (await caller(token)('GET', '/api/v1/timesheets/EMP004/weeks/2026-08-10')).body as TimesheetWeek;
 });

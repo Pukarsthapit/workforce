@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 import { XIcon } from "lucide-react"
 import { Dialog as DialogPrimitive } from "radix-ui"
 
-/* The prototype's modal (qnipay-workforce-v15.html:572-626):
+/* The prototype's modal (calm.ly-workforce-v15.html:572-626):
 
    - .scrim: the brand-tinted scrim at z 100, the dialog above it at 110,
      both clear of the phone's bottom bar (80).

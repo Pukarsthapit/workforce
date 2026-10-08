@@ -7,7 +7,7 @@ import type { QueueRow, RotaDay } from '@/contract/timesheets';
 import { POSTING_DOT, formatMinutes, tsStateInfo, type PostingDot as Dot } from '@/domain/timesheet';
 
 /* What the approver's queue and matrix show of a day: the prototype's
-   mgrTeamDay and mgrTeamMatrix cells (qnipay-workforce-v15.html:6990-7070). */
+   mgrTeamDay and mgrTeamMatrix cells (calm.ly-workforce-v15.html:6990-7070). */
 
 /* The rota line by its code (SHIFTS and SHNAME, v15:1884-1917). Rota lines
    belong to module 3; the seeded days carry the code. */

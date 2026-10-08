@@ -10,16 +10,16 @@ import { renderPage, withFakeServer } from '@/test/render-page';
 import { audits, resetTo } from '@/test/api-helpers';
 import { OnboardingPage } from './OnboardingPage';
 
-/* The qnipay seed at the frozen clock (13/08/2026): Priya Raman (EMP002) is a
+/* The calm.ly seed at the frozen clock (13/08/2026): Priya Raman (EMP002) is a
    candidate starting on 28/09/2026 with an empty case, every Onboarding
    feature on, three required documents (right to work, proof of address,
    photograph) and four policies (Code of conduct v4.1, Privacy notice v2.0,
    Employee handbook v7.3, IT and data security v3.2). */
 withFakeServer();
-beforeEach(() => resetTo('qnipay'));
+beforeEach(() => resetTo('calm.ly'));
 const PRIYA = 'priya.raman@dogmagroup.co.uk';
 const signIn = async (email = PRIYA) => {
-  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'Qnipay@123' }) });
+  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'calm.ly@123' }) });
   const body = (await r.json()) as { token?: string };
   if (!body.token) throw new Error(`sign-in as ${email} failed`);
   setToken(body.token);

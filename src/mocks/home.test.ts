@@ -18,7 +18,7 @@ const month = (r: Reply) => HomeMonth.parse(r.body);
 const dayOf = (m: HomeMonth, date: string) => m.days.find(d => d.date === date);
 const asEmployee = async () => caller(await tokenFor('employee'));
 async function asEmail(email: string) {
-  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'Qnipay@123' }) });
+  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'calm.ly@123' }) });
   const body = (await r.json()) as { token?: string };
   if (!body.token) throw new Error(`sign-in as ${email} failed`);
   return caller(body.token);
@@ -59,8 +59,8 @@ test('social: August shows the published rota\'s shifts, approved leave, sicknes
   expect(m.can).toEqual({ recordHours: true, bookLeave: true });
 });
 
-test('qnipay (Rota off): it boots on the tenant\'s own data, with no shifts, but leave and the recorded days still show', async () => {
-  resetTo('qnipay');
+test('calm.ly (Rota off): it boots on the tenant\'s own data, with no shifts, but leave and the recorded days still show', async () => {
+  resetTo('calm.ly');
   const r = await (await asEmail('bigyan.poudel@dogmagroup.co.uk'))('GET', '/api/v1/home');
   expect(r.status).toBe(200);
   const m = month(r);

@@ -1,5 +1,5 @@
 /* Ported from the prototype's DIMS, DIM_GROUPS and SUPPORT_LEVELS
-   (qnipay-workforce-v15.html:9110-9227, IMP-019): one form renderer and one
+   (calm.ly-workforce-v15.html:9110-9227, IMP-019): one form renderer and one
    save path for every dimension, so no dimension behaves differently from
    another. */
 import type { DimensionKind, DimensionRow } from '@/contract/dimensions';

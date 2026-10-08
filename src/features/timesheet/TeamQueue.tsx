@@ -9,7 +9,7 @@ import { latest } from '@/lib/latest';
 import { ReturnDialog } from './TeamDialogs';
 import { HistoryCount, PostingDot, isPending, payElements, queueHours, rotaLine, statePill } from './team';
 
-/* mgrTeamDay (qnipay-workforce-v15.html:7035-7075): the approver's queue.
+/* mgrTeamDay (calm.ly-workforce-v15.html:7035-7075): the approver's queue.
    "Needs approval" is anything awaiting a decision, so a corrected
    resubmission cannot fall out of it. Approve writes and toasts once the
    server has answered; Return opens the dialog. */

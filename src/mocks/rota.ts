@@ -60,10 +60,10 @@ function tenant(): Tenant {
 const flagOn = (k: string) => Boolean(tenant().flags[k]);
 /* D9: with the Rota module off the whole module is hidden, and so refused here. */
 function requireRota() {
-  if (!tenant().modules.R) refuse(403, { code: 'module-off', message: 'Rota is switched off for this organisation.', next: 'An administrator can switch the Rota module on in Qnipay setup.' });
+  if (!tenant().modules.R) refuse(403, { code: 'module-off', message: 'Rota is switched off for this organisation.', next: 'An administrator can switch the Rota module on in calm.ly setup.' });
 }
 function requireFlag(flag: string, what: string) {
-  if (!flagOn(flag)) refuse(403, { code: 'feature-off', message: `${what} is switched off for this organisation.`, next: 'An administrator can switch it on in Qnipay setup.' });
+  if (!flagOn(flag)) refuse(403, { code: 'feature-off', message: `${what} is switched off for this organisation.`, next: 'An administrator can switch it on in calm.ly setup.' });
 }
 function config(): RotaConfigRecord {
   return recordAt(store.coll<RotaConfigRecord>('rotaConfig'), 'rotaConfig')
@@ -942,7 +942,7 @@ export const rotaHandlers = [
      integration capability and ITACCESS alone, as the nav gates it. Newest first. */
   serve(listItRequests, () => {
     if (!flagOn('ITACCESS')) refuse(403, { code: 'feature-off', message: 'IT access requests are switched off for this organisation.',
-      next: 'An administrator can switch them on in Qnipay setup → Modules → Rota → Rota setup.' });
+      next: 'An administrator can switch them on in calm.ly setup → Modules → Rota → Rota setup.' });
     const items = Object.values(itColl()).sort((a, b) => b.raisedAt.localeCompare(a.raisedAt) || b.ref.localeCompare(a.ref));
     return { items };
   }),

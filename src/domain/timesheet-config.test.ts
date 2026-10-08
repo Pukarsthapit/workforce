@@ -1,5 +1,5 @@
 import social from '@/mocks/seed/social.json';
-import qnipay from '@/mocks/seed/qnipay.json';
+import calmly from '@/mocks/seed/calmly.json';
 import { DEFAULT_RULES, timesheetConfigProblem, type ConfigInput } from './timesheet';
 
 const ctx = { employeeTypes: ['shift', 'salaried'], payCodes: ['STD', 'OT15'] };
@@ -14,7 +14,7 @@ function withRule(c: ConfigInput, rule: Rule) { const t = c.types.shift; if (t) 
 const field = (c: ConfigInput) => timesheetConfigProblem(c, ctx)?.field;
 
 test('both seeds\' configs pass the setup checks', () => {
-  for (const s of [social, qnipay]) {
+  for (const s of [social, calmly]) {
     const d = s.data as unknown as { timesheetConfig: { timesheetConfig: ConfigInput }; employeeTypes: Record<string, { code: string }>; payCodes: Record<string, { code: string }> };
     expect(timesheetConfigProblem(d.timesheetConfig.timesheetConfig, {
       employeeTypes: Object.values(d.employeeTypes).map(t => t.code), payCodes: Object.values(d.payCodes).map(p => p.code),

@@ -16,20 +16,20 @@ import { BIGYAN, EDDIE, TOM, onbAudit, onbStore, teamOf } from './support/onboar
 type R = { status: number; body: unknown };
 const code = (r: R) => (r.body as { code: string }).code;
 const said = (r: R) => [r.status, code(r), (r.body as { message: string }).message];
-const pageTabs = (page: import('@playwright/test').Page) => page.locator('nav[aria-label="Pages"] a[data-testid^="nav-tab-"]');
+const pageTabs = (page: import('@playwright/test').Page) => page.locator('nav[aria-label="Main navigation"] a[data-testid^="nav-tab-"]');
 async function unreachable(page: import('@playwright/test').Page, path: string) {
   await page.goto(path);
   await expect(page.getByTestId(tid.unavailable.root), path).toBeVisible();
 }
 
-test.describe('on qnipay', () => {
-  test.beforeEach(async ({ api }) => { await api.seed('qnipay'); await api.setClock(FROZEN); });
+test.describe('on calm.ly', () => {
+  test.beforeEach(async ({ api }) => { await api.seed('calm.ly'); await api.setClock(FROZEN); });
 
   test('a starter reaches only the portal, by the nav or by URL, and the team and setup endpoints refuse them', async ({ page, api }) => {
     await signInEmail(page, TOM);
     await expect(page).toHaveURL(/\/work\/onb$/);
     await expect(pageTabs(page)).toHaveCount(1);
-    for (const g of ['team', 'setup']) await expect(page.getByTestId(tid.nav.group(g))).toHaveCount(0);
+    for (const view of ['tpeople', 'asetup', 'apeople']) await expect(page.getByTestId(tid.nav.tab(view))).toHaveCount(0);
     for (const path of ['/work/home', '/work/ts', '/work/leave', '/work/profile', '/team/tonb', '/team/tpeople', '/setup/monb', '/setup/apeople']) await unreachable(page, path);
     await page.getByTestId(tid.unavailable.home).click();
     await expect(page).toHaveURL(/\/work\/onb$/);
@@ -49,7 +49,7 @@ test.describe('on qnipay', () => {
   test('an employee who is not a starter, or a starter without Complete my own onboarding, has no portal', async ({ page, api }) => {
     await signInEmail(page, BIGYAN);
     await expect(page.getByTestId(tid.nav.tab('onb'))).toHaveCount(0);
-    await expect(page.getByTestId(tid.nav.tab('home'))).toBeVisible();
+    await expect(page.getByTestId('sidebar-home')).toHaveAttribute('href', '/work/home');
     await unreachable(page, '/work/onb');
     const active = await api.get('/api/v1/onboarding/me');
     expect(said(active)).toEqual([409, 'NOT_ONBOARDING', 'There is no onboarding for you to complete. It is open only while you are a new starter.']);

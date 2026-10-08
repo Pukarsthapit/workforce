@@ -1,10 +1,10 @@
 import meta from '@/mocks/seed/meta.json';
-import qnipay from '@/mocks/seed/qnipay.json';
+import calmly from '@/mocks/seed/calmly.json';
 import type { TimesheetConfig, TimesheetField } from '@/contract/timesheets';
 import { allowanceCode, allowanceNeed, draftOf, setupBody, setupFieldGroups, toggleMandatory, toggleVisible } from './setup';
 
 const FIELDS = meta.timesheetFields as TimesheetField[];
-const config = Object.values(qnipay.data.timesheetConfig)[0] as unknown as TimesheetConfig;
+const config = Object.values(calmly.data.timesheetConfig)[0] as unknown as TimesheetConfig;
 const field = (c: string) => {
   const f = FIELDS.find(x => x.c === c);
   if (!f) throw new Error(`no field ${c}`);

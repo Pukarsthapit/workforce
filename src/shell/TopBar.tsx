@@ -1,15 +1,13 @@
 import type { ReactNode } from 'react';
 import { Logo } from '@/ui';
+import { NavLink } from '@/ui';
 
-/* The prototype's .topbar (qnipay-workforce-v15.html:258-265, 1521-1522,
-   1552-1582): 56px of the inverse surface, sticky at the top above the tab
-   strip, the logo hard left, 24px side padding (16px below 1024px, 10px on a
-   phone), 16px between its parts (8px below 1024px). Signed out, it carries
-   the logo alone (body.signed-out, v15:790). */
-export function TopBar({ children }: { children?: ReactNode }) {
+export function TopBar({ children, homePath }: { children?: ReactNode; homePath?: string }) {
   return (
-    <header className="sticky top-0 z-[70] flex h-14 shrink-0 items-center gap-lg bg-surface-inverse px-xl text-text-on-brand max-lg:gap-sm max-lg:px-md max-md:px-[10px]">
-      <span className="flex shrink-0 items-center"><Logo /></span>
-      {children}
+    <header data-shell-topbar="" className="sticky top-0 z-[70] flex min-h-[68px] shrink-0 items-center gap-lg border-b border-border bg-surface-card/95 px-[clamp(24px,3.5vw,56px)] text-text-primary backdrop-blur max-lg:min-h-16 max-lg:gap-sm max-lg:px-md max-md:min-h-14 max-md:px-[10px]">
+      {homePath
+        ? <NavLink to={homePath} testId="shell-mobile-home" aria-label="Go to Home" className="flex min-h-touch shrink-0 items-center lg:hidden"><Logo className="h-8 max-md:h-7" /></NavLink>
+        : <span className="flex shrink-0 items-center lg:hidden"><Logo className="h-8 max-md:h-7" /></span>}
+      <div className="flex min-w-0 flex-1 items-center gap-sm">{children}</div>
     </header>);
 }

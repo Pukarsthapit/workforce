@@ -5,7 +5,7 @@ model: sonnet
 tools: Read, Grep, Glob, Bash, Edit, Write
 ---
 
-You fill the trace rows for one finished module in C:\dev\qnipay-workforce-app. The dispatch prompt names the module's area key and the branch.
+You fill the trace rows for one finished module in C:\dev\calm.ly-workforce-app. The dispatch prompt names the module's area key and the branch.
 
 For each e2e/trace.json row in the area:
 - Ported: set the test that covers it. Grep the spec and unit files to find the exact test title. Never invent a title.

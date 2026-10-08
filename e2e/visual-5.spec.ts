@@ -5,7 +5,7 @@ import { signInEmail } from './support/timesheet';
 import { EDDIE, PUKAR, TOM, completeMine, openPortal, openTracker } from './support/onboarding';
 
 /* Spec §10.3 visual baselines for module 5's screens, at desktop (1440) and
-   phone (390) widths, in light and dark, on the qnipay seed against the
+   phone (390) widths, in light and dark, on the calm.ly seed against the
    frozen clock, where Onboarding and every ONB_* feature are on: Tom
    Achterberg's portal on its first step, then (once he has sent everything
    through the server) his submitted page; Team onboarding for Pukar Sthapit
@@ -15,7 +15,7 @@ import { EDDIE, PUKAR, TOM, completeMine, openPortal, openTracker } from './supp
    against the prototype. */
 const WIDTHS = [{ w: 1440, h: 1000 }, { w: 390, h: 844 }] as const;
 const THEMES = ['light', 'dark'] as const;
-test.beforeEach(async ({ api }) => { await api.seed('qnipay'); await api.setClock(FROZEN); });
+test.beforeEach(async ({ api }) => { await api.seed('calm.ly'); await api.setClock(FROZEN); });
 
 async function settle(page: Page) {
   await page.evaluate(() => document.fonts.ready);
@@ -28,7 +28,7 @@ for (const { w, h } of WIDTHS) {
       test.setTimeout(120_000);
       await page.clock.setFixedTime(new Date(FROZEN));
       await page.setViewportSize({ width: w, height: h });
-      await page.addInitScript(t => { try { localStorage.setItem('qnipay.theme', t); } catch { /* the theme is also set on the html element */ } }, theme);
+      await page.addInitScript(t => { try { localStorage.setItem('calm.ly.theme', t); } catch { /* the theme is also set on the html element */ } }, theme);
       const shot = async (name: string) => {
         await settle(page);
         await expect(page).toHaveScreenshot(`${name}-${w}-${theme}.png`, { fullPage: true });

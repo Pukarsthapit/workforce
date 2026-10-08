@@ -15,7 +15,7 @@ import type { PatternCandidate } from '@/contract/rota';
 import type { z } from 'zod';
 
 /* The working pattern windows: the prototype's patternDetail inside
-   patternWindow, patternBox and patternPersonBox (qnipay-workforce-v15.html:
+   patternWindow, patternBox and patternPersonBox (calm.ly-workforce-v15.html:
    8865-8958, 9073-9082, 10329-10411). The editor is shared with Rota setup.
    The prototype applied each field as it changed; here the window edits one
    draft, and Save sends it with If-Match and one audit row, Cancel puts it

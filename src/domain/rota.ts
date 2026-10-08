@@ -1,4 +1,4 @@
-/* Rota rules. Ported from the prototype (qnipay-workforce-v15.html: SHIFTS and
+/* Rota rules. Ported from the prototype (calm.ly-workforce-v15.html: SHIFTS and
    recalcShift, "9b-i. ROTA WEEK STORE + LIFECYCLE", eligibility, suggest,
    thinnest, hoursPosition, genRange, applyPattern, repeatWeek, the copy, clear,
    publish and cover handlers, openShiftsFor). Every function is pure: the

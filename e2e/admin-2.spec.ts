@@ -7,7 +7,7 @@ import { BIGYAN, EDDIE, TODAY, dayState, sendVersioned, signInEmail } from './su
    changed on Timesheet setup applies on Save, with one audit row holding the
    before and after, and the employee's next save is refused by it, on screen
    and by the server. */
-test.beforeEach(async ({ api }) => { await api.seed('qnipay'); await api.setClock(FROZEN); });
+test.beforeEach(async ({ api }) => { await api.seed('calm.ly'); await api.setClock(FROZEN); });
 
 test('an admin lowers the daily maximum on Timesheet setup, and the employee’s 13-hour day is then refused by it', async ({ page, api }) => {
   await signInEmail(page, EDDIE);

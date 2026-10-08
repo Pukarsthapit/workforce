@@ -45,7 +45,7 @@ export function PersonForm({ person, defaultLocation, startState = 'candidate', 
   return <PersonFormBody person={person} initial={initial} onClose={onClose} onChangeState={onChangeState} />;
 }
 
-/* Ported from the prototype's employeeBox (qnipay-workforce-v15.html:10133-
+/* Ported from the prototype's employeeBox (calm.ly-workforce-v15.html:10133-
    10203): Identity, Employment, Contract and Access, two columns of fields.
    Validation is the server's (plan 1b decision D10): a refusal is shown
    against its field and under the form, and nothing is written. */
@@ -136,7 +136,7 @@ function PersonFormBody({ person, initial, onClose, onChangeState }: { person?: 
                 <SelectBox testId={tid.personForm.field('userType')} options={USER_TYPES} value={v.userType}
                   onValueChange={x => { if (isUserType(x)) set('userType', x); }} /></Field>
             : <Small className="mb-md">{!canSetType
-              ? (editing ? 'The user type is changed on Qnipay setup · Permissions.' : 'New people get an Employee account. An administrator can change it.')
+              ? (editing ? 'The user type is changed on calm.ly setup · Permissions.' : 'New people get an Employee account. An administrator can change it.')
               : person?.email
                 ? `This person has no account of their own: ${person.email} already signs in to another account. Give them an address of their own to create one.`
                 : 'This person has no account yet. Give them a work email to create one.'}</Small>}

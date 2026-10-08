@@ -18,7 +18,7 @@ import { COVER_REASONS, NO_REASONS_WHY, askFirstText } from '@/domain/rota';
 import type { FulfilStage, PlanItem } from '@/contract/rota';
 import { AdhocDialog } from './Dialogs';
 
-/* Cover requests: the prototype's mgrCover and sugBlock (qnipay-workforce-v15.html:
+/* Cover requests: the prototype's mgrCover and sugBlock (calm.ly-workforce-v15.html:
    7386-7450). The fulfilment stages in force, then each open request: why it
    needs filling, who has been asked, who could take it and who is ruled out,
    and the moves a manager makes (give it to someone, ask everyone, escalate).

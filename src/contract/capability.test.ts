@@ -22,7 +22,7 @@ function employeeHolding(caps: string[]): Account {
   return emp;
 }
 async function tokenFor(email: string): Promise<string> {
-  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'Qnipay@123' }) });
+  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'calm.ly@123' }) });
   return ((await r.json()) as { token: string }).token;
 }
 const call = (e: Endpoint, token: string) => {

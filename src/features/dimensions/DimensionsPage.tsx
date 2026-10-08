@@ -13,7 +13,7 @@ import { DimensionForm } from './DimensionForm';
 const ICON: Record<string, ReactNode> = { building: <Building />, shield: <ShieldCheck />, money: <Banknote />, users: <Users />, folder: <Folder /> };
 const isKind = (k: string | null): k is DimensionKind => !!k && (DIMENSION_KINDS as readonly string[]).includes(k);
 
-/* Ported from the prototype's admDimensions and dimPage (qnipay-workforce-v15.
+/* Ported from the prototype's admDimensions and dimPage (calm.ly-workforce-v15.
    html:9228-9270, IMP-019): an index of five cards grouped by the question
    each answers, and one page per dimension. The page is ?d=<kind>, so a
    dimension can be linked to (Employee types links to job profiles). */
@@ -38,7 +38,7 @@ function DimensionCard({ kind, onOpen }: { kind: DimensionKind; onOpen(k: Dimens
 }
 function DimensionIndex({ onOpen }: { onOpen(k: DimensionKind): void }) {
   return (<>
-    <PageHead title="Dimensions" crumb="Qnipay setup · Dimensions" tipTestId={tid.head.tip('aloc')}
+    <PageHead title="Dimensions" crumb="calm.ly setup · Dimensions" tipTestId={tid.head.tip('aloc')}
       tip="What every rota entry and timesheet line carries: where the work happened, who owns it, what it is costed to, and who did it." actions={<GuideButton view="aloc" />} />
     {DIM_GROUPS.map(g => (
       <section key={g.key} className="mt-lg mb-sm border-t pt-sm first-of-type:mt-0">
@@ -62,7 +62,7 @@ function DimensionTable({ kind, onBack }: { kind: DimensionKind; onBack(): void 
     return v === '' || v === undefined || v === null ? '—' : String(v);
   };
   return (<>
-    <PageHead title={spec.label} crumb={`Qnipay setup · ${spec.label}`} tip={spec.desc} tipTestId={tid.head.tip(`aloc-${kind}`)}
+    <PageHead title={spec.label} crumb={`calm.ly setup · ${spec.label}`} tip={spec.desc} tipTestId={tid.head.tip(`aloc-${kind}`)}
       actions={<>
         <Button testId={tid.dims.back} kind="ghost" small onClick={onBack}>‹ All dimensions</Button>
         <Button testId={tid.dims.add} kind="primary" small onClick={() => setForm({})}>New {DIMENSIONS[kind].singular}</Button><GuideButton view="aloc" /></>} />

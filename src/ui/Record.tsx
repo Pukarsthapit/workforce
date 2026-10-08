@@ -6,7 +6,7 @@ import { Tip } from './Affordances';
 /* The prototype's record-display pieces, used wherever one record or one
    list of records is shown: the person record, My profile, the approval
    queues, the dimension and employee-type pages. Each names the prototype
-   rule it ports (qnipay-workforce-v15.html). */
+   rule it ports (calm.ly-workforce-v15.html). */
 
 /* .avs (v15:702-704): initials on the brand's subtle tint in brand ink, the
    accent in dark. 26px in a list, larger at the head of a record. */
@@ -49,16 +49,16 @@ export function GroupLabel({ children, className }: { children: ReactNode; class
 /* .stats and .st (v15:455-463, 951): figure tiles, 190px at least, two to a
    row on a phone. */
 export function Stats({ children }: { children: ReactNode }) {
-  return <div className="mb-md grid grid-cols-[repeat(auto-fit,minmax(min(100%,190px),1fr))] gap-md max-md:grid-cols-2">{children}</div>;
+  return <div data-slot="stats" className="mb-xl grid grid-cols-[repeat(auto-fit,minmax(min(100%,180px),1fr))] gap-0 border-y border-border max-md:grid-cols-2">{children}</div>;
 }
 /* `foot` is the .f line under the figure; `tone` is .st.bad, .st.warn and .st.good, the figure in the status ink. */
 export function Stat({ label, testId, foot, tone, children }: {
   label: string; testId?: string; foot?: ReactNode; tone?: 'bad' | 'warn' | 'good'; children: ReactNode;
 }) {
   return (
-    <div className="rounded-card border bg-surface-card p-lg">
-      <div data-caps className="text-xs font-bold tracking-[.04em] text-text-muted uppercase">{label}</div>
-      <div data-testid={testId} className={cn('mt-[3px] text-2xl leading-[1.15] font-semibold tabular-nums',
+    <div data-slot="stat" className="min-w-0 py-lg pr-lg [&:not(:first-child)]:border-l [&:not(:first-child)]:border-border [&:not(:first-child)]:pl-lg">
+      <div className="text-xs font-medium tracking-[.08em] text-text-muted">{label}</div>
+      <div data-testid={testId} className={cn('mt-sm text-[length:var(--type-data-medium)] leading-[1.08] font-medium tracking-[-.045em] tabular-nums',
         tone === 'bad' && 'text-err', tone === 'warn' && 'text-warn', tone === 'good' && 'text-ok')}>{children}</div>
       {foot && <div className="mt-[2px] text-xs text-text-muted">{foot}</div>}
     </div>);
@@ -92,9 +92,16 @@ export function Banner({ tone, title, testId, actions, icon, children }: {
     </div>);
 }
 
-/* .empty (v15:479-480): nothing to show, said in the middle of its card. */
-export function Empty({ testId, children }: { testId?: string; children: ReactNode }) {
-  return <div data-testid={testId} className="px-lg py-2xl text-center text-sm text-text-muted">{children}</div>;
+export function Empty({ testId, title, icon, action, children }: {
+  testId?: string; title?: string; icon?: ReactNode; action?: ReactNode; children: ReactNode;
+}) {
+  return (
+    <div data-testid={testId} className="flex flex-col items-center px-lg py-xl text-center">
+      {icon && <span aria-hidden="true" className="mb-md grid size-10 place-items-center rounded-full bg-brand-subtle text-brand [&_svg]:size-5">{icon}</span>}
+      {title && <h3 className="mb-xs text-base">{title}</h3>}
+      <div className="max-w-prose text-sm text-text-secondary">{children}</div>
+      {action && <div className="mt-lg">{action}</div>}
+    </div>);
 }
 /* .count (v15:550), pushed to the end of a filter bar (.rt2, 539 and 958). */
 export function Count({ testId, children }: { testId?: string; children: ReactNode }) {

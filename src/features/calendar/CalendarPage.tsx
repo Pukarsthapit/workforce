@@ -12,7 +12,7 @@ import { useCaps } from '@/shell/useCaps';
 import { downloadText } from '@/lib/download';
 import { DOW_SHORT, dowMon, formatDmy } from '@/domain/time';
 
-/* Calendar: the prototype's admCalendarAll (qnipay-workforce-v15.html:9094-
+/* Calendar: the prototype's admCalendarAll (calm.ly-workforce-v15.html:9094-
    9098): the shared calendar (admCalendar, 8300-8321) and where the work is
    held (storeCard, 4649-4671). The financial year, the week start and the
    bank holidays are read-only, seeded per tenant (D7); the rota horizon is
@@ -26,7 +26,7 @@ export function CalendarPage() {
   const tenant = useTenant();
   return (
     <Page testId={tid.page('acal')}>
-      <PageHead title="Calendar" crumb="Qnipay setup · Calendar" tipTestId={tid.head.tip('acal')}
+      <PageHead title="Calendar" crumb="calm.ly setup · Calendar" tipTestId={tid.head.tip('acal')}
         tip="The year every module reads, and where your work is held" />
       {tenant.data
         ? <><YearCard tenant={tenant.data} /><HolidaysCard tenant={tenant.data} /></>
@@ -114,7 +114,7 @@ function SavedDataCard() {
   const download = async () => {
     try {
       const file = await exp.run();
-      const name = `qnipay-state-${(tenant.data?.name ?? file.tenant).replace(/\W+/g, '-').toLowerCase()}.json`;
+      const name = `calm.ly-state-${(tenant.data?.name ?? file.tenant).replace(/\W+/g, '-').toLowerCase()}.json`;
       if (downloadText(name, JSON.stringify(file, null, 1), 'application/json')) toastInfo('Exported', 'Keep the file to restore this demonstration elsewhere.');
       else toastRefusal({ message: 'This browser could not produce the file, so nothing was saved.', next: 'Try another browser.' });
     } catch (e) {

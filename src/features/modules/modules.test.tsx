@@ -10,7 +10,7 @@ import { TimesheetPage } from '@/features/timesheet/TimesheetPage';
 import { ModulesPage } from './ModulesPage';
 
 /* The social seed runs every module; LATE_FINISH, VEHICLE and GPS are off.
-   The qnipay seed has Rota off. */
+   The calm.ly seed has Rota off. */
 withFakeServer();
 beforeEach(async () => { resetTo('social'); await signInAs('admin'); });
 const tenant = () => {
@@ -42,7 +42,7 @@ test('the index is a card per module with its state and counts, a caution, a sea
 });
 
 test('an off module is marked on its card, with its features counted but not as on', async () => {
-  resetTo('qnipay'); await signInAs('admin');
+  resetTo('calm.ly'); await signInAs('admin');
   await open();
   expect(screen.getByTestId(tid.amods.cardState('R'))).toHaveTextContent('Off');
   expect(screen.getByTestId(tid.amods.cardCounts('R'))).toHaveTextContent('8 features · Rota setup');
@@ -128,14 +128,14 @@ test('the weekly grid’s layout and the break limit are set on their feature ro
 
 /* Suite ICONS, CRUMBS AND REDUNDANT COUNTS and HEADER PILLS REMOVED: each
    module card has its own icon from the shared set and says its count in
-   words; the index carries no crumb claiming Modules sits under Qnipay setup. */
-test('each module card carries its own icon and says its count in words, under no Qnipay setup crumb', async () => {
+   words; the index carries no crumb claiming Modules sits under calm.ly setup. */
+test('each module card carries its own icon and says its count in words, under no calm.ly setup crumb', async () => {
   await open();
   const icons = ['CORE', 'TS', 'R', 'L', 'ON'].map(c => screen.getByTestId(tid.amods.card(c)).querySelector('svg')?.innerHTML ?? '');
   expect(icons.every(Boolean)).toBe(true);
   expect(new Set(icons).size).toBe(5);
   expect(screen.getByTestId(tid.amods.cardCounts('L'))).toHaveTextContent(/\d+ of \d+ features/);
-  expect(screen.getByTestId(tid.page('amods'))).not.toHaveTextContent(/Qnipay setup · Modules/);
+  expect(screen.getByTestId(tid.page('amods'))).not.toHaveTextContent(/calm.ly setup · Modules/);
 });
 
 test('a module’s features page names the module in its crumb, and its head has no N of M on pill', async () => {
@@ -256,9 +256,9 @@ test('the modules index caution is reached by keyboard and is labelled', async (
 /* Suites WEEKLY VIEW (WK) and WEEKLY LAYOUT IS CONFIGURABLE (CL): "Switching
    back restores classic, the default" and "Switching back restores the
    grid", switched on the weekly grid's row (D6) and read on My timesheet. On
-   the qnipay seed Bigyan Poudel (a Consultant) is a grid type. */
+   the calm.ly seed Bigyan Poudel (a Consultant) is a grid type. */
 test('switching the weekly layout back restores classic, and from the list back restores the grid, on My timesheet too', async () => {
-  resetTo('qnipay'); await signInAs('admin');
+  resetTo('calm.ly'); await signInAs('admin');
   const choose = async (v: string, toast: RegExp) => {
     fireEvent.change(screen.getByTestId(tid.amods.weekLayout), { target: { value: v } });
     expect(await screen.findByText(toast)).toBeInTheDocument();
@@ -266,7 +266,7 @@ test('switching the weekly layout back restores classic, and from the list back 
   };
   const week = async () => {
     cleanup();
-    const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: 'bigyan.poudel@dogmagroup.co.uk', password: 'Qnipay@123' }) });
+    const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: 'bigyan.poudel@dogmagroup.co.uk', password: 'calm.ly@123' }) });
     setToken(((await r.json()) as { token: string }).token);
     renderPage(<TimesheetPage />);
     return screen.findByTestId(tid.week.grid);

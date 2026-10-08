@@ -14,7 +14,7 @@ const EXTRA: Partial<Record<DimensionKind, Record<string, unknown>>> = { locatio
 const toBody = (fields: DimField[], v: Record<string, Value>) => Object.fromEntries(fields.map(f =>
   [f.key, f.kind === 'number' ? Number(v[f.key] || 0) : f.kind === 'bool' ? Boolean(v[f.key]) : String(v[f.key] ?? '')]));
 
-/* Ported from the prototype's dimBox (qnipay-workforce-v15.html:9182-9211):
+/* Ported from the prototype's dimBox (calm.ly-workforce-v15.html:9182-9211):
    one form, built from the dimension's spec, for all five. The code is
    locked once the entry exists, and says why. Remove is offered on an entry
    that exists; the server refuses it while anything uses the entry, naming

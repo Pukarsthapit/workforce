@@ -33,7 +33,7 @@ describe('my notifications (Review Focus 4)', () => {
     expect(mgr.items.find(i => i.area === 'Workforce')?.link).toEqual({ view: 'tpeople', path: '/team/tpeople', label: 'People' });
     /* the admin's Timesheet target, Payroll readiness, is not built yet: no link */
     const adm = await mine(await as('admin'));
-    expect(adm.items.find(i => i.area === 'Integration')?.link).toEqual({ view: 'asetup', path: '/setup/asetup', label: 'Qnipay setup' });
+    expect(adm.items.find(i => i.area === 'Integration')?.link).toEqual({ view: 'asetup', path: '/setup/asetup', label: 'calm.ly setup' });
   });
   test('an item whose module is off is hidden and not counted, and comes back with the module', async () => {
     const call = await as('employee');

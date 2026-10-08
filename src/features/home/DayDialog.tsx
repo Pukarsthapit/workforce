@@ -11,7 +11,7 @@ import { formatDmy } from '@/domain/time';
 import { statePill } from '@/features/timesheet/team';
 import { RequestDialog } from '@/features/leave/LeaveDialogs';
 
-/* What is on a day: the prototype's empDayBox (qnipay-workforce-v15.html:
+/* What is on a day: the prototype's empDayBox (calm.ly-workforce-v15.html:
    5435-5474). The shift and where it comes from, the bank holiday, what the
    timesheet holds, the leave behind an absence, and a way to the page that
    owns each: My timesheet on that day, My shifts, My leave, and "Book time

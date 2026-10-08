@@ -4,13 +4,14 @@ import { Button, Field, TextInput, Pill, SelectBox, CheckboxField, SwitchField, 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/ui/shadcn/table';
 import { expectTestIdCoverage } from '@/test/testid-coverage';
 
-/* The page frame and head every screen shares (src/ui/Page.tsx): a crumb, one
-   h1 with its tip beside it, the actions slot, and no lede paragraph. */
+/* The page frame and head every screen shares (src/ui/Page.tsx): a parent
+   crumb without the repeated current title, one h1, actions, and no lede. */
 test('Page and PageHead render the crumb, one h1 with its tip, and the actions', () => {
-  render(<Page testId="page-demo"><PageHead title="Audit log" crumb="Qnipay setup · Audit log" tip="Who did what, and when." tipTestId="head-tip-demo"
+  render(<Page testId="page-demo"><PageHead title="Audit log" crumb="calm.ly setup · Audit log" tip="Who did what, and when." tipTestId="head-tip-demo"
     actions={<Button testId="demo-action">Export</Button>} /></Page>);
   const page = screen.getByTestId('page-demo');
-  expect(page).toHaveTextContent(/^Qnipay setup · Audit log/);
+  expect(page).toHaveTextContent(/^calm.ly setup/);
+  expect(page).not.toHaveTextContent('calm.ly setup · Audit log');
   expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Audit log');
   expect(screen.getByRole('heading', { level: 1 })).toContainElement(screen.getByTestId('head-tip-demo'));
   expect(screen.getByTestId('demo-action')).toBeInTheDocument();

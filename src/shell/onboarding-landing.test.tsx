@@ -16,14 +16,14 @@ beforeEach(() => resetTo('social'));
 afterEach(() => { cleanup(); setToken(null); window.history.pushState({}, '', '/'); });
 
 async function signIn(email: string) {
-  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'Qnipay@123' }) });
+  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'calm.ly@123' }) });
   const { token } = (await r.json()) as { token: string };
   queryClient.clear();
   setToken(token);
   window.history.pushState({}, '', '/');
   render(<App />);
-  const strip = await screen.findByRole('navigation', { name: 'Pages' });
-  return within(strip).queryAllByTestId(/^nav-tab-/).map(a => (a.getAttribute('data-testid') ?? '').replace('nav-tab-', ''));
+  const navigation = await screen.findByRole('navigation', { name: 'Main navigation' });
+  return within(navigation).queryAllByTestId(/^nav-tab-/).map(a => (a.getAttribute('data-testid') ?? '').replace('nav-tab-', ''));
 }
 
 test('a candidate sees the onboarding portal and nothing else, and lands on it', async () => {
@@ -40,5 +40,5 @@ test('with the Onboarding module off the same person gets the ordinary employee 
   if (t) t.modules.ON = false;
   const tabs = await signIn('priya.raman@brightpath.org');
   expect(tabs).not.toContain('onb');
-  expect(tabs).toContain('home');
+  expect(screen.getByTestId('sidebar-home')).toHaveAttribute('href', '/work/home');
 });

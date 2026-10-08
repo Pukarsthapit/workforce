@@ -14,7 +14,7 @@ const shown = (field: string, v: string) => (!v ? '—' : field === 'state' && i
 /* one text node, so it reads (and is found) as one line: "Contracted hours: 37.5 → 30" */
 export const historyLine = (h: HistoryEntry) => `${fieldLabel(h.field)}: ${shown(h.field, h.from)} → ${shown(h.field, h.to)}`;
 
-/* Ported from the prototype's personBox (qnipay-workforce-v15.html:10204-
+/* Ported from the prototype's personBox (calm.ly-workforce-v15.html:10204-
    10244): the person's name, role and site under an avatar with their state
    beside it, then the shared workforce record, one fact to a line. The rota,
    timesheet and leave figures the prototype showed belong to modules not

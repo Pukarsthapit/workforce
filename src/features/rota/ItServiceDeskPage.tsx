@@ -9,7 +9,7 @@ import { formatDay } from '@/domain/time';
 const LEDE = 'A fulfilled shift raises an access request carrying the details IT needs';
 const EMPTY = 'No access requests yet. Confirm a filled shift on Cover requests to raise one.';
 
-/* Ported from the prototype's admIT (qnipay-workforce-v15.html:9689-9703): the
+/* Ported from the prototype's admIT (calm.ly-workforce-v15.html:9689-9703): the
    heading with its lede behind an i-tip (ui-fidelity rule 3), the Simulated
    integration banner (.banner.d, the info surface), then one row per access
    request: Reference and Employee ID in tabular figures (the prototype's
@@ -21,11 +21,11 @@ export function ItServiceDeskPage() {
   const list = useItRequests();
   return (
     <Page testId={tid.page('iit')}>
-      <PageHead title="IT service desk" crumb="Qnipay setup · IT service desk" tip={LEDE} tipTestId={tid.head.tip('iit')} />
+      <PageHead title="IT service desk" crumb="calm.ly setup · IT service desk" tip={LEDE} tipTestId={tid.head.tip('iit')} />
 
       <Banner testId={tid.iit.banner} tone="info" title="Simulated integration">
         Confirming a filled shift raises a real access request with the details below. This build keeps it here and does not send it to a
-        service desk. To stop raising requests, switch off IT access requests in Qnipay setup → Modules → Rota → Rota setup.
+        service desk. To stop raising requests, switch off IT access requests in calm.ly setup → Modules → Rota → Rota setup.
       </Banner>
 
       {list.isPending && <p data-testid={tid.iit.loading} className="text-text-secondary">Loading the access requests&hellip;</p>}

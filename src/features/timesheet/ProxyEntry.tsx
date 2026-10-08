@@ -12,7 +12,7 @@ import { fillFromRota, gridAs, initialGrid, kindFor, refusedDay, weekBody, type 
 import { WeekGrid } from './WeekGrid';
 
 /* Proxy entry: the prototype's proxyBox, proxy-submit and proxy-week-submit
-   (qnipay-workforce-v15.html:10245-10263, 11923-11966). The form and the grid
+   (calm.ly-workforce-v15.html:10245-10263, 11923-11966). The form and the grid
    are the team member's: their week is read with their employee ID, so the
    capture fields, the checks and the seeded grid are theirs, never the
    manager's (D6, IMP-005c). The server records the manager as enteredBy and

@@ -17,12 +17,12 @@ test('ID The menu names the account you are on, and an admin can look at the app
   await page.getByTestId(tid.shell.viewAs(manager.personCode)).click();
 
   await expect(page.getByTestId(tid.shell.viewAsEnd)).toBeVisible();
-  await expect(page.getByTestId(tid.shell.rolePill)).toHaveText('Manager');
+  await expect(page.getByRole('status')).toContainText('Looking at the app as');
   await page.getByTestId(tid.shell.account).click();
   await expect(page.getByTestId(tid.shell.menuAccount)).toContainText(admin.name);
   await page.getByTestId(tid.shell.menuViewAsEnd).click();
   await expect(page.getByTestId(tid.shell.viewAsEnd)).toHaveCount(0);
-  await expect(page.getByTestId(tid.shell.rolePill)).toHaveText('Admin');
+  await expect(page.getByRole('status')).toHaveCount(0);
 });
 
 test('ID An employee is offered nobody to view as', async ({ page, signInAs }) => {
@@ -44,7 +44,7 @@ test('SV While viewing as someone, a change is refused and the store is unchange
   if (!employeeType) throw new Error('no employee user type');
   expect((await api.send('POST', '/api/v1/session/view-as', { personCode: manager.personCode })).status).toBe(200);
   const refused = await page.evaluate(async version => {
-    const token = sessionStorage.getItem('qnipay.session');
+    const token = sessionStorage.getItem('calm.ly.session');
     const r = await fetch('/api/v1/user-types/employee/capabilities/proxy', { method: 'PUT',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token ?? ''}`, 'If-Match': String(version) }, body: JSON.stringify({ granted: true }) });
     return { status: r.status, body: await r.json() as { code: string; next: string } };

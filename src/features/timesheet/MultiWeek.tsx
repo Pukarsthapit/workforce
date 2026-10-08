@@ -8,7 +8,7 @@ import type { MultiweekSubmitted, TimesheetWeek } from '@/contract/timesheets';
 import { hm } from './capture';
 
 /* Catch up on earlier weeks: the prototype's multi-week card in tsWeekView
-   (qnipay-workforce-v15.html:6358-6365) and submit-multiweek (11429-11433).
+   (calm.ly-workforce-v15.html:6358-6365) and submit-multiweek (11429-11433).
    Several past weeks go in one request and each routes through approval on
    its own; a week in a closed period comes back held with its lock note. */
 export function MultiWeek({ week, personId }: { week: TimesheetWeek; personId: string }) {

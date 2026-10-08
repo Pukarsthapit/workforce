@@ -15,7 +15,7 @@ import { PersonForm } from './PersonForm';
 import { LifecycleDialog } from './LifecycleDialog';
 
 /* The list, the record, the form and the lifecycle dialog together, shared
-   by Qnipay setup · People and My team · People. Add and Edit show only to a
+   by calm.ly setup · People and My team · People. Add and Edit show only to a
    holder of emp_crud; the server refuses anything shown by mistake. */
 export function PeopleWorkspace({ variant, view, crumb, tip, above }: {
   variant: 'admin' | 'team'; view: string; crumb: string; tip: string; above?: ReactNode;

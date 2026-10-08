@@ -90,7 +90,7 @@ describe('GET /api/v1/people/next-code', () => {
     expect(Object.values(store.coll<{ code: string }>('people')).map(p => p.code)).not.toContain(code);
   });
   test('EI A new ID follows the scheme already in use', async () => {
-    resetTo('qnipay');
+    resetTo('calm.ly');
     const { code } = getNextCode.response.parse((await (await as('admin'))('GET', '/api/v1/people/next-code')).body);
     expect(code).toBe('EMP021');
   });
@@ -200,7 +200,7 @@ describe('PATCH /api/v1/people/:id', () => {
     expect(personOf('CP-1042').state).toBe('active');
   });
   test('editing hours on a record whose seed email is shared succeeds', async () => {
-    resetTo('qnipay');
+    resetTo('calm.ly');
     const p = personOf('EMP015');
     const r = await (await as('admin'))('PATCH', `/api/v1/people/${p.id}`, { contractedHours: 30 }, p.version);
     expect(r.status).toBe(200);
@@ -225,11 +225,11 @@ describe('PATCH /api/v1/people/:id', () => {
      user type is. Without this a manager could move an admin's account to an
      address of their choosing and lock the admin out. */
   test('a manager cannot change the work email of an admin in their own location', async () => {
-    resetTo('qnipay');
+    resetTo('calm.ly');
     const mgr = accountOf('manager'), here = String(personOf(mgr.personCode).location);
     const admin = Object.values(store.coll<{ email: string; userType: string; personCode: string }>('accounts'))
       .find(a => a.userType === 'admin' && personOf(a.personCode).location === here);
-    if (!admin) throw new Error('the qnipay seed has no admin at the manager\'s location');
+    if (!admin) throw new Error('the calm.ly seed has no admin at the manager\'s location');
     const call = await as('manager'), p = personOf(admin.personCode), before = snapshot(...WRITES);
     const r = await call('PATCH', `/api/v1/people/${p.id}`, { email: 'someone.else@dogmagroup.co.uk' }, p.version);
     expect(r.status).toBe(403);

@@ -14,16 +14,16 @@ import { audits, resetTo } from '@/test/api-helpers';
 import { TeamPeoplePage } from '@/features/people/TeamPeoplePage';
 import { TeamTimesheetsPage } from './TeamTimesheetsPage';
 
-/* The qnipay seed at the frozen clock (Thursday 13/08/2026). Pukar Sthapit
+/* The calm.ly seed at the frozen clock (Thursday 13/08/2026). Pukar Sthapit
    (EMP001) is the manager at Manchester. Waiting on him: Bigyan Poudel
    (12/08), Bijay Shrestha (11/08, a waking night) and Jamir Maharjan (10/08,
    a 9h 30m night). Katherine Hull and Lina
    Townsend are approved; Marty Horst's proxy day was sent back. */
 withFakeServer();
 beforeEach(async () => {
-  resetTo('qnipay');
+  resetTo('calm.ly');
   const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email: 'pukar.sthapit@dogmagroup.co.uk', password: 'Qnipay@123' }) });
+    body: JSON.stringify({ email: 'pukar.sthapit@dogmagroup.co.uk', password: 'calm.ly@123' }) });
   const body = (await r.json()) as { token?: string };
   if (!body.token) throw new Error('sign-in failed');
   setToken(body.token);

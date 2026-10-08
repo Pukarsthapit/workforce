@@ -9,7 +9,7 @@ import type { OnbDocumentView, OnbFileRecord } from '@/api/onboarding';
 import { FieldRow, type StepProps } from './OnbFields';
 
 /* The prototype's onbDocuments, onbFileCell and the onb-upload and onb-view
-   handlers (qnipay-workforce-v15.html:4377-4384, 4423-4447, 11477-11518). The
+   handlers (calm.ly-workforce-v15.html:4377-4384, 4423-4447, 11477-11518). The
    right-to-work type, then a row per document asked: what it is, whether it is
    needed, what was sent, its state (with the reason a rejected one was sent
    back), View and Upload or Replace. Uploads are simulated (D3), and the step

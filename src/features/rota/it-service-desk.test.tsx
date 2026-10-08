@@ -21,7 +21,7 @@ describe('IT service desk', () => {
     const banner = screen.getByTestId(tid.iit.banner);
     expect(banner).toHaveTextContent('Simulated integration');
     expect(banner).toHaveTextContent('does not send it to a service desk');
-    expect(banner).toHaveTextContent('Qnipay setup → Modules → Rota → Rota setup');
+    expect(banner).toHaveTextContent('calm.ly setup → Modules → Rota → Rota setup');
     expect(screen.getByTestId(tid.head.tip('iit'))).toBeInTheDocument();
   });
 

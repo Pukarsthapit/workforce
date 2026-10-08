@@ -1,7 +1,7 @@
 import { PREVIEW_MAX_SIDE, PREVIEW_QUALITY, hasPreview, uploadProblem, type OnbRefusal } from '@/domain/onboarding';
 import type { UploadFile } from '@/api/onboarding';
 
-/* The prototype's readUpload (qnipay-workforce-v15.html:4350-4375), as brief
+/* The prototype's readUpload (calm.ly-workforce-v15.html:4350-4375), as brief
    D3 rules it. The browser reads the file; what is sent is its name, size and
    type and, for an image, a downscaled preview (longest side 560px, JPEG at
    0.7) as a data URL. Nothing else of the file leaves this function. */

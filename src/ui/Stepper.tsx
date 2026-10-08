@@ -1,4 +1,4 @@
-/* The prototype's .stepper (qnipay-workforce-v15.html:1518-1525): a minus
+/* The prototype's .stepper (calm.ly-workforce-v15.html:1518-1525): a minus
    and a plus either side of the value, one strong border round all three,
    the value in 14px/600 tabular figures between two light rules. Each end
    is disabled at its bound rather than clamping silently. On a phone the

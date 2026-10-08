@@ -6,7 +6,7 @@ import { BIGYAN, EDDIE, TODAY, dayState, signInEmail } from './support/timesheet
 /* Module 2, the employee's journey on My timesheet: save a day as a draft,
    submit it, submit the week in one request with the held-back days listed,
    and a day in a closed pay period that cannot be saved at all. */
-test.beforeEach(async ({ api }) => { await api.seed('qnipay'); await api.setClock(FROZEN); });
+test.beforeEach(async ({ api }) => { await api.seed('calm.ly'); await api.setClock(FROZEN); });
 
 test('an employee saves a day, submits it, submits the rest of the week in one request, and cannot save a day in a closed period', async ({ page, api }) => {
   await signInEmail(page, BIGYAN);

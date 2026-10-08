@@ -13,7 +13,7 @@ import { GLYPHS, missingTitle, shiftMonth, shortDate } from '@/domain/home';
 import { NoticesHomeCard } from '@/features/notices/NoticesHomeCard';
 import { BookLeave, DayDialog } from './DayDialog';
 
-/* My home: the prototype's essHome (qnipay-workforce-v15.html:5316-5416).
+/* My home: the prototype's essHome (calm.ly-workforce-v15.html:5316-5416).
    The month is the page: what you are doing, what you recorded, and whether
    you can book time off are all reached by opening the day they belong to.
    The server paints every day (GET /api/v1/home); this draws it. A month
@@ -80,13 +80,13 @@ function Figures({ m }: { m: HomeMonth }) {
   if (!rota && !m.can.recordHours && !m.can.bookLeave) return null;
   return (
     <Stats>
-      {rota && <Stat label="Next shift" testId={tid.home.next}
-        foot={m.nextShift ? `${m.nextShift.name} · ${m.nextShift.time}` : 'No further shifts this week'}>
-        <span className="text-lg">{m.nextShift ? shortDate(m.nextShift.date) : 'None booked'}</span>
-      </Stat>}
       {m.can.recordHours && <Stat label="Today’s timesheet" testId={tid.home.today}
         foot={t.absence ? t.absence.name : t.shift ? `${t.shift.name} scheduled` : 'No shift scheduled'}>
         <span className="text-lg">{t.ts?.text || (t.shift ? 'Not started' : '—')}</span>
+      </Stat>}
+      {rota && <Stat label="Next shift" testId={tid.home.next}
+        foot={m.nextShift ? `${m.nextShift.name} · ${m.nextShift.time}` : 'No further shifts this week'}>
+        <span className="text-lg">{m.nextShift ? shortDate(m.nextShift.date) : 'None booked'}</span>
       </Stat>}
       {m.can.recordHours && <Stat label="Hours this week" testId={tid.home.week}
         foot={w.contracted > 0 ? `of ${w.contracted}h contracted${rota ? ` · ${w.rotaHours}h rota’d` : ''}` : 'bank · no contracted baseline'}>{hours}h</Stat>}
@@ -145,10 +145,10 @@ function DayCell({ d, onOpen }: { d: HomeDay; onOpen: () => void }) {
   return (
     <button type="button" data-testid={tid.home.day(d.date)} data-paint={paint ?? undefined} data-glyph={d.glyph ?? undefined}
       data-future={d.future || undefined} aria-label={cellLabel(d)} onClick={onOpen}
-      className={cn('flex min-h-14 cursor-pointer flex-col items-stretch gap-[2px] rounded-sm border border-l-3 border-l-transparent bg-surface-card px-[6px] py-[5px] text-left text-xs',
-        'hover:border-y-brand hover:border-r-brand dark:hover:border-y-brand-accent dark:hover:border-r-brand-accent',
-        paint && PAINT[paint], d.today && 'border-2 border-brand dark:border-brand-accent')}>
-      <span className={cn('text-xs font-bold', d.future && 'text-text-muted')}>{parseIso(d.date).getUTCDate()}</span>
+      className={cn('flex min-h-[76px] cursor-pointer flex-col items-stretch gap-[3px] border-t border-transparent px-[6px] py-[7px] text-left text-xs transition-colors duration-(--motion-fast)',
+        'hover:bg-brand-subtle/60 dark:hover:bg-brand-subtle',
+        paint && cn('border-t-2', PAINT[paint]), d.today && 'border-t-2 border-brand bg-brand-subtle/70 dark:border-brand-accent dark:bg-brand-subtle')}>
+      <span className={cn('text-xs font-semibold tabular-nums', d.today ? 'text-brand dark:text-text-primary' : d.future && 'text-text-muted')}>{parseIso(d.date).getUTCDate()}</span>
       {d.absence
         ? <span className={cn('flex items-center gap-[6px] text-xs leading-[1.25] font-semibold', INK[d.absence.mark])}>
             <span aria-hidden="true" className={cn('text-base leading-none', ICON_FIT)}>{glyphOf(d.absence.icon)}</span>{d.absence.short || d.absence.name}</span>

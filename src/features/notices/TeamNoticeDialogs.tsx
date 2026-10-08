@@ -10,7 +10,7 @@ import { MUST_ACK_TIP, URGENT_TIP } from '@/domain/notices';
 import { formatDateTime } from '@/lib/format';
 import { NoticeMarks, StatusPill } from './NoticeParts';
 
-/* noticeEditBox (qnipay-workforce-v15.html:5898-5930): a new notice, a
+/* noticeEditBox (calm.ly-workforce-v15.html:5898-5930): a new notice, a
    draft or a live one. On a live one the audience is fixed and a warning
    says how many acknowledged the current version and will be asked again if
    the words change. A draft saves as a draft or posts; a live one saves its

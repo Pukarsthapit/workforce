@@ -1,4 +1,4 @@
-/* Templates. Ported from the prototype (qnipay-workforce-v15.html: TEMPLATES
+/* Templates. Ported from the prototype (calm.ly-workforce-v15.html: TEMPLATES
    2563-2793, TPL_SCOPES and captureTemplate 4565-4623, applyTemplate
    2931-3012, and the tpl-save, tpl-export, tpl-delete and tpl-import cases
    11979-12030). A template is data: what a tenant has decided, which can
@@ -129,7 +129,7 @@ const contract = (code: string, name: string, client: string, costCentre: string
 export const SHIPPED_TEMPLATES: Readonly<Record<string, Template>> = {
   /* QCIC / Dogma: professional services on Business Central Projects. Its
      8 projects and 85 tasks are the tenant's own export and are seeded with
-     the qnipay tenant rather than carried here. */
+     the calm.ly tenant rather than carried here. */
   qcic: {
     name: 'Professional Services — Projects', scope: 'structure',
     description: 'Consultants booking time to projects and project tasks, with resources mapped to Business Central. Weekly capture, no rota.',
@@ -217,10 +217,10 @@ export function templateSummary(t: Template): { types: string[]; modules: string
 export const TEMPLATE_NAME_MAX = 80;
 export const TEMPLATE_NAME_REQUIRED = 'A template needs a name.';
 export const TEMPLATE_NAME_SHIPPED = 'That name matches a template that ships with the app. Choose another.';
-export const NOT_A_TEMPLATE: Refusal = { status: 422, code: 'NOT_A_TEMPLATE', message: 'That file is not a Qnipay template.',
-  next: 'Choose a file that Qnipay exported as a template.' };
+export const NOT_A_TEMPLATE: Refusal = { status: 422, code: 'NOT_A_TEMPLATE', message: 'That file is not a calm.ly template.',
+  next: 'Choose a file that calm.ly exported as a template.' };
 export const UNREADABLE: Refusal = { status: 422, code: 'UNREADABLE', message: 'That file could not be read.',
-  next: 'Check it is the JSON file Qnipay exported, then try again.' };
+  next: 'Check it is the JSON file calm.ly exported, then try again.' };
 export const NO_SUCH_TEMPLATE: Refusal = { status: 404, code: 'not-found', message: 'That template no longer exists.', next: 'Reload the page.' };
 export const SHIPPED_REMOVE: Refusal = { status: 409, code: 'SHIPPED', message: 'A template that ships with the app cannot be removed.',
   next: 'Remove a template saved here instead.' };
@@ -294,9 +294,9 @@ export function captureTemplate(name: string, description: string, scope: Templa
 }
 
 /* ------------------------------------------------------------- the file */
-export interface TemplateFile { kind: 'qnipay.template'; v: 1; key: string; template: Template }
-export const templateFile = (key: string, template: Template): TemplateFile => ({ kind: 'qnipay.template', v: 1, key, template });
-export const templateFileName = (key: string) => `qnipay-template-${key}.json`;
+export interface TemplateFile { kind: 'calm.ly.template'; v: 1; key: string; template: Template }
+export const templateFile = (key: string, template: Template): TemplateFile => ({ kind: 'calm.ly.template', v: 1, key, template });
+export const templateFileName = (key: string) => `calm.ly-template-${key}.json`;
 
 /* The keys a template may hold, at each level. Anything else in a file is
    left out and listed (D3): the prototype's company details, pay codes, pay
@@ -316,12 +316,12 @@ const isObj = (v: unknown): v is Record<string, unknown> => typeof v === 'object
 
 export type FileRead = { ok: false; refusal: Refusal } | { ok: true; template: Record<string, unknown>; ignored: string[] };
 /* tpl-import, before the shape is checked: the text must be JSON, must say it
-   is a Qnipay template, and keeps only what a template may hold. The
+   is a calm.ly template, and keeps only what a template may hold. The
    structure goes when the template says it keeps configuration only. */
 export function readTemplateFile(text: string): FileRead {
   let o: unknown;
   try { o = JSON.parse(text); } catch { return { ok: false, refusal: UNREADABLE }; }
-  if (!isObj(o) || o.kind !== 'qnipay.template' || !isObj(o.template)) return { ok: false, refusal: NOT_A_TEMPLATE };
+  if (!isObj(o) || o.kind !== 'calm.ly.template' || !isObj(o.template)) return { ok: false, refusal: NOT_A_TEMPLATE };
   const ignored = new Set<string>();
   const keep = (obj: Record<string, unknown>, allowed: readonly string[], path: string) =>
     Object.fromEntries(Object.entries(obj).filter(([k]) => {

@@ -17,13 +17,13 @@ function exceptionsSummary(typeName: string, grants: readonly string[], revocati
   return `${typeName} + ${n} exception${n === 1 ? '' : 's'}`;
 }
 
-const HEAD = { title: 'Permissions', crumb: 'Qnipay setup · Permissions',
+const HEAD = { title: 'Permissions', crumb: 'calm.ly setup · Permissions',
   tip: 'Personas over one application. A manager is an employee record with extra capabilities.' };
 /* The capabilities the prototype lists as a persona's extra actions, beyond
    the pages it can reach (admPermissions, v15:8352). */
 const EXTRA_ACTIONS = ['claim', 'proxy'];
 
-/* Layout follows the prototype's admPermissions (qnipay-workforce-v15.html:8323-8367):
+/* Layout follows the prototype's admPermissions (calm.ly-workforce-v15.html:8323-8367):
    a template matrix, then what each persona can reach as a result, then who
    holds each persona. Per-user exceptions (the users table and UserExceptions
    modal) are new in this rebuild: the prototype only ever toggled the shared

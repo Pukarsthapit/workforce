@@ -52,9 +52,9 @@ test('export downloads everything held as one JSON file named after the organisa
   try {
     await userEvent.click(screen.getByTestId(tid.acal.export));
     expect(await screen.findByText('Keep the file to restore this demonstration elsewhere.')).toBeInTheDocument();
-    expect(names).toEqual(['qnipay-state-brightpath-support-services.json']);
+    expect(names).toEqual(['calm.ly-state-brightpath-support-services.json']);
     const file = JSON.parse((await blobs[0]?.text()) ?? '{}') as { kind?: string; data?: Record<string, unknown> };
-    expect(file.kind).toBe('qnipay.state');
+    expect(file.kind).toBe('calm.ly.state');
     expect(file.data?.tenant).toBeDefined();
     expect(file.data?.sessions).toBeUndefined();
   } finally {

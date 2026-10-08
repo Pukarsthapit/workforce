@@ -3,13 +3,13 @@ import { tid } from '../src/testids';
 import { BIGYAN, PUKAR, TODAY, dayState, sendVersioned, signInEmail } from './support/timesheet';
 import { askFor, decide, leaveAudit, myLeave, openRequest } from './support/leave';
 
-/* Module 4, the employee's journeys on qnipay (brief D14): ask for leave and
+/* Module 4, the employee's journeys on calm.ly (brief D14): ask for leave and
    see it waiting, a half day across two dates and more than the balance
    refused where the dates are, a waiting request cancelled (D1, D2, Review
    Focus 2 and 3); and My timesheet on a day of approved leave, where saving
    time is refused with ABSENCE_BLOCKED until the day is marked called in and
    worked anyway (D8, Review Focus 5). */
-test.beforeEach(async ({ api }) => { await api.seed('qnipay'); await api.setClock(FROZEN); });
+test.beforeEach(async ({ api }) => { await api.seed('calm.ly'); await api.setClock(FROZEN); });
 const info = (page: import('@playwright/test').Page, text: string | RegExp) => page.getByTestId(tid.toast.info).filter({ hasText: text });
 
 test('an employee asks for leave and sees it waiting; a half day across two dates and more than the balance are refused inline; a waiting request is cancelled', async ({ page, api }) => {

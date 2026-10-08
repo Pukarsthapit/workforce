@@ -6,7 +6,7 @@ import { buttonVariants } from '@/ui/shadcn/button';
 import type { ShiftTypeRecord } from '@/contract/rota';
 import { TONE_CLASS, cellTone } from './week';
 
-/* The shift palette: the prototype's shiftPalette (qnipay-workforce-v15.html:
+/* The shift palette: the prototype's shiftPalette (calm.ly-workforce-v15.html:
    7247-7260) with its CSS (867-882). Each shift type is a chip in the grid's
    colours. A chip can be dragged onto a cell, or picked up with Enter, Space
    or a tap and put down on a cell the same way; every route ends in the one

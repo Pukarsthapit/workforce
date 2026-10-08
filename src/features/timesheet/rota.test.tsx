@@ -22,7 +22,7 @@ withFakeServer();
 beforeEach(() => resetTo('social'));
 const signIn = async (who: string) => {
   const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email: `${who}@brightpath.org`, password: 'Qnipay@123' }) });
+    body: JSON.stringify({ email: `${who}@brightpath.org`, password: 'calm.ly@123' }) });
   const body = (await r.json()) as { token?: string };
   if (!body.token) throw new Error(`sign-in as ${who} failed`);
   setToken(body.token);
@@ -239,11 +239,11 @@ describe('Team timesheets, the matrix against the rota', () => {
   });
 });
 
-describe('Rota off (qnipay): the timesheet shows none of the rota', () => {
+describe('Rota off (calm.ly): the timesheet shows none of the rota', () => {
   beforeEach(async () => {
-    resetTo('qnipay');
+    resetTo('calm.ly');
     const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: 'bigyan.poudel@dogmagroup.co.uk', password: 'Qnipay@123' }) });
+      body: JSON.stringify({ email: 'bigyan.poudel@dogmagroup.co.uk', password: 'calm.ly@123' }) });
     const body = (await r.json()) as { token?: string };
     if (!body.token) throw new Error('sign-in failed');
     setToken(body.token);

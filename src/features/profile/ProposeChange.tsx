@@ -4,7 +4,7 @@ import type { Profile } from '@/contract/profile';
 import { Banner, Button, Field, FormWarn, Modal, Pill, TextInput, toastInfo } from '@/ui';
 import { useProposeChanges } from '@/api/profile';
 
-/* Ported from the prototype's profileEditBox (qnipay-workforce-v15.html:
+/* Ported from the prototype's profileEditBox (calm.ly-workforce-v15.html:
    5652-5672). Nothing is written to the record here: a request is raised and
    routed for approval, and a field already awaiting a decision is locked. */
 export function ProposeChange({ profile, onClose }: { profile: Profile; onClose(): void }) {

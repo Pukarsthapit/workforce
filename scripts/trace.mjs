@@ -5,7 +5,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const SUITE = process.env.PROTOTYPE_SUITE || resolve(here, '../../Qnipay workforce cc/mockup/qnipay-regression-suite.js');
+const SUITE = process.env.PROTOTYPE_SUITE || resolve(here, '../../calm.ly workforce cc/mockup/calm.ly-regression-suite.js');
 const OUT = resolve(here, '../e2e/trace.json');
 const map = JSON.parse(readFileSync(resolve(here, '../e2e/trace-areas.json'), 'utf8'));
 const src = readFileSync(SUITE, 'utf8').split('\n');
@@ -29,6 +29,6 @@ src.forEach(line => {
     rows.push({ id, section, text, area, ...(old?.deferredTo ? { deferredTo: old.deferredTo } : {}), status: old ? old.status : 'pending', ...(old?.test ? { test: old.test } : {}), ...(old?.reason ? { reason: old.reason } : {}) });
   }
 });
-writeFileSync(OUT, JSON.stringify({ generatedFrom: 'qnipay-regression-suite.js', rows }, null, 1) + '\n');
+writeFileSync(OUT, JSON.stringify({ generatedFrom: 'calm.ly-regression-suite.js', rows }, null, 1) + '\n');
 console.log(`trace.json: ${rows.length} rows`);
 if (defaulted.size) console.log('sections sent to the default area (' + map.defaultArea + '):\n  ' + [...defaulted].join('\n  '));

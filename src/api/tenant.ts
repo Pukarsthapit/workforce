@@ -55,7 +55,7 @@ export function useUpdateTenantSettings() {
   });
 }
 /* Configurable role names (D11). Renaming your own user type re-reads the
-   session, so the role pill and switcher show the new name. */
+   session, so the account area and switcher show the new name. */
 export function useRenameUserType(self: { userType: string } | null) {
   return useRecordMutation<{ id: string; name: string; ifMatch: number }, Mutation<UserType>>({
     mutationFn: vars => api(renameUserType, { params: { id: vars.id }, body: { name: vars.name }, ifMatch: vars.ifMatch }),

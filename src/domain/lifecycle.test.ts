@@ -5,7 +5,7 @@ import {
 } from './lifecycle';
 
 /* The guard table, written out in full so a change to the rules is a change to this test.
-   Ported from the prototype's EMP_STATES (qnipay-workforce-v15.html, "IMP-013"). */
+   Ported from the prototype's EMP_STATES (calm.ly-workforce-v15.html, "IMP-013"). */
 const ALLOWED: Record<PersonState, PersonState[]> = {
   candidate: ['preboard', 'archived'],
   preboard: ['active', 'archived'],

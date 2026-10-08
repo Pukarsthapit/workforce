@@ -10,14 +10,14 @@ import { audits, resetTo } from '@/test/api-helpers';
 import meta from '@/mocks/seed/meta.json';
 import { TimesheetPage } from './TimesheetPage';
 
-/* The qnipay seed at the frozen clock (Thursday 13/08/2026 15:30 London).
+/* The calm.ly seed at the frozen clock (Thursday 13/08/2026 15:30 London).
    Bigyan Poudel (EMP004) is a Consultant, a grid type, so My timesheet opens
    on the week; he reports to Manish Nepal, has a day awaiting approval on
    Wednesday 12 August and two earlier weeks of drafts in closed periods. */
 withFakeServer();
-beforeEach(() => resetTo('qnipay'));
+beforeEach(() => resetTo('calm.ly'));
 const signInEmail = async (email: string) => {
-  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'Qnipay@123' }) });
+  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'calm.ly@123' }) });
   const body = (await r.json()) as { token?: string };
   if (!body.token) throw new Error(`sign-in as ${email} failed`);
   setToken(body.token);
@@ -40,7 +40,7 @@ const openWeek = async () => {
   renderPage(<TimesheetPage />);
   return screen.findByTestId(tid.week.grid);
 };
-/* module 4 D8: the absence comes from the leave record itself, with no rota on qnipay */
+/* module 4 D8: the absence comes from the leave record itself, with no rota on calm.ly */
 const leaveToday = () => {
   const lr = store.coll<{ id: string; from: string; to: string }>('leaveRequests');
   const approved = lr.lr_5;
@@ -58,6 +58,14 @@ describe('My timesheet, day view', () => {
     expect(screen.getByTestId(tid.ts.dayState)).toHaveTextContent('Nothing logged');
     expect(screen.getByTestId(tid.dayForm.field('finish'))).toBeInTheDocument();
     expect(screen.getByTestId(tid.dayForm.group('breaks'))).toHaveTextContent('Breaks');
+    const allowanceSummary = screen.getByTestId(tid.dayForm.group('allow'));
+    const allowancePanel = allowanceSummary.closest('details');
+    if (!allowancePanel) throw new Error('allowances should be a collapsible side-panel section');
+    expect(allowancePanel).not.toHaveAttribute('open');
+    expect(allowancePanel.nextElementSibling).toHaveTextContent('Shift details');
+    await userEvent.click(allowanceSummary);
+    expect(allowancePanel).toHaveAttribute('open');
+    expect(within(allowancePanel).getAllByRole('checkbox').length).toBeGreaterThan(0);
     expect(screen.queryByTestId(tid.ts.fillRota)).toBeNull();
     expectTestIdCoverage(document.body);
     await userEvent.click(screen.getByTestId(tid.guide.open('ts')));
@@ -140,7 +148,7 @@ describe('My timesheet, day view', () => {
     await userEvent.click(screen.getByTestId(project));
     expect(await screen.findByTestId(`${project}-option-Go fibre BC implementation Project`)).toBeInTheDocument();
     expect(screen.queryByTestId(`${project}-option-Northgate Fit-out`)).toBeNull();
-    await userEvent.click(screen.getByTestId(`${project}-option-Qnipay D365 Implementation`));
+    await userEvent.click(screen.getByTestId(`${project}-option-calm.ly D365 Implementation`));
     await userEvent.click(screen.getByTestId(task));
     const tasks = (await screen.findAllByRole('option')).map(o => o.textContent ?? '');
     expect(tasks).toHaveLength(35);
@@ -263,7 +271,7 @@ describe('My timesheet, week view', () => {
     const optionsOf = (testId: string) => [...within(screen.getByTestId(testId)).getAllByRole('option')].map(o => o.textContent ?? '').filter(t => t !== '—');
     expect(optionsOf(tid.week.ctx(0, 'project'))).toContain('Go fibre BC implementation Project');
     expect(optionsOf(tid.week.ctx(0, 'project'))).not.toContain('Northgate Fit-out');
-    set(tid.week.ctx(0, 'project'), 'Qnipay D365 Implementation');
+    set(tid.week.ctx(0, 'project'), 'calm.ly D365 Implementation');
     const tasks = optionsOf(tid.week.ctx(0, 'job_task'));
     expect(tasks).toHaveLength(35);
     expect(tasks.every(t => t.startsWith('PT-'))).toBe(true);
@@ -453,13 +461,13 @@ describe('My timesheet, the grid layout', () => {
   test('hours in the second section update its own total, the Monday total and the allocation breakdown, and removing it returns to one', async () => {
     await openWeek();
     await userEvent.click(screen.getByTestId(tid.week.addAlloc));
-    set(tid.week.ctx(1, 'project'), 'Qnipay D365 Implementation');
+    set(tid.week.ctx(1, 'project'), 'calm.ly D365 Implementation');
     set(tid.week.cell(1, 0, 'start'), '18:00');
     set(tid.week.cell(1, 0, 'finish'), '20:00');
     expect(screen.getByTestId(tid.week.rowTotal(1))).toHaveTextContent('02:00');
     expect(screen.getByTestId(tid.week.dayTotal(0))).toHaveTextContent('02:00');
     expect(screen.getByTestId(tid.week.total)).toHaveTextContent('09:30');
-    expect(screen.getByTestId(tid.week.alloc)).toHaveTextContent('Qnipay D365 Implementation 02:00');
+    expect(screen.getByTestId(tid.week.alloc)).toHaveTextContent('calm.ly D365 Implementation 02:00');
     await userEvent.click(screen.getByTestId(tid.week.delAlloc(1)));
     expect(screen.queryByTestId(tid.week.allocRow(1))).toBeNull();
     expect(screen.queryByTestId(tid.week.row(1))).toBeNull();

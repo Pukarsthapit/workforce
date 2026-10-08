@@ -7,7 +7,7 @@ import { NO_REASONS_WHY, rotaState, shiftName, shiftTime } from '@/domain/rota';
 import type { PlanItem, RotaWeekView } from '@/contract/rota';
 import { longDay, weekRange } from './week';
 
-/* planPanel (qnipay-workforce-v15.html:7349-7368): the suggested cover, held
+/* planPanel (calm.ly-workforce-v15.html:7349-7368): the suggested cover, held
    on screen until accepted or dismissed. Nothing reaches the rota until it is
    accepted, and accepting goes through the server's assignment path. */
 export function PlanPanel({ view, items, busy, onAccept, onAcceptAll, onAsk, onSkip, onDismiss }: {

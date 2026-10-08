@@ -40,7 +40,7 @@ const recordLabel = (e: AuditEntry) => `${ENTITY_LABEL[e.entity] ?? e.entity}: $
    what, in one muted line. Here that is the record, the change and the reason. */
 const detail = (e: AuditEntry) => [recordLabel(e), describeChange(e.before, e.after), e.reason].filter(Boolean).join(' · ');
 
-/* Ported from the prototype's admAudit (qnipay-workforce-v15.html:9682-9688):
+/* Ported from the prototype's admAudit (calm.ly-workforce-v15.html:9682-9688):
    When (12px muted), Who, Action, Detail (12px muted). The filters the spec
    asks for sit above it as the prototype's filter bar of 32px pills. On a
    phone the log is a record list (table.rec): each entry a card titled with
@@ -54,7 +54,7 @@ export function AuditPage() {
 
   return (
     <Page testId={tid.page('iaudit')}>
-      <PageHead title="Audit log" crumb="Qnipay setup · Audit log" tip="Every state change anyone makes, newest first, with who acted and when."
+      <PageHead title="Audit log" crumb="calm.ly setup · Audit log" tip="Every state change anyone makes, newest first, with who acted and when."
         tipTestId={tid.head.tip('iaudit')} />
 
       <FilterBar>

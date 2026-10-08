@@ -15,7 +15,7 @@ import { MyShiftsPage } from './MyShiftsPage';
 withFakeServer();
 beforeEach(() => resetTo('social'));
 const signInEmail = async (email: string) => {
-  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'Qnipay@123' }) });
+  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'calm.ly@123' }) });
   const body = (await r.json()) as { token?: string };
   if (!body.token) throw new Error(`sign-in as ${email} failed`);
   setToken(body.token);

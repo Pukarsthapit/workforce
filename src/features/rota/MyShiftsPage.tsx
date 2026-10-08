@@ -8,7 +8,7 @@ import { useCaps } from '@/shell/useCaps';
 import { DOW_SHORT, addDays, dowMon, formatDay, formatDmy, parseIso } from '@/domain/time';
 
 /* My shifts: the prototype's essShifts and openShiftsFor
-   (qnipay-workforce-v15.html:5487-5530), for an employee and for a manager's
+   (calm.ly-workforce-v15.html:5487-5530), for an employee and for a manager's
    own record. The next shift, this week's shifts and hours, the rest days,
    and the open shifts this person may claim, which the server has already
    filtered through the safe-worker rules. A week shows only once it has been

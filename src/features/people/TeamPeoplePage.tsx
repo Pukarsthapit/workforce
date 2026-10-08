@@ -3,7 +3,7 @@ import { useCaps } from '@/shell/useCaps';
 import { ProfileQueue } from '@/features/profile/ProfileQueue';
 import { PeopleWorkspace } from './PeopleWorkspace';
 
-/* My team · People (mgrPeople, qnipay-workforce-v15.html:7613): the people at
+/* My team · People (mgrPeople, calm.ly-workforce-v15.html:7613): the people at
    the manager's own location (plan 1b decision D5), with the profile changes
    awaiting them above, as the prototype puts them. */
 export function TeamPeoplePage() {

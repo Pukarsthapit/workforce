@@ -18,7 +18,7 @@ import { NewPatternDialog, PatternEditor, PatternPeopleDialog, activePill, type 
 import { PatternUploadDialog } from './PatternUpload';
 import { draftOf, newStageDraft, rotaBody, type NumKey, type RotaDraft, type ToggleKey, type TypeDraft, type TypeNumKey } from './setup';
 
-/* Rota setup: the prototype's admRota (qnipay-workforce-v15.html:8765-8864)
+/* Rota setup: the prototype's admRota (calm.ly-workforce-v15.html:8765-8864)
    with the per-type rota eligibility it kept on the employee type (8144-8157).
    The shift catalogue and the working patterns are the same pieces Shift
    catalogue and Working patterns use, each saved on its own record. Every

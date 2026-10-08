@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState, type ComponentType, type ReactNode } from 'react';
-import { Sun, TriangleAlert } from 'lucide-react';
+import { ArrowUpRight, BadgeDollarSign, Bell, BriefcaseBusiness, Building2, CalendarCheck, CalendarClock, CalendarDays, CalendarRange, ChartColumn, ChevronDown, ChevronLeft, CircleHelp, ClipboardCheck, ClipboardList, Clock3, FileSignature, FileText, Headset, HeartPulse, History, Home, Link2, MapPinned, Megaphone, Menu, PanelLeftClose, PanelLeftOpen, Puzzle, Settings, ShieldCheck, Sun, TriangleAlert, UserRound, UserRoundPlus, Users, Workflow } from 'lucide-react';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router';
 import type { NavGroup, NavTab } from '@/domain/nav';
 import type { Session } from '@/contract/session';
 import { tid } from '@/testids';
 import { cn } from '@/lib/utils';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/ui/shadcn/dropdown-menu';
 import { buttonVariants } from '@/ui/shadcn/button';
-import { Modal, NavLink, Page, PageHead, Card, toastInfo } from '@/ui';
+import { Logo, Modal, NavLink, Page, PageHead, Card, toastInfo } from '@/ui';
+import { GUIDES } from '@/ui/guides';
 import { AccountMenu, type MenuAccount } from './AccountMenu';
 import { TopBar } from './TopBar';
 import { NotificationBell, type InboxState } from './Inbox';
@@ -61,14 +61,15 @@ const BUILT: Record<string, ComponentType> = { asetup: SetupIndex, aperm: Permis
   amods: ModulesPage, acal: CalendarPage, aorg: OrganisationPage, anotif: NotificationsPage, aappr: ApprovalsPage, notices: NoticesPage, tnotices: TeamNoticesPage,
   home: HomePage, thome: TeamHomePage, docs: DocumentsPage, onb: OnboardingPage, tonb: TeamOnboardingPage,
   monb: OnboardingSetupPage, iit: ItServiceDeskPage };
-const THEME_KEY = 'qnipay.theme';
+const THEME_KEY = 'calm.ly.theme';
+const SIDEBAR_KEY = 'calm.ly.sidebar.collapsed';
 
 /* Avoids a non-null assertion on role[0]: charAt(0) is always defined, even
    for an empty string, so this needs no unsafe indexing. */
 const capitalise = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
-/* The role pill's text: the user type's display name (D11), so a renamed
-   role shows its new name; while viewing as someone, the viewed person's. */
+/* The role label used in the account area and workspace context: a renamed
+   role's display name, and the viewed person's while viewing as someone. */
 export function roleLabelOf(session: Pick<Session, 'account' | 'viewingAs'>): string {
   const on = session.viewingAs ?? session.account;
   return on.roleName || capitalise(on.userType);
@@ -102,9 +103,8 @@ function useInbox(readOnly: boolean): InboxState {
   };
 }
 
-/* The shell chrome is shared: a module never restyles it. Top bar, then the
-   tab strip (desktop) or the bottom bar (phone), both painted from the same
-   array, then the routed page inside its own Page frame. */
+/* Desktop navigation stays in the left sidebar; phones use the same
+ information architecture in a drawer, with a contextual quick-page bar. */
 export function ShellView({ nav, roleLabel, viewingAs, account, canViewAs = false, inbox, who, onSignOut, onViewAs = () => {}, onEndViewAs }: {
   nav: NavGroup[]; roleLabel: string; viewingAs: string | null; account: MenuAccount; canViewAs?: boolean;
   /* the bell's inbox; read from the server when not given */
@@ -116,43 +116,55 @@ export function ShellView({ nav, roleLabel, viewingAs, account, canViewAs = fals
   const { pathname, search } = useLocation();
   useHomeOnSwitch(who, nav, pathname);
   const [theme, toggleTheme] = useTheme();
-  const current = nav.find(g => pathname.startsWith(`/${g.key}/`)) ?? nav[0];
-  const first = nav[0]?.tabs[0];
+  const [helpOpen, setHelpOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    try { return localStorage.getItem(SIDEBAR_KEY) === 'true'; } catch { return false; }
+  });
+  const toggleSidebar = () => setSidebarCollapsed(collapsed => {
+    const next = !collapsed;
+    try { localStorage.setItem(SIDEBAR_KEY, String(next)); } catch { /* sidebar state still applies this session */ }
+    return next;
+  });
+  const current = nav.find(g => pathname.startsWith(`/${g.key}/`));
+  const homeTab = universalHome(nav);
+  const first = homeTab ?? nav[0]?.tabs[0];
   const stripTabs = stripTabsFor(current, pathname, search);
   const here = pathname + search;
+  const activeTab = [...nav.flatMap(g => g.tabs), ...stripTabs].find(t => isHere(t, here));
+  const sections = sidebarSections(nav, current, stripTabs);
+  const profile = nav.find(g => g.key === 'work')?.tabs.find(t => t.view === 'profile');
   return (
-    <div className="flex min-h-dvh flex-col">
-      <TopBar>
-        <nav aria-label="Areas" className="flex min-w-0 gap-[2px] md:flex-wrap max-md:flex-1 max-md:flex-nowrap max-md:overflow-x-auto max-md:[scrollbar-width:none]">
-          {nav.map(g => <AreaLink key={g.key} group={g} current={g === current} />)}
-        </nav>
-        <div className="ml-auto flex shrink-0 items-center gap-md max-md:gap-[2px]">
-          {/* .rolepill (v15:303-306): the role on screen, in the accent, in
-              capitals. Dashed while looking at the app as someone else. */}
-          <span data-testid={tid.shell.rolePill} data-caps
-            className={cn('hidden shrink-0 items-center rounded-pill border border-accent-line px-[11px] py-xs text-xs font-bold tracking-[.05em] text-brand-accent uppercase md:inline-flex', viewingAs && 'border-dashed opacity-85')}
-            title={viewingAs ? `Looking at the app as ${viewingAs} · your account is ${account.name}` : undefined}>{roleLabel}</span>
-          <IconButton testId={tid.shell.theme} label={`${theme === 'dark' ? 'Light' : 'Dark'} theme`} onClick={toggleTheme}><Sun aria-hidden="true" /></IconButton>
-          {inbox ? <NotificationBell inbox={inbox} /> : <ServerBell readOnly={viewingAs !== null} />}
-          <AccountMenu account={account} viewingAs={viewingAs} canViewAs={canViewAs} onSignOut={onSignOut} onViewAs={onViewAs} onEndViewAs={onEndViewAs} />
-        </div>
-      </TopBar>
-      {viewingAs && <div role="status" className="flex flex-wrap items-center gap-md border-b border-warn bg-warn-surface px-xl py-sm text-sm text-warn max-lg:px-md">
-        <span>Looking at the app as <b>{viewingAs}</b>. Your own account is unchanged.</span>
-        <button type="button" data-testid={tid.shell.viewAsEnd} className="inline-flex min-h-touch items-center font-semibold underline" onClick={onEndViewAs}>Return to my account</button></div>}
-      {stripTabs.length > 0 && <TabStrip tabs={stripTabs} here={here} />}
-      {/* the page reserves what the bottom bar occupies, home indicator included (v15:815-816) */}
-      <main className={cn('flex-1 md:pb-10', stripTabs.length > 0 && 'max-md:pb-[calc(72px+env(safe-area-inset-bottom,0px))]')}>
-        <Routes>
-          {nav.flatMap(g => g.tabs).map(t => {
-            const Built = BUILT[t.view];
-            return <Route key={t.path} path={t.path} element={Built ? <Built /> : <NotBuilt tab={t} />} />;
-          })}
-          <Route path="/" element={first ? <Navigate to={first.path} replace /> : <NothingAvailable />} />
-          <Route path="*" element={first ? <PageUnavailable path={pathname} home={first} /> : <NothingAvailable />} />
-        </Routes>
-      </main>
-      {stripTabs.length > 0 && <BottomBar tabs={stripTabs} here={here} />}
+    <div className={cn('min-h-dvh overflow-x-clip lg:grid', sidebarCollapsed ? 'lg:grid-cols-[76px_minmax(0,1fr)]' : 'lg:grid-cols-[256px_minmax(0,1fr)]')}>
+      <SideNavigation sections={sections} homeTab={homeTab}
+        profilePath={profile?.path} here={here} account={account} roleLabel={roleLabel} viewingAs={viewingAs} canViewAs={canViewAs}
+        onSignOut={onSignOut} onViewAs={onViewAs} onEndViewAs={onEndViewAs}
+        collapsed={sidebarCollapsed} onToggle={toggleSidebar} onHelp={() => setHelpOpen(true)} />
+      <div className="flex min-h-dvh min-w-0 flex-col">
+        <TopBar homePath={first?.path ?? '/'}>
+          <MobileNavigation homeTab={homeTab} sections={sections} profilePath={profile?.path} here={here}
+            account={account} roleLabel={roleLabel} viewingAs={viewingAs} canViewAs={canViewAs}
+            onSignOut={onSignOut} onViewAs={onViewAs} onEndViewAs={onEndViewAs} onHelp={() => setHelpOpen(true)} />
+          <div className="ml-auto flex shrink-0 items-center gap-md max-md:gap-[2px]">
+            <IconButton testId={tid.shell.theme} label={`${theme === 'dark' ? 'Light' : 'Dark'} theme`} onClick={toggleTheme}><Sun aria-hidden="true" /></IconButton>
+            {inbox ? <NotificationBell inbox={inbox} /> : <ServerBell readOnly={viewingAs !== null} />}
+          </div>
+        </TopBar>
+        {viewingAs && <div role="status" className="flex flex-wrap items-center gap-md border-b border-warn bg-warn-surface px-xl py-sm text-sm text-warn max-lg:px-md">
+          <span>Looking at the app as <b>{viewingAs}</b>. Your own account is unchanged.</span>
+          <button type="button" data-testid={tid.shell.viewAsEnd} className="inline-flex min-h-touch items-center font-semibold underline" onClick={onEndViewAs}>Return to my account</button></div>}
+        <main className={cn('min-w-0 flex-1 lg:pb-10', stripTabs.length > 0 && 'max-lg:pb-[calc(72px+env(safe-area-inset-bottom,0px))]')}>
+          <Routes>
+            {nav.flatMap(g => g.tabs).map(t => {
+              const Built = BUILT[t.view];
+              return <Route key={t.path} path={t.path} element={Built ? <Built /> : <NotBuilt tab={t} />} />;
+            })}
+            <Route path="/" element={homeTab?.view === 'workspace-home' ? <WorkspaceHome sections={sections} roleLabel={roleLabel} /> : first ? <Navigate to={first.path} replace /> : <NothingAvailable />} />
+            <Route path="*" element={first ? <PageUnavailable path={pathname} home={first} /> : <NothingAvailable />} />
+          </Routes>
+        </main>
+        {stripTabs.length > 0 && <BottomBar tabs={stripTabs} here={here} />}
+      </div>
+      <HelpDialog open={helpOpen} onOpenChange={setHelpOpen} view={activeTab?.view} />
     </div>);
 }
 
@@ -168,22 +180,9 @@ function useHomeOnSwitch(who: string | undefined, nav: NavGroup[], pathname: str
   useEffect(() => {
     if (last.current === who) return;
     last.current = who;
-    const first = nav[0]?.tabs[0];
-    if (first && !nav.some(g => g.tabs.some(t => t.path === pathname))) void navigate(first.path, { replace: true });
+    const home = universalHome(nav) ?? nav[0]?.tabs[0];
+    if (home && !nav.some(g => g.tabs.some(t => t.path === pathname))) void navigate(home.path, { replace: true });
   }, [who, nav, pathname, navigate]);
-}
-
-/* .modsw button (v15:287-301, 1527, 1560-1561): 14px/500 in the muted shell
-   green, 7px 14px, a white lift on hover; the current area in the accent at
-   600. The link itself is the 44px touch target; the pill is drawn inside
-   it, so the bar keeps the prototype's 34px pill. */
-function AreaLink({ group, current }: { group: NavGroup; current: boolean }) {
-  return (
-    <NavLink to={firstTabPath(group)} testId={tid.nav.group(group.key)} aria-current={current ? 'true' : undefined}
-      className="group inline-flex min-h-touch shrink-0 items-center rounded-pill focus-visible:shadow-none">
-      <span className={cn('rounded-pill px-[14px] py-[7px] text-sm whitespace-nowrap transition-colors duration-(--qp-duration-fast) ease-qp group-focus-visible:shadow-focus max-lg:px-[9px] max-lg:py-[6px] max-lg:text-xs max-md:px-[11px]',
-        current ? 'bg-brand-accent font-semibold text-text-on-accent' : 'font-medium text-shell-ink-muted group-hover:bg-shell-hover group-hover:text-text-on-brand')}>{group.label}</span>
-    </NavLink>);
 }
 
 /* .iconbtn (v15:307-315, 1549): a 34px round button in the pale shell ink
@@ -200,17 +199,11 @@ function IconButton({ testId, label, onClick, children }: { testId: string; labe
    returning), so the first tab always exists; this still satisfies
    noUncheckedIndexedAccess without a non-null assertion, and fails loudly
    (rather than silently) if that invariant is ever broken. */
-function firstTabPath(g: NavGroup): string {
-  const t = g.tabs[0];
-  if (!t) throw new Error(`nav group "${g.key}" has no tabs`);
-  return t.path;
-}
-
 /* Setup is not one flat strip. At the index the strip holds the index's own
-   tab alone, selected, as the prototype's does ("Qnipay setup"); inside a
+   tab alone, selected, as the prototype's does ("calm.ly setup"); inside a
    section it shows only that section's pages, plus a way back (ported from
    the prototype's SETUP_SECTIONS drill and its "‹ All setup" tab,
-   qnipay-workforce-v15.html:4075). Work and My Team are unaffected: their
+   calm.ly-workforce-v15.html:4075). Work and My Team are unaffected: their
    strip is just the group's tabs, as it always was. Inside Modules, opening
    a module (/setup/amods?m=<code>) drills in once more, as the prototype's
    NAV() does (v15:4059-4076): a way back to the module list, the module's
@@ -256,51 +249,249 @@ function useTheme(): ['light' | 'dark', () => void] {
   return [theme, toggle];
 }
 
-/* Plan review focus: a valid session whose capabilities resolve to nothing
-   (e.g. everything revoked) must not render an empty shell. This is what it
-   sees instead of a blank main area: a clear statement and what to do next. */
+/* A valid session whose capabilities resolve to nothing must not render an
+   empty shell; the account control remains available in the sidebar footer. */
 function NothingAvailable() {
   return (
     <Page testId={tid.page('none')} narrow>
       <PageHead title="Nothing available" />
-      <Card><p className="text-text-secondary">Your account has no access to open here. Ask an administrator to grant a capability on Qnipay setup &rarr; Permissions.</p></Card>
+      <Card><p className="text-text-secondary">Your account has no access to open here. Ask an administrator to grant a capability on calm.ly setup &rarr; Permissions.</p></Card>
     </Page>);
 }
 
-function menuKey(r: { group?: string; groupKey?: string }): string {
-  if (!r.groupKey) throw new Error(`nav group "${r.group ?? '(none)'}" has no stable key`);
-  return r.groupKey;
+export const TAB_ICON: Record<string, ComponentType<{ 'aria-hidden'?: 'true' | 'false'; className?: string }>> = {
+  home: Home, thome: Home, 'workspace-home': Home, ts: Clock3, tteam: ClipboardCheck, shifts: CalendarDays, tshifts: CalendarDays, trota: CalendarDays,
+  leave: Sun, tleave: CalendarClock, tsick: HeartPulse, people: Users, apeople: Users, tpeople: Users, docs: FileText, notices: Megaphone,
+  tnotices: Megaphone, hours: ChartColumn, thours: ChartColumn, texc: TriangleAlert, aperm: ShieldCheck, asetup: Settings,
+  amods: Building2, aorg: Building2, acal: CalendarDays, anotif: Bell, aappr: ClipboardCheck,
+  profile: UserRound, onb: ClipboardList, tonb: ClipboardCheck, tcover: UserRoundPlus, tpat: Workflow,
+  mfeat: Puzzle, mts: Clock3, mrota: CalendarRange, mleave: CalendarCheck, monb: ClipboardList,
+  atypes: BriefcaseBusiness, acon: FileSignature, aloc: MapPinned, iaudit: History, ibc: Link2,
+  ipay: BadgeDollarSign, mpay: BadgeDollarSign, iit: Headset,
+};
+
+function WorkspaceHome({ sections, roleLabel }: { sections: SidebarSection[]; roleLabel: string }) {
+  return <Page testId={tid.page('home')}>
+    <PageHead title="Home" crumb={`${roleLabel} workspace`} />
+    <p className="text-sm text-text-secondary">Choose an area to continue.</p>
+    <div className="mt-xl grid gap-xl sm:grid-cols-2 xl:grid-cols-3">
+      {sections.map(section => <section key={section.key} aria-labelledby={`workspace-home-${section.key}`}>
+        <h2 id={`workspace-home-${section.key}`} className="mb-sm text-xs font-semibold tracking-[.12em] text-text-muted">{section.label}</h2>
+        <nav aria-label={`${section.label} shortcuts`} className="divide-y divide-border border-y border-border">
+          {section.tabs.map(tab => <NavLink key={`${tab.view}-${tab.path}`} to={tab.path} testId={`home-destination-${tab.view}`}
+            className="group flex min-h-12 items-center gap-sm py-sm text-sm text-text-secondary transition-colors hover:text-text-primary focus-visible:shadow-focus">
+            <TabIcon view={tab.view} />
+            <span className="min-w-0 flex-1 truncate">{tab.label}</span>
+            <ArrowUpRight aria-hidden="true" className="size-4 shrink-0 opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100" />
+          </NavLink>)}
+        </nav>
+      </section>)}
+    </div>
+  </Page>;
 }
 
-/* .tabs (v15:338-351, 1523): the 44px card-surface strip, sticky under the
-   top bar, 24px side padding (16px below 1024px). A tab is 14px/500 in
-   secondary ink, 0 13px, 43px tall over a 2px rule; hover lifts it onto the
-   tint; selected is brand ink at 600 with the rule in brand (the accent in
-   dark). A heading's menu (.tabgrp, .tabmenu; v15:352-384) marks the page
-   you are on with a fill and an inset bar, never colour alone. */
-const TAB = 'relative inline-flex h-[43px] shrink-0 items-center border-b-2 border-transparent px-[13px] text-sm font-medium whitespace-nowrap text-text-secondary transition-colors duration-(--qp-duration-fast) hover:bg-surface-tint hover:text-text-primary';
-const TAB_ON = 'border-brand font-semibold text-brand hover:bg-transparent hover:text-brand dark:border-brand-accent dark:text-brand-accent dark:hover:text-brand-accent';
-function TabStrip({ tabs, here }: { tabs: NavTab[]; here: string }) {
-  const runs: { group?: string; groupKey?: string; tabs: NavTab[] }[] = [];
-  tabs.forEach(t => { const last = runs[runs.length - 1]; if (t.group && last?.group === t.group) last.tabs.push(t); else runs.push({ group: t.group, groupKey: t.groupKey, tabs: [t] }); });
-  const link = (t: NavTab) => <NavLink key={t.view} to={t.path} testId={tid.nav.tab(t.view)} aria-current={isHere(t, here) ? 'page' : undefined}
-    className={cn(TAB, isHere(t, here) && TAB_ON)}>{t.label}</NavLink>;
+type SidebarSection = { key: string; label: string; tabs: NavTab[] };
+
+function universalHome(nav: NavGroup[]): NavTab | undefined {
+  const teamHome = nav.find(g => g.key === 'team')?.tabs.find(t => t.view === 'thome');
+  const personalHome = nav.find(g => g.key === 'work')?.tabs.find(t => t.view === 'home');
+  const onboarding = nav.find(g => g.key === 'work')?.tabs.find(t => t.view === 'onb');
+  return teamHome ?? personalHome ?? onboarding ?? (nav.length ? { view: 'workspace-home', label: 'Home', path: '/', built: true } : undefined);
+}
+
+function sidebarSections(nav: NavGroup[], current: NavGroup | undefined, stripTabs: NavTab[]): SidebarSection[] {
+  const work = nav.find(g => g.key === 'work')?.tabs ?? [];
+  const team = nav.find(g => g.key === 'team')?.tabs ?? [];
+  const setup = nav.find(g => g.key === 'setup')?.tabs ?? [];
+  const all = [...work, ...team, ...setup];
+  const get = (view: string) => all.find(t => t.view === view);
+  const section = (key: string, label: string, views: string[]): SidebarSection =>
+    ({ key, label, tabs: views.flatMap(view => { const item = get(view); return item ? [item] : []; }) });
+  const teamReports = get('thours');
+  const personalHours = get('hours');
+  const people = get('tpeople') ?? get('apeople');
+  const adminPeople = get('apeople');
+  const personalNotices = get('notices');
+  const teamNotices = get('tnotices');
+  const documents = get('docs');
+  const teamOnboarding = get('tonb');
+  const exceptions = get('texc');
+  const settings = get('asetup');
+  return [
+    section('work', 'WORK', ['ts', 'tteam', 'shifts', 'trota', 'tcover', 'tshifts', 'tpat', 'leave', 'tleave', 'tsick', 'onb']),
+    { key: 'people', label: 'PEOPLE', tabs: [
+      ...(people ? [{ ...people, label: 'People' }] : []),
+      ...(people?.view === 'tpeople' && adminPeople ? [{ ...adminPeople, label: 'People administration' }] : []),
+      ...(documents ? [documents] : []),
+      ...(personalNotices ? [personalNotices] : []),
+      ...(teamNotices ? [{ ...teamNotices, label: personalNotices ? 'Manage notices' : 'Notices' }] : []),
+      ...(teamOnboarding ? [teamOnboarding] : []),
+    ] },
+    { key: 'insights', label: 'INSIGHTS', tabs: [
+      ...(teamReports ? [{ ...teamReports, label: 'Reports' }] : []),
+      ...(personalHours ? [{ ...personalHours, label: 'My hours' }] : []),
+      ...(exceptions ? [exceptions] : []),
+    ] },
+    { key: 'system', label: 'SYSTEM', tabs: [
+      ...(settings ? [settings] : []),
+      ...(current?.key === 'setup' ? stripTabs.filter(t => t.view !== 'asetup') : []),
+    ] },
+  ].filter(s => s.tabs.length);
+}
+
+function TabIcon({ view }: { view: string }) {
+  const Icon = TAB_ICON[view];
+  return Icon ? <Icon aria-hidden="true" className="size-[17px] shrink-0" /> : <span aria-hidden="true" className="size-[17px] shrink-0 text-center leading-[17px]">·</span>;
+}
+
+function SidebarItem({ tab, here, collapsed = false, onSelect, testId }: {
+  tab: NavTab; here: string; collapsed?: boolean; onSelect?: () => void; testId: string;
+}) {
+  const active = isHere(tab, here);
+  return <NavLink to={tab.path} testId={testId} onClick={onSelect} aria-current={active ? 'page' : undefined}
+    aria-label={collapsed ? tab.label : undefined} title={collapsed ? tab.label : undefined}
+    className={cn('group relative flex min-h-11 items-center rounded-md text-sm text-text-secondary transition-colors duration-(--qp-duration-fast) hover:bg-surface-subtle hover:text-text-primary focus-visible:shadow-focus',
+      collapsed ? 'w-11 justify-center px-0' : 'gap-sm px-md',
+      tab.back && 'ml-md text-xs',
+      active && 'bg-brand-subtle font-semibold text-brand dark:text-text-primary')}>
+    {tab.back ? <ChevronLeft aria-hidden="true" className="size-4 shrink-0" /> : <TabIcon view={tab.view} />}
+    {!collapsed && <span className="min-w-0 truncate">{tab.label}</span>}
+    {active && <span aria-hidden="true" className="absolute top-2 bottom-2 left-0 w-[2px] rounded-full bg-brand" />}
+  </NavLink>;
+}
+
+function SidebarSections({ sections, here, collapsed = false, onSelect, idPrefix }: {
+  sections: SidebarSection[]; here: string; collapsed?: boolean; onSelect?: () => void; idPrefix: string;
+}) {
+  const [closedSections, setClosedSections] = useState<Record<string, boolean>>({});
+  return <div className="space-y-6">
+    {sections.filter(s => s.key !== 'system').map(section => (
+      <section key={section.key} aria-labelledby={!collapsed ? `${idPrefix}-${section.key}` : undefined}>
+        {!collapsed && <h2 className="px-md pb-2">
+          <button type="button" id={`${idPrefix}-${section.key}`} data-testid={`${idPrefix}-section-${section.key}`}
+            aria-expanded={!closedSections[section.key]} aria-controls={`${idPrefix}-${section.key}-links`}
+            onClick={() => setClosedSections(current => ({ ...current, [section.key]: !current[section.key] }))}
+            className="flex min-h-11 w-full items-center justify-between gap-sm rounded-sm text-left text-[11px] font-semibold tracking-[.12em] text-text-muted transition-colors hover:text-text-primary focus-visible:shadow-focus">
+            {section.label}
+            <ChevronDown aria-hidden="true" className={cn('size-3.5 transition-transform', closedSections[section.key] && '-rotate-90')} />
+          </button>
+        </h2>}
+        <nav id={`${idPrefix}-${section.key}-links`} aria-label={section.label}
+          hidden={!collapsed && closedSections[section.key]}
+          className={cn('space-y-1', collapsed && 'flex flex-col items-center')}>
+          {section.tabs.map(tab => <SidebarItem key={tab.view} tab={tab} here={here} collapsed={collapsed} onSelect={onSelect}
+            testId={idPrefix === 'sidebar' ? tid.nav.tab(tab.view) : `mobile-nav-${tab.view}`} />)}
+        </nav>
+      </section>))}
+  </div>;
+}
+
+function SidebarFooter({ settings, profilePath, account, roleLabel, viewingAs, canViewAs, collapsed, here, onHelp, onSelect, onSignOut, onViewAs, onEndViewAs, idPrefix }: {
+  settings: NavTab[]; profilePath?: string; account: MenuAccount; roleLabel: string; viewingAs: string | null; canViewAs: boolean;
+  collapsed: boolean; here: string; onHelp(): void; onSelect?: () => void;
+  onSignOut(): void; onViewAs(personCode: string): void; onEndViewAs(): void; idPrefix: string;
+}) {
+  const settingRoot = settings.find(t => t.view === 'asetup' && !t.back);
+  const settingChildren = settings.filter(t => t !== settingRoot);
+  return <div className={cn('mt-auto border-t border-border pt-md pb-md', collapsed ? 'px-xs' : 'px-sm')}>
+    {(settingRoot || settingChildren.length > 0) && <section className="mb-4" aria-labelledby={`${idPrefix}-system-label`}>
+      {!collapsed && <h2 id={`${idPrefix}-system-label`} className="px-md pb-2 text-[11px] font-semibold tracking-[.12em] text-text-muted">SYSTEM</h2>}
+      {settingRoot && <SidebarItem tab={{ ...settingRoot, label: 'Settings' }} here={here} collapsed={collapsed} onSelect={onSelect} testId={`${idPrefix}-settings`} />}
+      {settingChildren.length > 0 && <nav aria-label="Settings pages" className={cn('mt-1 space-y-1', collapsed && 'flex flex-col items-center')}>
+        {settingChildren.map(tab => <SidebarItem key={`${tab.view}-${tab.path}`} tab={tab} here={here} collapsed={collapsed} onSelect={onSelect} testId={`${idPrefix}-setting-${tab.view}`} />)}
+      </nav>}
+    </section>}
+    <section className="mb-4" aria-labelledby={`${idPrefix}-support-label`}>
+      {!collapsed && <h2 id={`${idPrefix}-support-label`} className="px-md pb-2 text-[11px] font-semibold tracking-[.12em] text-text-muted">SUPPORT</h2>}
+      <button type="button" data-testid={`${idPrefix}-help`} onClick={onHelp} aria-label={collapsed ? 'Help & Support' : undefined} title={collapsed ? 'Help & Support' : undefined}
+        className={cn('flex min-h-11 w-full items-center rounded-md text-sm text-text-secondary transition-colors hover:bg-surface-subtle hover:text-text-primary focus-visible:shadow-focus',
+          collapsed ? 'justify-center px-0' : 'gap-sm px-md')}>
+        <CircleHelp aria-hidden="true" className="size-[17px] shrink-0" />{!collapsed && 'Help & Support'}
+      </button>
+    </section>
+    <section aria-label="User area" className={cn('border-t border-border pt-md', collapsed ? 'flex flex-col items-center gap-1' : 'space-y-1')}>
+      <div className={cn('flex min-h-11 items-center', collapsed ? 'flex-col gap-1' : 'gap-xs')}>
+        {profilePath && <NavLink to={profilePath} testId={`${idPrefix}-profile-link`} onClick={onSelect} aria-current={here.split('?')[0] === profilePath ? 'page' : undefined}
+          aria-label={collapsed ? `Profile: ${account.name}` : undefined} title={collapsed ? account.name : undefined}
+          className={cn('flex min-h-11 min-w-0 flex-1 items-center rounded-md text-sm text-text-secondary transition-colors hover:bg-surface-subtle hover:text-text-primary focus-visible:shadow-focus',
+            collapsed ? 'w-11 flex-none justify-center px-0' : 'gap-sm px-md', here.split('?')[0] === profilePath && 'bg-brand-subtle font-semibold text-brand')}>
+          <UserRound aria-hidden="true" className="size-[17px] shrink-0" />
+          {!collapsed && <span className="min-w-0"><span className="block truncate font-medium text-text-primary">{account.name}</span><span className="block truncate text-xs text-text-muted">Profile / Account</span></span>}
+        </NavLink>}
+        <AccountMenu account={account} viewingAs={viewingAs} canViewAs={canViewAs} onSignOut={onSignOut} onViewAs={onViewAs} onEndViewAs={onEndViewAs}
+          testId={idPrefix === 'sidebar' ? tid.shell.account : `${idPrefix}-account`}
+          side="top" align={idPrefix === 'sidebar' ? 'start' : 'end'} />
+      </div>
+      {!collapsed && <span className="block px-md text-xs text-text-muted">{roleLabel}</span>}
+    </section>
+  </div>;
+}
+
+function SideNavigation({ sections, homeTab, profilePath, here, account, roleLabel, viewingAs, canViewAs, onSignOut, onViewAs, onEndViewAs, collapsed, onToggle, onHelp }: {
+  sections: SidebarSection[]; homeTab: NavTab | undefined; profilePath?: string; here: string; account: MenuAccount; roleLabel: string;
+  viewingAs: string | null; canViewAs: boolean; onSignOut(): void; onViewAs(personCode: string): void; onEndViewAs(): void;
+  collapsed: boolean; onToggle(): void; onHelp(): void;
+}) {
+  const settings = sections.find(s => s.key === 'system')?.tabs ?? [];
   return (
-    <nav aria-label="Pages" className="sticky top-14 z-[60] hidden min-h-11 flex-wrap items-stretch gap-y-[2px] border-b bg-surface-card px-xl max-lg:px-md md:flex">
-      {runs.map(r => !r.group ? r.tabs.map(link) : (
-        <DropdownMenu key={r.group}>
-          <DropdownMenuTrigger data-testid={tid.nav.menu(menuKey(r))}
-            className={cn(TAB, 'data-[state=open]:bg-surface-tint data-[state=open]:text-text-primary', r.tabs.some(t => isHere(t, here)) && TAB_ON)}>
-            {r.group}<span aria-hidden="true" className="ml-[5px] text-xs leading-none opacity-55">▾</span></DropdownMenuTrigger>
-          <DropdownMenuContent align="start" sideOffset={-1} className="min-w-[212px] p-[5px] shadow-md">
-            {r.tabs.map(t => <DropdownMenuItem key={t.view} asChild
-              className={cn('h-9 px-[10px] py-0 font-medium whitespace-nowrap text-text-secondary focus:text-text-primary',
-                isHere(t, here) && 'bg-brand-subtle font-semibold text-brand shadow-[inset_2px_0_0_var(--qp-color-brand-primary)] focus:bg-brand-subtle focus:text-brand dark:text-brand-accent dark:shadow-[inset_2px_0_0_var(--qp-color-brand-accent)] dark:focus:text-brand-accent')}>
-              <NavLink to={t.path} testId={tid.nav.tab(t.view)} aria-current={isHere(t, here) ? 'page' : undefined}>{t.label}</NavLink>
-            </DropdownMenuItem>)}
-          </DropdownMenuContent>
-        </DropdownMenu>))}
-    </nav>);
+    <aside aria-label="Workspace" data-testid="shell-sidebar" data-collapsed={collapsed} className="sticky top-0 hidden h-dvh min-h-0 flex-col border-r border-border bg-surface-card lg:flex">
+      <div className={cn('flex items-center pt-7 pb-6', collapsed ? 'flex-col gap-sm px-xs' : 'justify-between px-xl')}>
+        <NavLink to={homeTab?.path ?? '/'} testId="shell-sidebar-home" aria-label="Go to Home" className="flex min-w-0 items-center justify-center">
+          <Logo className={collapsed ? 'h-6' : 'h-10'} />
+        </NavLink>
+        <button type="button" data-testid="shell-sidebar-toggle" aria-label={collapsed ? 'Expand navigation' : 'Collapse navigation'}
+          aria-expanded={!collapsed} onClick={onToggle} title={collapsed ? 'Expand navigation' : 'Collapse navigation'}
+          className="grid size-11 shrink-0 place-items-center rounded-md text-text-secondary transition-colors hover:bg-surface-subtle hover:text-text-primary focus-visible:shadow-focus">
+          {collapsed ? <PanelLeftOpen aria-hidden="true" className="size-[18px]" /> : <PanelLeftClose aria-hidden="true" className="size-[18px]" />}
+        </button>
+      </div>
+      <nav aria-label="Main navigation" className={cn('min-h-0 flex-1 overflow-y-auto', collapsed ? 'px-xs' : 'px-sm')}>
+        {homeTab && <div className="mb-6"><SidebarItem tab={{ ...homeTab, label: 'Home' }} here={here} collapsed={collapsed} testId="sidebar-home" /></div>}
+        <SidebarSections sections={sections} here={here} collapsed={collapsed} idPrefix="sidebar" />
+      </nav>
+      <SidebarFooter settings={settings} profilePath={profilePath} account={account} roleLabel={roleLabel} viewingAs={viewingAs} canViewAs={canViewAs}
+        onSignOut={onSignOut} onViewAs={onViewAs} onEndViewAs={onEndViewAs}
+        collapsed={collapsed} here={here} onHelp={onHelp} idPrefix="sidebar" />
+    </aside>);
+}
+
+function MobileNavigation({ homeTab, sections, profilePath, here, account, roleLabel, viewingAs, canViewAs, onHelp, onSignOut, onViewAs, onEndViewAs }: {
+  homeTab: NavTab | undefined; sections: SidebarSection[]; profilePath?: string; here: string; account: MenuAccount; roleLabel: string;
+  viewingAs: string | null; canViewAs: boolean; onHelp(): void; onSignOut(): void; onViewAs(personCode: string): void; onEndViewAs(): void;
+}) {
+  const [open, setOpen] = useState(false);
+  return <>
+    <button type="button" data-testid="shell-mobile-navigation" aria-label="Open navigation" aria-haspopup="dialog" aria-expanded={open}
+      onClick={() => setOpen(true)} className="grid size-11 shrink-0 place-items-center rounded-md text-text-secondary transition-colors hover:bg-surface-subtle focus-visible:shadow-focus lg:hidden">
+      <Menu aria-hidden="true" className="size-5" />
+    </button>
+    <Modal open={open} onOpenChange={setOpen} title="Navigation">
+      <div className="max-h-[min(68dvh,600px)] overflow-y-auto pr-xs">
+        {homeTab && <div className="mb-6"><SidebarItem tab={{ ...homeTab, label: 'Home' }} here={here} onSelect={() => setOpen(false)} testId="mobile-nav-home" /></div>}
+        <SidebarSections sections={sections} here={here} onSelect={() => setOpen(false)} idPrefix="mobile-navigation" />
+        <SidebarFooter settings={sections.find(s => s.key === 'system')?.tabs ?? []} profilePath={profilePath} account={account}
+          roleLabel={roleLabel} viewingAs={viewingAs} canViewAs={canViewAs}
+          onSignOut={() => { setOpen(false); onSignOut(); }} onViewAs={code => { setOpen(false); onViewAs(code); }}
+          onEndViewAs={() => { setOpen(false); onEndViewAs(); }}
+          collapsed={false} here={here} onSelect={() => setOpen(false)} onHelp={() => { setOpen(false); onHelp(); }} idPrefix="mobile-navigation" />
+      </div>
+    </Modal>
+  </>;
+}
+
+function HelpDialog({ open, onOpenChange, view }: { open: boolean; onOpenChange(open: boolean): void; view?: string }) {
+  const guide = view ? GUIDES[view] : undefined;
+  return <Modal open={open} onOpenChange={onOpenChange} title="Help & Support">
+    <div className="space-y-md text-sm text-text-secondary">
+      {guide ? <>
+        <p className="font-medium text-text-primary">{guide.title}</p>
+        {guide.sections.map(([heading, body]) => <section key={heading}>
+          <h3 className="mb-xs font-semibold text-text-primary">{heading}</h3>
+          <p className="leading-relaxed">{body}</p>
+        </section>)}
+      </> : <p>For guidance on a page, open its help button. For account access or organisation-specific support, contact your calm.ly administrator.</p>}
+    </div>
+  </Modal>;
 }
 
 /* The prototype's bottom bar glyphs (TAB_GLYPH, v15:10648-10653). The two
@@ -336,7 +527,7 @@ function BottomBar({ tabs, here }: { tabs: NavTab[]; here: string }) {
   if (!destinations.length) return null;
   const on = (active: boolean) => active ? 'text-brand dark:text-brand-accent' : 'text-text-muted';
   return (
-    <nav aria-label="Quick pages" className="fixed inset-x-0 bottom-0 z-[80] flex border-t bg-surface-card pb-[env(safe-area-inset-bottom,0px)] md:hidden">
+    <nav aria-label="Quick pages" className="fixed inset-x-0 bottom-0 z-[80] flex border-t bg-surface-card pb-[env(safe-area-inset-bottom,0px)] lg:hidden">
       {destinations.map(t => <NavLink key={t.view} to={t.path} testId={tid.nav.bottom(t.view)} aria-label={t.label}
         aria-current={isHere(t, here) ? 'page' : undefined} className={cn(BAR_ITEM, on(isHere(t, here)))}>
         {barGlyph(GLYPH[t.view] ?? '●')}<span className="max-w-full truncate">{shortLabel(t.label)}</span></NavLink>)}

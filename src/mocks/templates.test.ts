@@ -38,8 +38,8 @@ describe('listing', () => {
     expect(l.inUse).toBe('social');
     expect(l.templates.find(t => t.key === 'mne')).toMatchObject({ name: 'M&E / Building Services', types: ['Site Engineer', 'Contracts Manager', 'Office / Admin'], version: null });
   });
-  test('the qnipay tenant runs on the professional services template', async () => {
-    resetTo('qnipay');
+  test('the calm.ly tenant runs on the professional services template', async () => {
+    resetTo('calm.ly');
     admin = await as('admin');
     expect((await list()).inUse).toBe('qcic');
   });
@@ -205,7 +205,7 @@ describe('export, import and remove (D4)', () => {
     const call = admin;
     await save('Round trip');
     const file = TemplateFile.parse((await call('GET', EXPORT('tpl_round_trip'))).body);
-    expect(file).toMatchObject({ kind: 'qnipay.template', v: 1, key: 'tpl_round_trip', template: { name: 'Round trip' } });
+    expect(file).toMatchObject({ kind: 'calm.ly.template', v: 1, key: 'tpl_round_trip', template: { name: 'Round trip' } });
     expect(TemplateFile.parse((await call('GET', EXPORT('mne'))).body).template).toEqual(SHIPPED_TEMPLATES.mne);
     expect((await call('DELETE', ONE('tpl_round_trip'), undefined, savedVer('tpl_round_trip'))).status).toBe(200);
     const r = TemplateImported.parse((await call('POST', `${T}/import`, { text: JSON.stringify(file) })).body);
@@ -224,14 +224,14 @@ describe('export, import and remove (D4)', () => {
     expect([shipped.status, refusal(shipped.body).message]).toEqual([409, TEMPLATE_NAME_SHIPPED]);
     expect(snapshot('templates', 'audit')).toEqual(before);
   });
-  test('a file that cannot be read, is not a template, or holds what Qnipay cannot use is refused; ignored keys are listed', async () => {
+  test('a file that cannot be read, is not a template, or holds what calm.ly cannot use is refused; ignored keys are listed', async () => {
     const call = admin;
-    for (const [text, message] of [['{oops', 'That file could not be read.'], ['{"kind":"something"}', 'That file is not a Qnipay template.'],
-      [JSON.stringify({ kind: 'qnipay.template', v: 1, key: 'x', template: { name: 'Bad', modules: 'all' } }), 'That file is not a Qnipay template.']] as const) {
+    for (const [text, message] of [['{oops', 'That file could not be read.'], ['{"kind":"something"}', 'That file is not a calm.ly template.'],
+      [JSON.stringify({ kind: 'calm.ly.template', v: 1, key: 'x', template: { name: 'Bad', modules: 'all' } }), 'That file is not a calm.ly template.']] as const) {
       const r = await call('POST', `${T}/import`, { text });
       expect([r.status, refusal(r.body).message], text).toEqual([422, message]);
     }
-    const p = { kind: 'qnipay.template', v: 1, key: 'tpl_p', template: { ...SHIPPED_TEMPLATES.social, name: 'From the prototype', company: { currency: 'GBP £' }, payCodes: [] } };
+    const p = { kind: 'calm.ly.template', v: 1, key: 'tpl_p', template: { ...SHIPPED_TEMPLATES.social, name: 'From the prototype', company: { currency: 'GBP £' }, payCodes: [] } };
     const r = TemplateImported.parse((await call('POST', `${T}/import`, { text: JSON.stringify(p) })).body);
     expect(r.ignored).toEqual(['company', 'payCodes']);
     expect(JSON.stringify(store.coll('templates'))).not.toMatch(/currency|£/);

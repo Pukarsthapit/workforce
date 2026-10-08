@@ -17,7 +17,7 @@ export const UOMS: { value: Uom; label: string }[] = [{ value: 'hour', label: 'P
 export const CATEGORIES: { value: Cat; label: string }[] = (['Contracted', 'Bank', 'Agency', 'Salaried'] as const).map(c => ({ value: c, label: c }));
 export const pick = <T extends string>(list: { value: T }[], v: string): T | undefined => list.find(x => x.value === v)?.value;
 
-/* Ported from the prototype's newTypeBox (qnipay-workforce-v15.html:10272-
+/* Ported from the prototype's newTypeBox (calm.ly-workforce-v15.html:10272-
    10300): start blank, from a live type, or from an archetype we ship. The
    new type is a copy; nothing is shared back to what it was copied from. */
 export function NewTypeModal({ onClose, onCreated }: { onClose(): void; onCreated(t: EmployeeType): void }) {

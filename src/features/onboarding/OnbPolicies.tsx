@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import type { OnbPolicyView } from '@/api/onboarding';
 
 /* The prototype's onbPolicies and the onb-read and onb-ack handlers
-   (qnipay-workforce-v15.html:4448-4467, 11593-11620). A policy is a document
+   (calm.ly-workforce-v15.html:4448-4467, 11593-11620). A policy is a document
    you read and tick, so it reads as a list of documents with a checkbox each,
    not as a settings page with switches. Each shows the version it is at; a
    tick records that version, so a new upload asks again (D10). */

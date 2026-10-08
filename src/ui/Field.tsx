@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { tid } from '@/testids';
 import { Tip } from './Affordances';
 
-/* The prototype's .fld (qnipay-workforce-v15.html:489-508): a 12px/600 label
+/* The prototype's .fld (calm.ly-workforce-v15.html:489-508): a 12px/600 label
    5px above the control, hint or error 12px and 4px below it, 12px under the
    whole field. The required marker is .req, a small error-coloured
    "• required" beside the label, never an asterisk inside it.

@@ -10,11 +10,11 @@ import { latest } from '@/lib/latest';
 
 const TITLE = { manager: 'Profile changes awaiting you', payroll: 'Bank detail changes awaiting payroll' } as const;
 
-/* Ported from the prototype's profileQueue (qnipay-workforce-v15.html:7595-
+/* Ported from the prototype's profileQueue (calm.ly-workforce-v15.html:7595-
    7612): each change with who raised it, the old value struck through and
    the new one, Decline and Approve. A bank change goes on to payroll after
    its manager approves (plan 1b decision D3), which shows here as the
-   payroll stage on Qnipay setup · People. Declining needs a reason (D4). */
+   payroll stage on calm.ly setup · People. Declining needs a reason (D4). */
 export function ProfileQueue({ stage }: { stage: 'manager' | 'payroll' }) {
   const queue = useProfileQueue(true);
   const [held, setDeclining] = useState<ProfileChange | null>(null);

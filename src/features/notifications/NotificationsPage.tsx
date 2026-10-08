@@ -7,7 +7,7 @@ import { useNotificationMatrix, useUpdateMatrix, type NotificationMatrix, type U
 import { NOTIF_CHANNELS, NOTIF_PERSONAS, channelLabel, isNotifChannel, type NotifChannel, type NotifPersona } from '@/domain/notifications';
 import { clockFromIso, formatDmy } from '@/domain/time';
 
-/* Notifications: the prototype's admNotifications (qnipay-workforce-v15.html:
+/* Notifications: the prototype's admNotifications (calm.ly-workforce-v15.html:
    8370-8403). One row per event this tenant can raise, grouped "<Module>
    events", one channel select per column (Employee, Manager, Admin: the
    recipient's part in the event, not their account type); a dash where the event never
@@ -23,7 +23,7 @@ export function NotificationsPage() {
   const m = useNotificationMatrix();
   return (
     <Page testId={tid.page('anotif')}>
-      <PageHead title="Notifications" crumb="Qnipay setup · Notifications" tipTestId={tid.anotif.tip}
+      <PageHead title="Notifications" crumb="calm.ly setup · Notifications" tipTestId={tid.anotif.tip}
         tip="One platform notification model. Every module raises events into the same framework." />
       {m.data
         ? <Matrix matrix={m.data} />

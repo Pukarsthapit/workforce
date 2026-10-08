@@ -18,7 +18,7 @@ beforeEach(() => resetTo('social'));
 type Call = ReturnType<typeof caller>;
 const as = async (p: Persona) => caller(await tokenFor(p));
 async function asEmail(email: string): Promise<Call> {
-  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'Qnipay@123' }) });
+  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'calm.ly@123' }) });
   const { token } = (await r.json()) as { token: string };
   return caller(token);
 }
@@ -451,7 +451,7 @@ describe('people create refuses a missing, malformed or duplicate work email for
 });
 describe('a new starter sees the portal only (D8)', () => {
   const sessionOf = async (email: string) => {
-    const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'Qnipay@123' }) });
+    const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'calm.ly@123' }) });
     return Session.parse(await r.json());
   };
   test('session.onboarding is true for a candidate or preboarding person while Onboarding is on, false otherwise', async () => {
@@ -465,7 +465,7 @@ describe('a new starter sees the portal only (D8)', () => {
     const tom = await asEmail(TOM), before = snapshot(...WRITES, 'leaveRequests', 'leaveLedger');
     const r = await tom('POST', '/api/v1/leave/requests', { type: 'AL', from: '2026-09-07', to: '2026-09-08', part: 'full' });
     expect(r.status).toBe(403);
-    expect(refusal(r)).toMatchObject({ code: 'not-started', message: 'You can use the rest of Qnipay once you have started.', next: expect.stringContaining('Finish your onboarding first.') });
+    expect(refusal(r)).toMatchObject({ code: 'not-started', message: 'You can use the rest of calm.ly once you have started.', next: expect.stringContaining('Finish your onboarding first.') });
     expect(snapshot(...WRITES, 'leaveRequests', 'leaveLedger')).toEqual(before);
     expect((await tom('GET', '/api/v1/onboarding/me')).status).toBe(200);
     expect((await save(tom, 'personal', { mode: 'check', personal: PERSONAL }, 1)).status).toBe(200);

@@ -69,7 +69,7 @@ const keyDay = (d: HomeDay): KeyDay => ({
 
 const documentsOn = () => { const t = tenantRec(); return flagOn(t.modules, t.flags, 'DOCS'); };
 function requireDocuments() {
-  if (!documentsOn()) refuse(403, { code: 'feature-off', message: 'Documents is switched off for this tenant.', next: 'Turn it on in Qnipay setup → Modules and features.' });
+  if (!documentsOn()) refuse(403, { code: 'feature-off', message: 'Documents is switched off for this tenant.', next: 'Turn it on in calm.ly setup → Modules and features.' });
 }
 const docColl = () => store.coll<DocumentRow>('documents');
 const NO_DOCUMENT = () => refuse(404, { code: 'not-found', message: 'That document is not one of yours, or it no longer exists.', next: 'Open Documents to see the ones you have.' });

@@ -6,7 +6,7 @@ import { downloadText, toCsv } from '@/lib/download';
 import { HORIZONS } from '@/domain/rota';
 
 /* Upload working patterns: the prototype's uploadBox, upload-import and
-   upload-errors (qnipay-workforce-v15.html:10418-10446, 12241-12256, sample
+   upload-errors (calm.ly-workforce-v15.html:10418-10446, 12241-12256, sample
    at 3646-3654). Mass upload is declared simulated, as the prototype says:
    the window shows the validation preview of a sample file, Import writes
    nothing and says so, and the error report is a real CSV file. */
@@ -23,7 +23,7 @@ const UPLOAD_SAMPLE = {
     { row: 64, field: 'Start date', msg: 'Start date is in the past. Generation begins from today.' },
   ],
 } as const;
-export const UPLOAD_ERRORS_FILE = 'qnipay-upload-errors.csv';
+export const UPLOAD_ERRORS_FILE = 'calm.ly-upload-errors.csv';
 
 export function PatternUploadDialog({ horizon, onClose }: { horizon: number; onClose: () => void }) {
   const U = UPLOAD_SAMPLE;

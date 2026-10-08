@@ -4,7 +4,7 @@ import { useTenant } from '@/api/tenant';
 import { buildNav, type NavGroup } from '@/domain/nav';
 import type { Session } from '@/contract/session';
 import { tid } from '@/testids';
-import { Button } from '@/ui';
+import { Button, Skeleton } from '@/ui';
 import { useSession } from './SessionProvider';
 
 /* Shared by Shell and any routed page that needs to know what this account
@@ -49,15 +49,25 @@ export function useShellData(): ShellData {
 
 export function ShellLoading() {
   return (
-    <div data-testid={tid.shell.loading} className="flex min-h-dvh items-center justify-center p-lg">
-      <p className="text-text-secondary">Loading your workspace&hellip;</p>
+    <div data-testid={tid.shell.loading} role="status" aria-label="Loading your workspace"
+      className="mx-auto flex min-h-dvh w-full max-w-5xl flex-col gap-xl p-xl max-md:p-lg">
+      <span className="sr-only">Loading your workspace&hellip;</span>
+      <Skeleton className="h-14 w-full" />
+      <div className="grid flex-1 grid-cols-[220px_minmax(0,1fr)] gap-xl max-md:grid-cols-1">
+        <Skeleton className="hidden min-h-[65vh] lg:block" />
+        <div className="flex flex-col gap-md">
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-20 w-full" />
+          <Skeleton className="h-56 w-full" />
+        </div>
+      </div>
     </div>);
 }
 
 export function ShellError({ onRetry, onSignOut }: { onRetry(): void; onSignOut(): void }) {
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center gap-md p-lg text-center">
-      <p data-testid={tid.shell.error} className="text-err">Qnipay could not load your workspace. Nothing has changed on your account.</p>
+      <p data-testid={tid.shell.error} className="text-err">calm.ly could not load your workspace. Nothing has changed on your account.</p>
       <p className="text-text-secondary">Try again, or sign out and sign back in.</p>
       <div className="flex gap-sm">
         <Button testId={tid.shell.retry} kind="primary" onClick={onRetry}>Try again</Button>

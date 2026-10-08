@@ -964,7 +964,7 @@
     "id": "rota_pattern",
     "group": "team",
     "label": "Working patterns",
-    "gate": "Working patterns on My team → Team rota, and Qnipay setup → Rota",
+    "gate": "Working patterns on My team → Team rota, and calm.ly setup → Rota",
     "lockedFor": []
    },
    "own_onb": {
@@ -1000,7 +1000,7 @@
     "id": "onb_cfg",
     "group": "cfg",
     "label": "Configure onboarding",
-    "gate": "Qnipay setup → Onboarding — steps, documents, policies and who verifies",
+    "gate": "calm.ly setup → Onboarding — steps, documents, policies and who verifies",
     "lockedFor": []
    },
    "emp_crud": {
@@ -1018,7 +1018,7 @@
     "id": "rota_shift",
     "group": "team",
     "label": "Create shift types",
-    "gate": "New shift type on the rota palette, and Qnipay setup → Rota → Shift catalogue",
+    "gate": "New shift type on the rota palette, and calm.ly setup → Rota → Shift catalogue",
     "lockedFor": []
    },
    "master_data": {
@@ -1036,7 +1036,7 @@
     "id": "type_cfg",
     "group": "cfg",
     "label": "Employee types and configuration",
-    "gate": "Qnipay setup → Employee types",
+    "gate": "calm.ly setup → Employee types",
     "lockedFor": []
    },
    "mod_cfg": {
@@ -1054,7 +1054,7 @@
     "id": "framework",
     "group": "cfg",
     "label": "Notification and approval framework",
-    "gate": "Qnipay setup → Notifications, Approvals",
+    "gate": "calm.ly setup → Notifications, Approvals",
     "lockedFor": []
    },
    "notice_org": {
@@ -1072,7 +1072,7 @@
     "id": "perm_cfg",
     "group": "cfg",
     "label": "Permissions and role configuration",
-    "gate": "Qnipay setup → Permissions (this page)",
+    "gate": "calm.ly setup → Permissions (this page)",
     "lockedFor": [
      "admin"
     ]
@@ -1092,7 +1092,7 @@
     "id": "bank_verify",
     "group": "team",
     "label": "Verify bank detail changes",
-    "gate": "The bank detail queue on Qnipay setup → People",
+    "gate": "The bank detail queue on calm.ly setup → People",
     "lockedFor": []
    }
   },

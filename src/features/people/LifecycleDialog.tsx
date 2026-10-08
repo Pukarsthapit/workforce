@@ -6,7 +6,7 @@ import { useMovePerson } from '@/api/people';
 import { LIFECYCLE, type PersonState } from '@/domain/lifecycle';
 import { StatePill } from './StatePill';
 
-/* Ported from the prototype's emp-lifecycle dialog (qnipay-workforce-v15.html:
+/* Ported from the prototype's emp-lifecycle dialog (calm.ly-workforce-v15.html:
    11793-11834): only the states this record can reach, each with what it
    means, a reason kept on the record, and the caution about shifts. The
    caution says what is true in this build (plan 1b decision D11): Rota is not

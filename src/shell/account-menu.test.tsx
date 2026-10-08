@@ -12,7 +12,7 @@ import { App } from '@/App';
 
 /* I5: the account menu names the account and, for a holder of perm_cfg,
    offers one person per role to look at the app as (prototype drawMenu,
-   qnipay-workforce-v15.html:10765-10790). I3: a failed start or end of
+   calm.ly-workforce-v15.html:10765-10790). I3: a failed start or end of
    view-as is toasted and changes nothing. */
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterAll(() => server.close());
@@ -27,7 +27,7 @@ const anyAccount = (type: string): SeedAccount => {
 };
 async function signedInAs(type: string): Promise<{ account: SeedAccount; token: string }> {
   const account = anyAccount(type);
-  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: account.email, password: 'Qnipay@123' }) });
+  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: account.email, password: 'calm.ly@123' }) });
   const { token } = (await r.json()) as { token: string };
   setToken(token);
   return { account, token };
@@ -110,7 +110,7 @@ test('a failed start of view-as is toasted and leaves the session as it was', as
   await userEvent.click(person);
   expect(await screen.findByTestId(tid.toast.error)).toHaveTextContent('Nothing has been changed');
   expect(screen.queryByTestId(tid.shell.viewAsEnd)).not.toBeInTheDocument();
-  expect(screen.getByTestId(tid.shell.rolePill)).toHaveTextContent('Admin');
+  expect(screen.queryByRole('status')).not.toBeInTheDocument();
 });
 
 test('a failed "Return to my account" is toasted, not silent, and the view stays as it was', async () => {
@@ -125,5 +125,5 @@ test('a failed "Return to my account" is toasted, not silent, and the view stays
   expect(t).toHaveTextContent('Nothing has been changed');
   expect(within(t).getByTestId(tid.toast.next)).toHaveTextContent('Try again');
   expect(screen.getByTestId(tid.shell.viewAsEnd)).toBeInTheDocument();
-  expect(screen.getByTestId(tid.shell.rolePill)).toHaveTextContent('Employee');
+  expect(screen.getByRole('status')).toHaveTextContent('Looking at the app as');
 });

@@ -2,7 +2,7 @@ import type { InputHTMLAttributes, ReactNode, SelectHTMLAttributes } from 'react
 import { cn } from '@/lib/utils';
 import { fieldControl } from '@/ui/shadcn/input';
 
-/* The prototype's form layout pieces (qnipay-workforce-v15.html). */
+/* The prototype's form layout pieces (calm.ly-workforce-v15.html). */
 
 /* .wtsub (v15:1503-1506) over a .fgrid (1260-1262): a form section's name in
    12px/650 secondary ink with a rule under it, then two columns of fields,
@@ -56,7 +56,7 @@ export function NativeSelect({ testId, className, children, ...rest }: { testId:
   return <select data-testid={testId} {...rest} className={cn(fieldControl, 'cursor-pointer pr-lg', className)}>{children}</select>;
 }
 
-/* The capture form's layout (qnipay-workforce-v15.html:1257-1272, 1299-1304),
+/* The capture form's layout (calm.ly-workforce-v15.html:1257-1272, 1299-1304),
    shared by the day form, the weekly grid and proxy entry. */
 
 /* .fgrid: two columns of fields 12px apart both ways, one on a phone or in a

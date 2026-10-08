@@ -6,7 +6,7 @@ import { useBulkApprove, useDecideDay, type ApprovalQueue, type BulkApproved, ty
 import { formatDmy, returnReasonProblem } from '@/domain/timesheet';
 import { queueHours } from './team';
 
-/* bulkApproveBox (qnipay-workforce-v15.html:9756-9793) and confirm-approve-all
+/* bulkApproveBox (calm.ly-workforce-v15.html:9756-9793) and confirm-approve-all
    (11880-11903): what approve-all would do, shown before anything is written.
    The set is the server's (ApprovalQueue.bulk), read again on every render,
    so after QUEUE_CHANGED the dialog shows what is there now and the next

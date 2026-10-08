@@ -13,8 +13,8 @@ import { versionKey } from '@/lib/latest';
 import { ALWAYS_ASKED, REQUIRED_CHANGE_WARNING, STEP_UNAVAILABLE, isVerifier } from '@/domain/onboarding';
 import { DENSE_TEXT, PoliciesCard } from './OnbSetupPolicies';
 
-/* Qnipay setup → Modules → Onboarding → Onboarding setup: the prototype's
-   admOnboarding (qnipay-workforce-v15.html:4672-4728) with its step switch,
+/* calm.ly setup → Modules → Onboarding → Onboarding setup: the prototype's
+   admOnboarding (calm.ly-workforce-v15.html:4672-4728) with its step switch,
    document setting and verified-by handlers (10951-10966, 12829-12839).
    The step switches and the document settings edit one draft: Save sends the
    whole config with If-Match and writes one audit row with the before and

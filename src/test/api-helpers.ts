@@ -9,12 +9,12 @@ import { isStarterState } from '@/domain/onboarding';
 export type Persona = 'employee' | 'manager' | 'admin';
 export const FROZEN = '2026-08-13T14:30:00.000Z';
 /* Clears faults too, so one a test set but never consumed cannot leak into the next. */
-export function resetTo(tenant: 'social' | 'qnipay' = 'social') { faults.length = 0; store.reset(tenant); store.setClock(FROZEN); }
+export function resetTo(tenant: 'social' | 'calm.ly' = 'social') { faults.length = 0; store.reset(tenant); store.setClock(FROZEN); }
 
 interface Acc { email: string; userType: Persona; personCode: string }
 /* The first account of that user type whose person has started. The server
    keeps a new starter (candidate or preboard) to the onboarding portal, so
-   the generic persona never picks one: qnipay's first employee accounts are
+   the generic persona never picks one: calm.ly's first employee accounts are
    Priya Raman (candidate) and Tom Achterberg (preboard), and the tests about
    starters sign in as them by name. */
 export function accountOf(t: Persona): Acc {
@@ -26,7 +26,7 @@ export function accountOf(t: Persona): Acc {
 }
 export async function tokenFor(t: Persona): Promise<string> {
   const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email: accountOf(t).email, password: 'Qnipay@123' }) });
+    body: JSON.stringify({ email: accountOf(t).email, password: 'calm.ly@123' }) });
   const body = (await r.json()) as { token?: string };
   if (!body.token) throw new Error(`sign-in as ${t} failed with ${r.status}`);
   return body.token;

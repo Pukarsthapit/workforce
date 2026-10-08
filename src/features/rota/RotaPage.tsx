@@ -19,7 +19,7 @@ import { WeekBar } from './WeekBar';
 import { AddShiftDialog, AdhocDialog, ClearDialog, GapDialog, HorizonDialog, RepeatDialog, ShiftDialog, askFirst } from './Dialogs';
 import { NO_FILTERS, dow, filterRows, overCap, shortDay, type RotaFilters } from './week';
 
-/* Team rota: the prototype's mgrRota (qnipay-workforce-v15.html:7071-7106).
+/* Team rota: the prototype's mgrRota (calm.ly-workforce-v15.html:7071-7106).
    The page opens on the manager's own location and the server's week (rota
    home), then reads that location's week: lines, coverage, hours, state and
    history in one call. Nothing on screen changes until the server has

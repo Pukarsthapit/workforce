@@ -9,7 +9,7 @@ import { useCreateShiftType, useDeleteShiftType, useUpdateShiftType, type ShiftC
 import { SHIFT_TONES, recalcShift, shiftTypeProblem, type ShiftTone } from '@/domain/rota';
 
 /* The shift catalogue: the prototype's shiftCatalogueBody and shiftTypeBox
-   (qnipay-workforce-v15.html:7206-7227, 10297-10328), built once and shown in
+   (calm.ly-workforce-v15.html:7206-7227, 10297-10328), built once and shown in
    two places, Shift catalogue for a manager and Rota setup for an admin.
    The prototype applied each inline change as it was typed. Here a row's
    edits are a draft until that row's Save (Cancel puts it back): each shift

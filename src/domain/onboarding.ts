@@ -1,4 +1,4 @@
-/* Onboarding rules. Ported from the prototype (qnipay-workforce-v15.html:
+/* Onboarding rules. Ported from the prototype (calm.ly-workforce-v15.html:
    ONB_STEPS, ONB_DOCS, ONB_VERIFIERS, ONB_POLICIES, ONB_STATES, nextPolVer,
    onbFor, readUpload, fileSize, onbStepAvailable, onbSteps, onbDocsFor,
    onbBlockers, onbProgress, onbFieldRow, onbSaveStep and the onb-upload,

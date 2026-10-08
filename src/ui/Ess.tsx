@@ -2,13 +2,13 @@ import type { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
 /* The employee self-service layout: the prototype's essWrap and its cards
-   (qnipay-workforce-v15.html:5531-5541, 730-734, 819-820, 1180-1185). One
+   (calm.ly-workforce-v15.html:5531-5541, 730-734, 819-820, 1180-1185). One
    layout driven by the real viewport: the cards flow into as many 320px
    columns as fit, one on a phone. */
 
 /* .mcols: the responsive column flow the employee cards sit in. */
 export function EssCols({ children, testId }: { children: ReactNode; testId?: string }) {
-  return <div data-testid={testId} className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] items-start gap-md max-md:grid-cols-1">{children}</div>;
+  return <div data-slot="ess-cols" data-testid={testId} className="grid grid-cols-12 items-start gap-x-2xl gap-y-xl max-md:grid-cols-1">{children}</div>;
 }
 
 /* .mc and .mc.dark: an employee card, 16px padding, 12px under it. The dark
@@ -16,16 +16,16 @@ export function EssCols({ children, testId }: { children: ReactNode; testId?: st
    is the card's .lb line. */
 export function EssCard({ testId, dark, label, children }: { testId?: string; dark?: boolean; label?: ReactNode; children?: ReactNode }) {
   return (
-    <div data-testid={testId} className={cn('mb-md rounded-card border p-lg',
-      dark ? 'border-transparent bg-surface-inverse text-text-on-inverse' : 'bg-surface-card')}>
-      {label && <div className={cn('mb-sm text-xs font-bold tracking-[.08em]', dark ? 'text-text-on-inverse/65' : 'text-text-muted')}>{label}</div>}
+    <section data-slot="ess-card" data-testid={testId} className={cn('min-w-0 border-t border-border pt-md',
+      dark && 'border-l-2 border-l-ok bg-ok-surface/45 pl-lg')}>
+      {label && <div className="mb-sm text-xs font-medium tracking-[.09em] text-text-muted">{label}</div>}
       {children}
-    </div>);
+    </section>);
 }
 
 /* .mc .big: the 18px/600 headline of a card. */
 export function EssBig({ children, testId }: { children: ReactNode; testId?: string }) {
-  return <div data-testid={testId} className="text-lg font-semibold">{children}</div>;
+  return <div data-testid={testId} className="text-[length:var(--type-data-large)] leading-[1.12] font-medium tracking-[-.045em] tabular-nums">{children}</div>;
 }
 
 /* .mr inside a card: what on the left, its value on the right, a light rule under every row but the last. */

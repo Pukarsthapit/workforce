@@ -4,7 +4,7 @@ import { tid } from '../../src/testids';
 /* MSW lives in the page's service worker, so control calls run inside the page. */
 const call = (page: Page, method: string, path: string, body?: unknown) =>
   page.evaluate(async ([m, p, b]) => {
-    const token = sessionStorage.getItem('qnipay.session');
+    const token = sessionStorage.getItem('calm.ly.session');
     const r = await fetch(p as string, { method: m as string, headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
       body: b === undefined ? undefined : JSON.stringify(b) });
     const text = await r.text();
@@ -22,7 +22,7 @@ async function control(page: Page, method: string, path: string, body?: unknown)
 export const FROZEN = '2026-08-13T14:30:00.000Z';
 type Persona = 'employee' | 'manager' | 'admin';
 export const test = base.extend<{
-  api: { reset(): Promise<void>; seed(t: 'social' | 'qnipay'): Promise<void>; setClock(iso: string | null): Promise<void>;
+  api: { reset(): Promise<void>; seed(t: 'social' | 'calm.ly'): Promise<void>; setClock(iso: string | null): Promise<void>;
     fault(method: string, path: string, status: number, times?: number): Promise<void>; get(path: string): Promise<{ status: number; body: unknown }>;
     send(method: string, path: string, body?: unknown): Promise<{ status: number; body: unknown }> };
   signInAs(p: Persona): Promise<void>;
@@ -30,8 +30,7 @@ export const test = base.extend<{
   api: async ({ page }, use) => {
     await page.goto('/');
     /* Either landed on sign-in, or a session already persisted and the shell
-       is up. Not the role pill for that second case: spec §10.3 hides it
-       below the md breakpoint, so it is not a viewport-independent signal. */
+       is up. The account control is available at every viewport. */
     await page.getByTestId(tid.signIn.form).or(page.getByTestId(tid.shell.account)).waitFor();
     const api = {
       reset: async () => { await control(page, 'POST', '/api/_dev/reset'); await control(page, 'POST', '/api/_dev/clock', { now: FROZEN }); },
@@ -57,16 +56,18 @@ export const test = base.extend<{
       const accounts = (await api.get('/api/v1/session/accounts')).body as { email: string; userType: Persona }[];
       const acc = accounts.find(a => a.userType === p);
       if (!acc) throw new Error(`no demo account for persona "${p}"`);
-      await page.evaluate(() => sessionStorage.removeItem('qnipay.session'));
+      await page.evaluate(() => sessionStorage.removeItem('calm.ly.session'));
       await page.goto('/');
       await page.getByTestId(tid.signIn.email).fill(acc.email);
-      await page.getByTestId(tid.signIn.password).fill('Qnipay@123');
+      await page.getByTestId(tid.signIn.password).fill('calm.ly@123');
       await page.getByTestId(tid.signIn.submit).click();
-      /* Not the role pill: spec §10.3 hides it (and the brand name) below the
-         md breakpoint to keep the phone header on one line, so it is not a
-         viewport-independent signal that sign-in landed on the shell. The
-         account menu trigger always renders. */
-      await expect(page.getByTestId(tid.shell.account)).toBeVisible();
+      /* Desktop exposes the account menu in the sidebar footer; mobile exposes
+         the navigation drawer control in the compact header. */
+      if ((page.viewportSize()?.width ?? 1280) < 768) {
+        await expect(page.getByTestId('shell-mobile-navigation')).toBeVisible();
+      } else {
+        await expect(page.getByTestId(tid.shell.account)).toBeVisible();
+      }
     });
   },
 });

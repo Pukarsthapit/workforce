@@ -1,6 +1,6 @@
 /* The day form's model, shared by My timesheet and proxy entry: which fields a
    person's type captures (the prototype's GROUPS, FIELD_HINTS, buildForm,
-   readDayTimes, renderDaySummary and validateEntry, qnipay-workforce-v15.html:
+   readDayTimes, renderDaySummary and validateEntry, calm.ly-workforce-v15.html:
    6097-6228, 6778-6823, 3357-3373), how the form's values become the DayInput
    the server takes, and the client-side checks. Every check is a domain
    function the server also runs (brief D3): the client only warns early. */

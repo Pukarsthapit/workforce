@@ -9,7 +9,7 @@ import { JSDOM } from 'jsdom';
 import { tsImport } from 'tsx/esm/api';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const SRC = process.env.PROTOTYPE_PATH || resolve(here, '../../Qnipay workforce cc/mockup/qnipay-workforce-v15.html');
+const SRC = process.env.PROTOTYPE_PATH || resolve(here, '../../calm.ly workforce cc/mockup/calm.ly-workforce-v15.html');
 const html = readFileSync(SRC, 'utf8');
 const OUT = resolve(here, '../src/mocks/seed');
 /* Built in UTC, not with local-time arguments: the latter makes FROZEN.getTime()
@@ -20,7 +20,7 @@ const OUT = resolve(here, '../src/mocks/seed');
    src/mocks/store.test.ts) regardless of where this script runs. */
 const FROZEN = new Date(Date.UTC(2026, 7, 13, 14, 30, 0));   // the date the sample data was authored around
 const STAMP = FROZEN.toISOString();
-const KEY = 'qnipay.workforce.v1';
+const KEY = 'calm.ly.workforce.v1';
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 /* Polls localStorage rather than trusting a fixed delay: saveState() in the
    prototype debounces its write by 400ms, so a fixed sleep is either a guess
@@ -69,7 +69,7 @@ function boot() {
   const w = dom.window, d = w.document;
   /* Loud on purpose: `el && el.dispatchEvent(...)` would make a missing
      selector a silent no-op — sign-in would leave the store empty, or
-     switchTemplate would leave it exactly as qnipay left it, and both would
+     switchTemplate would leave it exactly as calm.ly left it, and both would
      write plausible-looking JSON that is quietly wrong. Naming the selector
      in the error is what makes step 4's "fix only the extractor" workable. */
   const must = (label, el) => { if (!el) throw new Error('extractor: could not find ' + label); return el; };
@@ -81,7 +81,7 @@ function boot() {
     const row = must('an admin account row in #lg-accounts (text matching /Configuration, modules/)',
       [...d.querySelectorAll('#lg-accounts .acct')].find(b => /Configuration, modules/.test(b.textContent)));
     must('#lg-em input', d.querySelector('#lg-em')).value = row.getAttribute('data-em');
-    must('#lg-pw input', d.querySelector('#lg-pw')).value = 'Qnipay@123';
+    must('#lg-pw input', d.querySelector('#lg-pw')).value = 'calm.ly@123';
     click('"signin" button', act('signin'));
   };
   /* named switchTemplate, not useTenant: an identifier starting with `use`
@@ -110,7 +110,7 @@ const SELF_KEY = { phone: 'phone', addr: 'address', emgName: 'emergencyName', em
 const SENSITIVE = new Set(['bankAcc', 'bankSort']);
 /* Not in the prototype (plan 1b decision D3): payroll's half of a bank detail change. */
 const BANK_VERIFY = { c: 'bank_verify', g: 'team', label: 'Verify bank detail changes',
-  gate: 'The bank detail queue on Qnipay setup → People', emp: 0, mgr: 0, adm: 1 };
+  gate: 'The bank detail queue on calm.ly setup → People', emp: 0, mgr: 0, adm: 1 };
 
 function shape(tenantKey, data, PERMS_META, PERM_GROUPS, PROFILE_CHANGES, ref) {
   const ROLE_OF = { emp: 'employee', mgr: 'manager', adm: 'admin' };
@@ -212,7 +212,7 @@ function documentSeed(accounts) {
 /* ---- 1c group 5: delegations (brief D8) ----
    DELEGATIONS is never persisted by the prototype, so it is read from its
    source. Its people are named; here they are employee codes, and a row
-   whose people are not on this tenant's roster is not carried (the qnipay
+   whose people are not on this tenant's roster is not carried (the calm.ly
    tenant has neither Rachel Hussain nor Dee Fitzgerald). Its modules are a
    list. The approval chains are not seeded: until a chain is first saved it
    is the prototype's APPROVAL_CHAIN, from src/domain/approvals.ts. */
@@ -252,7 +252,7 @@ function tenantSettings(data) {
    The rules come from src/domain/leave.ts itself (through tsx), so the seed is
    built with the same cell plan, episode and balance maths the server uses.
    The prototype's leave records name care ids (CP-1042...). Where the roster has
-   them (social) they are used as they are. Where it does not (qnipay), they go
+   them (social) they are used as they are. Where it does not (calm.ly), they go
    to the people who report to the managing admin at the manager location, in
    the order timesheets used (D10 of module 2): the signed-in employee's
    records first. The leaver goes to the first of those reports who has left
@@ -419,9 +419,9 @@ function onboarding(data, people) {
 }
 
 /* ---- module 3: rota (brief D1, D9) ---- */
-/* Only a tenant with the Rota module gets rota data; qnipay keeps R off and gets none.
+/* Only a tenant with the Rota module gets rota data; calm.ly keeps R off and gets none.
    The prototype's stored ROTA_WEEKS were stashed under the template it booted with
-   (qnipay's empty roster), so the two weeks are rebuilt from the social roster's own
+   (calm.ly's empty roster), so the two weeks are rebuilt from the social roster's own
    lines, as seedRotaWeeks builds them: the week on the frozen clock is p.sh, published
    v1, and the week before is each line rotated by a day, also published v1. Weeks
    are per location (D1), for every location with somebody on its roster. */
@@ -514,7 +514,7 @@ function timesheets(data, people) {
   const byName = new Map(people.map(p => [norm(p.name), p]));
   const actor = p => ({ personCode: p.code, name: p.name });
   /* D10: the prototype's submissions name care ids (CP-1042...). Where the roster
-     has them (social) they are used as they are. Where it does not (qnipay), the
+     has them (social) they are used as they are. Where it does not (calm.ly), the
      six rows go, in order, to the six people who report to the managing admin at
      the manager location: not a manager themselves, and still employed. */
   const subs = data.TS_SUBMISSIONS || [];
@@ -597,7 +597,7 @@ function timesheets(data, people) {
 }
 
 /* A missing PEOPLE roster, or a `social` snapshot indistinguishable from
-   `qnipay`, means an action above no-opped without tripping a missing-selector
+   `calm.ly`, means an action above no-opped without tripping a missing-selector
    error (e.g. it clicked something, but not the thing that mattered). Both
    are checked explicitly rather than trusted from a non-empty write. */
 function assertNonEmpty(data, label) {
@@ -653,30 +653,30 @@ const typeArchetypes = Object.entries(TYPE_LIB).map(([key, t]) =>
 
 const rawBeforeSignIn = w.localStorage.getItem(KEY);   // null: nothing saved yet
 signInAdmin();
-const rawQnipay = await waitForStoreChange(w, rawBeforeSignIn, 'sign-in');
-const qnipay = JSON.parse(rawQnipay).data;
-assertNonEmpty(qnipay, 'sign-in');
+const rawcalm.ly = await waitForStoreChange(w, rawBeforeSignIn, 'sign-in');
+const calm.ly = JSON.parse(rawcalm.ly).data;
+assertNonEmpty(calm.ly, 'sign-in');
 
 switchTemplate('social');
-const rawSocial = await waitForStoreChange(w, rawQnipay, "switching to 'social'");
+const rawSocial = await waitForStoreChange(w, rawcalm.ly, "switching to 'social'");
 const social = JSON.parse(rawSocial).data;
 assertNonEmpty(social, "switching to 'social'");
-assertTenantChanged(qnipay, social, 'social');
+assertTenantChanged(calm.ly, social, 'social');
 
 /* The prototype names its default tenant `qcic` (template key and client
-   name). This app calls that tenant `qnipay`, so the rename is applied to the
+   name). This app calls that tenant `calm.ly`, so the rename is applied to the
    extracted JSON rather than by retyping any record. The template it runs on
    keeps the prototype's key, qcic, which is the shipped template's key in
    src/domain/templates.ts. */
-const renameTenant = json => json.replace(/qcic/g, 'qnipay').replace(/QCIC/g, 'Qnipay')
-  .replace('"template": "qnipay"', '"template": "qcic"');
-writeFileSync(resolve(OUT, 'qnipay.json'), renameTenant(JSON.stringify(shape('qnipay', qnipay, PERMS_META, PERM_GROUPS, PROFILE_CHANGES, social), null, 1)) + '\n');
+const renameTenant = json => json.replace(/qcic/g, 'calm.ly').replace(/QCIC/g, 'calm.ly')
+  .replace('"template": "calm.ly"', '"template": "qcic"');
+writeFileSync(resolve(OUT, 'calm.ly.json'), renameTenant(JSON.stringify(shape('calm.ly', calm.ly, PERMS_META, PERM_GROUPS, PROFILE_CHANGES, social), null, 1)) + '\n');
 writeFileSync(resolve(OUT, 'social.json'), JSON.stringify(shape('social', social, PERMS_META, PERM_GROUPS, PROFILE_CHANGES, social), null, 1) + '\n');
 writeFileSync(resolve(OUT, 'meta.json'), JSON.stringify({
   flags: literal('FLAGS'), modules: literal('MODULES'), permGroups: literal('PERM_GROUPS'), empStates: literal('EMP_STATES'),
   supportLevels: literal('SUPPORT_LEVELS'), typeArchetypes, typeCapabilities: literal('CAPS'), selfFields: literal('SELF_FIELDS'),
   timesheetFields, timesheetRepeats: literal('REPEATS'),
 }, null, 1) + '\n');
-console.log('seed written: qnipay', (qnipay.PEOPLE || []).length, 'people,', Object.keys(qnipay.TYPES || {}).length, 'types; social',
+console.log('seed written: calm.ly', (calm.ly.PEOPLE || []).length, 'people,', Object.keys(calm.ly.TYPES || {}).length, 'types; social',
   (social.PEOPLE || []).length, 'people,', Object.keys(social.TYPES || {}).length, 'types');
 w.close();

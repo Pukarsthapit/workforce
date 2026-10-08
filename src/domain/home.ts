@@ -1,5 +1,5 @@
 /* 1c group 7: My home, the month calendar (brief D7, D13). The prototype's
-   essHome, dayInfo, calKey, greeting and whoLine (qnipay-workforce-v15.html:
+   essHome, dayInfo, calKey, greeting and whoLine (calm.ly-workforce-v15.html:
    5323-5433, 6244-6256, 6307-6327). One answer per day: the published rota
    gives the shift, the leave records give leave and sickness, the timesheet
    gives what was recorded, and the tenant gives its bank holidays. The server

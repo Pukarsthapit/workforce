@@ -22,7 +22,7 @@ import { formatDmy } from '@/domain/time';
 import { MODULES, moduleLive } from '@/domain/modules';
 import { TEMPLATE_SCOPES, scopeLabel, templateFileName, type TemplateScope } from '@/domain/templates';
 
-/* Organisation: the prototype's admOrgAll and admOrg (qnipay-workforce-v15.html:
+/* Organisation: the prototype's admOrgAll and admOrg (calm.ly-workforce-v15.html:
    9088-9091, 7989-8039) with templateCards and templateActions (8480-8520)
    above the company profile. Brand & appearance is left out (no theme or
    brand editing in 1c) and so is the currency (no money). Compliance keeps
@@ -35,7 +35,7 @@ export function OrganisationPage() {
   const tenant = useTenant();
   return (
     <Page testId={tid.page('aorg')}>
-      <PageHead title="Organisation" crumb="Qnipay setup · Organisation" tipTestId={tid.head.tip('aorg')}
+      <PageHead title="Organisation" crumb="calm.ly setup · Organisation" tipTestId={tid.head.tip('aorg')}
         tip="Who this organisation is, the template it runs on, and how pay periods are set" />
       {tenant.data
         ? <>
@@ -148,7 +148,7 @@ function TemplateActions() {
     if (!f) return;
     let text: string;
     try { text = await readText(f); } catch {
-      toastRefusal({ message: 'That file could not be read.', next: 'Check it is the JSON file Qnipay exported, then try again.' });
+      toastRefusal({ message: 'That file could not be read.', next: 'Check it is the JSON file calm.ly exported, then try again.' });
       return;
     }
     imp.mutate({ text }, { onSuccess: out => toastInfo(`${out.record.name} imported. Choose it to apply it.`,

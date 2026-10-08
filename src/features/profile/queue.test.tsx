@@ -47,7 +47,7 @@ test('declining needs a reason, and leaves the record as it was, with full test 
   expect(await screen.findByText('Declined · Home address left unchanged')).toBeInTheDocument();
   expect(personOf('CP-1201').address).toBe(was);
 });
-test('a bank change says payroll verifies it, and after the manager approves it waits for payroll on Qnipay setup · People', async () => {
+test('a bank change says payroll verifies it, and after the manager approves it waits for payroll on calm.ly setup · People', async () => {
   const emp = accountOf('employee').personCode;
   await caller(await tokenFor('employee'))('POST', '/api/v1/profile-changes', { changes: [{ field: 'bankAccount', to: '12345678' }], note: '' });
   const id = pendingId(emp, 'bankAccount');

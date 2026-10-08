@@ -243,8 +243,8 @@ describe('modules (Review Focus 2)', () => {
 });
 
 describe('features and their extras', () => {
-  test('a feature of a module that is off is MODULE_OFF (qnipay runs without Rota), and nothing changes', async () => {
-    resetTo('qnipay');
+  test('a feature of a module that is off is MODULE_OFF (calm.ly runs without Rota), and nothing changes', async () => {
+    resetTo('calm.ly');
     const call = await as('admin'), before = snapshot(...WRITES);
     const r = await call('PATCH', FLAG('FULFIL'), { on: true }, ver());
     expect(r.status).toBe(409);
@@ -293,7 +293,7 @@ describe('settings', () => {
     expect([bad.status, Refusal.parse(bad.body).message]).toEqual([422, 'Choose a rota horizon of 12, 6 or 3 months.']);
   });
   test('on a tenant that never set up Rota, the horizon creates Rota setup at its defaults', async () => {
-    resetTo('qnipay');
+    resetTo('calm.ly');
     const out = updateTenantSettings.response.parse((await (await as('admin'))('PATCH', SETTINGS, { rotaHorizon: 3 }, ver())).body);
     expect(out.record.rotaHorizon).toBe(3);
     expect(store.coll<{ horizon: number; version: number }>('rotaConfig').rotaConfig).toMatchObject({ horizon: 3, version: 1 });

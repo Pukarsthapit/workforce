@@ -12,7 +12,7 @@ import { CATEGORIES, MODES, NewTypeModal, UOMS, pick } from './NewTypeModal';
 
 const SUB = 'mt-lg mb-sm border-b pb-xs text-xs font-[650] tracking-normal text-text-secondary first:mt-0';
 
-/* Ported from the prototype's admTypesJobs and admTypes (qnipay-workforce-
+/* Ported from the prototype's admTypesJobs and admTypes (calm.ly-workforce-
    v15.html:9099-9107, 8105-8180): pick a type, then how it captures time and
    what its forms offer, one setting to a row. The prototype wrote each
    setting as it changed; here the type is saved once, with If-Match and one
@@ -25,7 +25,7 @@ export function EmployeeTypesPage() {
   const current = types.data?.find(t => t.code === selected) ?? types.data?.[0];
   return (
     <Page testId={tid.page('atypes')}>
-      <PageHead title="Employee types" crumb="Qnipay setup · Employee types" tipTestId={tid.head.tip('atypes')}
+      <PageHead title="Employee types" crumb="calm.ly setup · Employee types" tipTestId={tid.head.tip('atypes')}
         tip="What somebody is: how they capture time, which fields they see, and what they may claim." />
       {types.isError && <p data-testid={tid.types.error} role="alert" className="text-err">The employee types could not be loaded. Reload the page.</p>}
       {types.data && (
@@ -35,7 +35,7 @@ export function EmployeeTypesPage() {
           <ChipPicker testId={tid.types.list}>
             {types.data.map(t => (
               <Chip key={t.code} testId={tid.types.chip(t.code)} on={t.code === current?.code} onClick={() => setSelected(t.code)}>
-                {t.name} <span className="text-xs font-bold tracking-[.05em] opacity-70">{t.uom === 'day' ? 'DAY' : 'HR'}</span></Chip>))}
+                {t.name} <span className="text-xs font-bold tracking-[.05em]">{t.uom === 'day' ? 'DAY' : 'HR'}</span></Chip>))}
             <Chip testId={tid.types.add} add onClick={() => setAdding(true)}>+ New employee type</Chip>
           </ChipPicker>
           {current && <TypeDetail key={`${current.code}-${current.version}`} type={current} onRemoved={() => setSelected(null)} />}

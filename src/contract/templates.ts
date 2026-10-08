@@ -48,7 +48,7 @@ export const Template = z.object({
   roleNames: RoleNames.optional(), approvalChain: z.array(ChainStep).max(40).optional(), structure: Structure.optional(), onboarding: Onboarding.optional(),
 });
 export type Template = z.infer<typeof Template>;
-export const TemplateFile = z.object({ kind: z.literal('qnipay.template'), v: z.literal(1), key: z.string(), template: Template });
+export const TemplateFile = z.object({ kind: z.literal('calm.ly.template'), v: z.literal(1), key: z.string(), template: Template });
 export type TemplateFile = z.infer<typeof TemplateFile>;
 
 /* One template as the Organisation page lists it: a card for every one, and a
@@ -82,7 +82,7 @@ export type TemplateApplied = z.infer<typeof TemplateApplied>;
 export const SaveTemplate = z.strictObject({ name: z.string().max(200), description: z.string().max(300), scope: TemplateScope });
 export type SaveTemplate = z.infer<typeof SaveTemplate>;
 /* the file's text as it was read, so the server says whether it could be read */
-export const ImportTemplate = z.strictObject({ text: z.string().max(2_000_000, 'That file is too large to be a Qnipay template.') });
+export const ImportTemplate = z.strictObject({ text: z.string().max(2_000_000, 'That file is too large to be a calm.ly template.') });
 export const TemplateSaved = z.object({ record: TemplateRow, auditId: z.string() });
 export const TemplateImported = TemplateSaved.extend({ ignored: z.array(z.string()) });
 export type TemplateImported = z.infer<typeof TemplateImported>;

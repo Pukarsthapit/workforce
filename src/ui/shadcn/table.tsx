@@ -1,7 +1,7 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
-/* The prototype's table layer (qnipay-workforce-v15.html:474-487, 887-947).
+/* The prototype's table layer (calm.ly-workforce-v15.html:474-487, 887-947).
 
    - plain: .tw + table. The wrapper is the bordered, radius-12 card that
      scrolls; th is 12px/700 capitals at .04em in muted ink; td is 10px 12px

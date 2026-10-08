@@ -20,7 +20,7 @@ export const SavedData = z.object({
 export type SavedData = z.infer<typeof SavedData>;
 /* The export file: every collection except the sign-in sessions. */
 export const SavedDataExport = z.object({
-  kind: z.literal('qnipay.state'), v: z.literal(1), at: z.string(), version: z.string(), tenant: z.string(),
+  kind: z.literal('calm.ly.state'), v: z.literal(1), at: z.string(), version: z.string(), tenant: z.string(),
   data: z.record(z.string(), z.record(z.string(), z.unknown())),
 });
 export type SavedDataExport = z.infer<typeof SavedDataExport>;

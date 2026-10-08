@@ -1,11 +1,11 @@
 /* Copies the prototype's token layer verbatim. The prototype is the source of
-   truth for the Qnipay design language, so nothing here is retyped by hand. */
+   truth for the calm.ly design language, so nothing here is retyped by hand. */
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const SRC = process.env.PROTOTYPE_PATH || resolve(here, '../../Qnipay workforce cc/mockup/qnipay-workforce-v15.html');
+const SRC = process.env.PROTOTYPE_PATH || resolve(here, '../../calm.ly workforce cc/mockup/calm.ly-workforce-v15.html');
 const html = readFileSync(SRC, 'utf8');
 
 /* the block that opens at `start` and closes at its matching brace */
@@ -43,7 +43,9 @@ const out = [
   ...allBlocks(':root{'),
   ...allBlocks('[data-theme="dark"]{'),
   '',
-].join('\n');
+].join('\n')
+  .replace('type — Inter throughout.', 'type — Lexend Deca throughout.')
+  .replaceAll('"Inter",system-ui,sans-serif', '"Lexend Deca",system-ui,sans-serif');
 
 mkdirSync(resolve(here, '../src/ui'), { recursive: true });
 writeFileSync(resolve(here, '../src/ui/tokens.css'), out);

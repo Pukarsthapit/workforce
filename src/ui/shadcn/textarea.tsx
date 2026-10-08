@@ -2,7 +2,7 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { fieldControl } from "./input"
 
-/* The prototype's .fld textarea (qnipay-workforce-v15.html:500): the input's
+/* The prototype's .fld textarea (calm.ly-workforce-v15.html:500): the input's
    look, auto height, 9px 11px, line-height 1.5, resizable vertically. */
 function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
   return (

@@ -1,9 +1,9 @@
 /* The fake server's database. In memory, persisted to localStorage so a reload
    keeps what the person did, and set aside wholesale when the seed changes. */
 import socialSeed from './seed/social.json';
-import qnipaySeed from './seed/qnipay.json';
+import calmlySeed from './seed/calmly.json';
 
-export const STORE_KEY = 'qnipay.app.store';
+export const STORE_KEY = 'calm.ly.app.store';
 /* Written after every save with a fresh value. Another tab compares it with
    the one it last saw before handling a request, so it never answers from a
    copy of the database that is older than what is persisted (see sync). */
@@ -23,7 +23,7 @@ export interface Seed { version: string; tenant: string; data: Collections }
    had set, not the wall clock. */
 interface PersistedState extends Seed { clock: string | null }
 
-const SEEDS: Record<string, { data: Collections }> = { social: socialSeed as { data: Collections }, qnipay: qnipaySeed as { data: Collections } };
+const SEEDS: Record<string, { data: Collections }> = { social: socialSeed as { data: Collections }, 'calm.ly': calmlySeed as { data: Collections } };
 export const TENANTS = Object.keys(SEEDS);
 /* One collection as a tenant's seed ships it, untouched by anything since:
    what "the default" means for a setting the seed configures. */

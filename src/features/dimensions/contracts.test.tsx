@@ -49,7 +49,7 @@ test('a failed save shows the refusal and leaves the record as it was', async ()
 test('CR A crumb still appears where it names a real route', async () => {
   renderPage(<ContractsPage />);
   await screen.findByTestId(tid.contracts.table);
-  expect(screen.getByText('Qnipay setup · Contracts')).toBeInTheDocument();
+  expect(screen.getByText('calm.ly setup · Contracts')).toBeInTheDocument();
 });
 /* After a 412 the screen re-reads the people, and the open form starts again
    from the record as it now stands, so the next save carries the fresh

@@ -9,7 +9,7 @@ import { formatDmy } from '@/domain/time';
 import { NoticeMarks, StatusPill } from './NoticeParts';
 import { EditDialog, TrackDialog, WithdrawDialog } from './TeamNoticeDialogs';
 
-/* My team → Notices: the prototype's mgrNotices (qnipay-workforce-v15.html:
+/* My team → Notices: the prototype's mgrNotices (calm.ly-workforce-v15.html:
    5870-5897). Every notice the poster manages, draft first, then live,
    scheduled, expired and withdrawn, each urgent, then pinned, then newest;
    organisation notices outside their scope are shown read-only. A row says

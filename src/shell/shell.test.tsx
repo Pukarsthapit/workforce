@@ -3,9 +3,9 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '@/api/query';
-import { ShellView, isHere, roleLabelOf, stripTabsFor } from './Shell';
+import { ShellView, isHere, roleLabelOf, stripTabsFor, TAB_ICON } from './Shell';
 import { emptyInbox } from './Inbox';
-import { buildNav } from '@/domain/nav';
+import { buildNav, everyTab } from '@/domain/nav';
 import { expectTestIdCoverage } from '@/test/testid-coverage';
 import { tid } from '@/testids';
 import type { MenuAccount } from './AccountMenu';
@@ -19,37 +19,78 @@ test('the shell has full test id coverage for a manager', () => {
   expectTestIdCoverage();
 });
 
-/* Spec §6: "The role pill shows the account's role, and says so while viewing
-   as someone else." Ported from the prototype (qnipay-workforce-v15.html:
-   10605-10608: the `.viewing` toggle and the composed title) and CSS
-   (html:1164, `.rolepill.viewing{opacity:.85;border-style:dashed}`). */
-test('viewing as someone else shows a dashed role pill naming both people, a way back, and full test id coverage', () => {
-  const nav = buildNav({ caps: new Set(['own_home']), modules: { CORE: true }, flags: {}, onboarding: false });
-  render(<QueryClientProvider client={queryClient}><MemoryRouter initialEntries={['/work/home']}>
-    <ShellView nav={nav} roleLabel="Employee" viewingAs="Amara Okafor" account={menuAccount('Priya Shah')} inbox={emptyInbox(0)} onSignOut={() => {}} onEndViewAs={() => {}} /></MemoryRouter></QueryClientProvider>);
-  expect(screen.getByTestId(tid.shell.viewAsEnd)).toBeInTheDocument();
-  expect(screen.getByText(/Amara Okafor/)).toBeInTheDocument();
-  const pill = screen.getByTestId(tid.shell.rolePill);
-  expect(pill).toHaveTextContent('Employee');
-  expect(pill.className).toMatch(/border-dashed/);
-  expect(pill.className).toMatch(/opacity-85/);
-  expect(pill).toHaveAttribute('title', 'Looking at the app as Amara Okafor · your account is Priya Shah');
-  expectTestIdCoverage();
+test('the brand links home and the desktop navigation collapses without losing its accessible names', async () => {
+  localStorage.removeItem('calm.ly.sidebar.collapsed');
+  const nav = buildNav({ caps: new Set(['own_home', 'own_ts', 'own_leave']), modules: { CORE: true, TS: true, A: true, L: true }, flags: {}, onboarding: false });
+  renderAt(nav, '/work/ts');
+  expect(screen.getByTestId('shell-sidebar-home')).toHaveAttribute('href', '/work/home');
+  expect(screen.getByTestId('shell-mobile-home')).toHaveAttribute('href', '/work/home');
+  const sidebar = screen.getByTestId('shell-sidebar');
+  expect(sidebar).toHaveAttribute('data-collapsed', 'false');
+  expect(screen.getByRole('navigation', { name: 'WORK' })).toBeInTheDocument();
+  const workCategory = screen.getByTestId('sidebar-section-work');
+  expect(workCategory).toHaveAttribute('aria-expanded', 'true');
+  await userEvent.click(workCategory);
+  expect(workCategory).toHaveAttribute('aria-expanded', 'false');
+  expect(screen.queryByRole('navigation', { name: 'WORK' })).not.toBeInTheDocument();
+  await userEvent.click(workCategory);
+  expect(screen.getByRole('navigation', { name: 'WORK' })).toBeInTheDocument();
+  expect(screen.getByTestId('sidebar-profile-link')).toHaveAccessibleName(/Amara Okafor/);
+  await userEvent.click(screen.getByRole('button', { name: 'Collapse navigation' }));
+  expect(sidebar).toHaveAttribute('data-collapsed', 'true');
+  expect(screen.getByTestId(tid.nav.tab('ts'))).toHaveAccessibleName('Timesheet');
+  expect(screen.getByTestId('sidebar-home')).toHaveAccessibleName('Home');
+  expect(localStorage.getItem('calm.ly.sidebar.collapsed')).toBe('true');
+  await userEvent.click(screen.getByRole('button', { name: 'Expand navigation' }));
+  expect(sidebar).toHaveAttribute('data-collapsed', 'false');
+  localStorage.removeItem('calm.ly.sidebar.collapsed');
 });
 
-test('not viewing as anyone shows a plain role pill with no title and no dashed style', () => {
+test('Home is one role-adaptive destination and Help opens current-page guidance', async () => {
+  const nav = buildNav({
+    caps: new Set(['own_home', 'own_ts', 'team_rota', 'team_people']),
+    modules: { CORE: true, TS: true, A: true, R: true }, flags: {}, onboarding: false,
+  });
+  renderAt(nav, '/team/trota');
+  expect(screen.getByTestId('sidebar-home')).toHaveAttribute('href', '/team/thome');
+  expect(screen.getByRole('navigation', { name: 'PEOPLE' })).toHaveTextContent('People');
+  expect(screen.queryByTestId(tid.nav.tab('mrota'))).not.toBeInTheDocument();
+  await userEvent.click(screen.getByTestId('sidebar-help'));
+  expect(await screen.findByRole('dialog')).toHaveTextContent(/Where shifts come from/);
+});
+
+test('navigation categories can also be collapsed in the mobile drawer', async () => {
+  const nav = buildNav({ caps: new Set(['own_home', 'own_ts']), modules: { CORE: true, TS: true, A: true }, flags: {}, onboarding: false });
+  renderAt(nav, '/work/home');
+  await userEvent.click(screen.getByTestId('shell-mobile-navigation'));
+  const drawer = screen.getByRole('dialog', { name: 'Navigation' });
+  const workCategory = within(drawer).getByTestId('mobile-navigation-section-work');
+  expect(workCategory).toHaveAttribute('aria-expanded', 'true');
+  await userEvent.click(workCategory);
+  expect(workCategory).toHaveAttribute('aria-expanded', 'false');
+  expect(within(drawer).queryByRole('navigation', { name: 'WORK' })).not.toBeInTheDocument();
+});
+
+test('every current sidebar destination has a dedicated icon', () => {
+  const missing = everyTab().map(tab => tab.view).filter(view => !TAB_ICON[view]);
+  expect([...missing, ...(!TAB_ICON.mfeat ? ['mfeat'] : [])]).toEqual([]);
+});
+
+test('the top bar keeps theme and notifications on the right without a role or employee-type label', () => {
   const nav = buildNav({ caps: new Set(['own_home']), modules: { CORE: true }, flags: {}, onboarding: false });
   render(<QueryClientProvider client={queryClient}><MemoryRouter initialEntries={['/work/home']}>
     <ShellView nav={nav} roleLabel="Employee" viewingAs={null} account={menuAccount('Priya Shah')} inbox={emptyInbox(0)} onSignOut={() => {}} onEndViewAs={() => {}} /></MemoryRouter></QueryClientProvider>);
-  const pill = screen.getByTestId(tid.shell.rolePill);
-  expect(pill).not.toHaveAttribute('title');
-  expect(pill.className).not.toMatch(/border-dashed/);
+  const topBar = document.querySelector('[data-shell-topbar]');
+  expect(topBar?.children.item(1)).toHaveClass('flex-1');
+  const controls = topBar?.querySelector('.ml-auto');
+  expect(controls).toContainElement(screen.getByTestId(tid.shell.theme));
+  expect(controls).toContainElement(screen.getByTestId(tid.shell.bell));
+  expect(topBar?.querySelector('[data-caps]')).toBeNull();
+  expectTestIdCoverage();
 });
 
-/* Plan review focus: a valid session whose capabilities resolve to nothing
-   (e.g. everything revoked) must not render an empty shell. It gets a clear
-   page saying there is nothing to open and what to do, while the header
-   (account menu, sign-out) stays reachable. */
+/* A valid session whose capabilities resolve to nothing gets a clear page,
+   while the footer account menu and sign-out stay reachable. */
 test('an account with no reachable capability sees a clear page, not an empty shell', () => {
   render(<QueryClientProvider client={queryClient}><MemoryRouter initialEntries={['/']}>
     <ShellView nav={[]} roleLabel="Employee" viewingAs={null} account={menuAccount('Priya Shah')} inbox={emptyInbox(0)} onSignOut={() => {}} onEndViewAs={() => {}} /></MemoryRouter></QueryClientProvider>);
@@ -58,17 +99,15 @@ test('an account with no reachable capability sees a clear page, not an empty sh
   expectTestIdCoverage();
 });
 
-/* Item 4: setup is sectioned, not one flat strip. Inside a section the strip
-   shows a "‹ All setup" way back plus that section's own pages, and every
-   page it can reach still carries full test id coverage. */
-test('inside a setup section the strip shows a way back plus that section\'s pages, with full test id coverage', () => {
+test('setup pages are listed under setup, with the current destination marked', () => {
   const nav = buildNav({ caps: new Set(['perm_cfg', 'framework']), modules: { CORE: true }, flags: {}, onboarding: false });
   render(<QueryClientProvider client={queryClient}><MemoryRouter initialEntries={['/setup/aperm']}>
     <ShellView nav={nav} roleLabel="Admin" viewingAs={null} account={menuAccount('Dee Fitzgerald')} inbox={emptyInbox(0)} onSignOut={() => {}} onEndViewAs={() => {}} /></MemoryRouter></QueryClientProvider>);
-  expect(screen.getByTestId(tid.nav.tab('asetup'))).toHaveTextContent(/All setup/);
-  expect(screen.getByTestId(tid.nav.tab('aperm'))).toBeInTheDocument();
-  expect(screen.getByTestId(tid.nav.tab('anotif'))).toBeInTheDocument();
-  expect(screen.getByTestId(tid.nav.tab('aappr'))).toBeInTheDocument();
+  const setupPages = screen.getByRole('navigation', { name: 'Settings pages' });
+  expect(screen.getByTestId('sidebar-settings')).toHaveTextContent('Settings');
+  expect(within(setupPages).getByTestId('sidebar-setting-aperm')).toHaveAttribute('aria-current', 'page');
+  expect(within(setupPages).getByTestId('sidebar-setting-anotif')).toBeInTheDocument();
+  expect(within(setupPages).getByTestId('sidebar-setting-aappr')).toBeInTheDocument();
   expect(screen.queryByTestId(tid.nav.tab('aorg'))).not.toBeInTheDocument();
   expectTestIdCoverage();
 });
@@ -81,16 +120,10 @@ test('at the setup index the strip holds the index tab alone, as in the prototyp
   const nav = buildNav({ caps: new Set(['perm_cfg']), modules: { CORE: true }, flags: {}, onboarding: false });
   const setup = nav.find(g => g.key === 'setup');
   if (!setup) throw new Error('expected a setup group to exist for this capability set');
-  expect(stripTabsFor(setup, '/setup/asetup').map(t => [t.view, t.label])).toEqual([['asetup', 'Qnipay setup']]);
+  expect(stripTabsFor(setup, '/setup/asetup').map(t => [t.view, t.label])).toEqual([['asetup', 'calm.ly setup']]);
 });
 
-/* MANAGER NAV GROUPED BY MODULE: "The secondary strip stays scannable"
-   (prototype: `#tabs>button,#tabs>.tabgrp).length<=7`, "the strip carries
-   five items, not twelve: two pages and three headings"). Consecutive tabs
-   sharing a `group` collapse into one dropdown trigger (TabStrip's `runs`),
-   so a manager holding every scheduling/requests/people capability still
-   sees a handful of top-level items, not one per page. */
-test('the manager strip stays scannable: a handful of top-level items, not one per page', () => {
+test('the manager sees each My Team page in the left navigation and current area switcher', () => {
   const nav = buildNav({
     caps: new Set(['own_home', 'team_ts', 'team_hours', 'team_rota', 'rota_pattern', 'rota_shift', 'team_leave', 'team_sick', 'team_people', 'onb_track', 'notice_post']),
     modules: { CORE: true, TS: true, A: true, R: true, L: true, ON: true }, flags: { NOTICES: true }, onboarding: false,
@@ -98,18 +131,20 @@ test('the manager strip stays scannable: a handful of top-level items, not one p
   /* on a page not built yet (Exceptions): the strip is the subject, and Team Home now reads the session */
   render(<QueryClientProvider client={queryClient}><MemoryRouter initialEntries={['/team/texc']}>
     <ShellView nav={nav} roleLabel="Manager" viewingAs={null} account={menuAccount('Rachel Hussain')} inbox={emptyInbox(0)} onSignOut={() => {}} onEndViewAs={() => {}} /></MemoryRouter></QueryClientProvider>);
-  const strip = screen.getByRole('navigation', { name: 'Pages' });
-  const topLevel = within(strip).getAllByTestId(/^nav-(tab|menu)-/);
-  expect(topLevel.length).toBeLessThanOrEqual(7);
+  const mainNavigation = screen.getByRole('navigation', { name: 'Main navigation' });
+  expect(within(mainNavigation).getByTestId(tid.nav.tab('tteam'))).toBeInTheDocument();
+  const strip = screen.getByRole('navigation', { name: 'WORK' });
+  const team = nav.find(g => g.key === 'team');
+  if (!team) throw new Error('expected the My Team area');
+  expect(within(strip).getByTestId(tid.nav.tab('trota'))).toBeInTheDocument();
+  expect(within(strip).getByTestId(tid.nav.tab('tteam'))).toBeInTheDocument();
 });
 
-/* MANAGER NAV GROUPED BY MODULE: "A page inside a menu still marks its
-   heading as current". */
-test('a page inside a menu still marks its heading as current', () => {
+test('a selected My Team page is marked in the page navigation', () => {
   const nav = buildNav({ caps: new Set(['own_home', 'team_rota', 'rota_pattern', 'rota_shift']), modules: { CORE: true, R: true }, flags: {}, onboarding: false });
   render(<QueryClientProvider client={queryClient}><MemoryRouter initialEntries={['/team/trota']}>
     <ShellView nav={nav} roleLabel="Manager" viewingAs={null} account={menuAccount('Rachel Hussain')} inbox={emptyInbox(0)} onSignOut={() => {}} onEndViewAs={() => {}} /></MemoryRouter></QueryClientProvider>);
-  expect(screen.getByTestId(tid.nav.menu('scheduling')).className).toMatch(/font-semibold/);
+  expect(screen.getByTestId(tid.nav.tab('trota'))).toHaveAttribute('aria-current', 'page');
 });
 
 /* The module drill-in (v15:4059-4076, suite S:3051-3060): opening a module
@@ -146,19 +181,18 @@ test('on a module setup page (mts, mrota, mleave, monb) the strip is that module
   }
 });
 
-test('the strip on a module setup page renders the drill-in tabs, the setup page marked current', () => {
+test('all setup destinations stay visible while on a module drill-in route', () => {
   const nav = buildNav({ caps: new Set(['mod_cfg']), modules: { CORE: true, TS: true, A: true, R: true, L: true }, flags: {}, onboarding: false });
   render(<QueryClientProvider client={queryClient}><MemoryRouter initialEntries={['/setup/amods?m=R']}>
     <ShellView nav={nav} roleLabel="Admin" viewingAs={null} account={menuAccount('Dee Fitzgerald')} inbox={emptyInbox(0)} onSignOut={() => {}} onEndViewAs={() => {}} /></MemoryRouter></QueryClientProvider>);
-  const strip = screen.getByRole('navigation', { name: 'Pages' });
-  expect(within(strip).getAllByRole('link').map(a => a.textContent)).toEqual(['‹ All modules', 'Rota features', 'Rota setup']);
-  expect(within(strip).getByRole('link', { name: 'Rota setup' })).toHaveAttribute('href', '/setup/mrota');
-  expect(within(strip).getByRole('link', { name: 'Rota features' })).toHaveAttribute('aria-current', 'page');
+  const setupPages = screen.getByRole('navigation', { name: 'Settings pages' });
+  expect(within(setupPages).getByTestId('sidebar-setting-amods')).toBeInTheDocument();
+  expect(within(setupPages).getByTestId('sidebar-setting-mrota')).toHaveAttribute('href', '/setup/mrota');
 });
 
-/* 1c follow-up from group 2 (D11): the role pill shows the renamed role,
-   the viewed person's own while viewing as someone, never the raw user type. */
-test('the role pill shows the renamed role, the viewed person\'s while viewing as someone', () => {
+/* Role labels remain available to account and workspace context, using the
+   viewed person's renamed role while viewing as someone else. */
+test('the shell role label uses the renamed role for the current account', () => {
   const account = { email: 'a@example.org', userType: 'admin' as const, personCode: 'CP-0001', name: 'Dee', roleName: 'Administrator', roleDescription: '', locationName: '' };
   expect(roleLabelOf({ account })).toBe('Administrator');
   expect(roleLabelOf({ account, viewingAs: { personCode: 'CP-0002', name: 'Amara Okafor', userType: 'employee', roleName: 'Colleague' } })).toBe('Colleague');

@@ -15,7 +15,7 @@ import { ESCALATE_TO, LEAVE_TYPE_ADDED, LEAVE_UNITS, RECORD_UNITS, STAGE_CHANNEL
 import { formatDmy } from '@/domain/time';
 import { addedType, draftOf, leaveBody, leaveUnit, newStageDraft, type LeaveDraft, type NumKey, type PolicyDraft, type StageDraft, type ToggleKey } from './setup';
 
-/* Leave setup: the prototype's admLeave (qnipay-workforce-v15.html:8960-9071)
+/* Leave setup: the prototype's admLeave (calm.ly-workforce-v15.html:8960-9071)
    with the per-type leave policy it kept on the employee type (8160-8172).
    Every setting edits one draft: Save sends it with If-Match and writes one
    audit row with the before and after, Cancel puts it back (D11). The

@@ -6,7 +6,7 @@ import type { Self, UserType } from '@/api/access';
 import { ROLE_NAME_MAX, roleNameProblem } from '@/domain/modules';
 
 /* Rename roles: the prototype's role-names and role-names-save cases
-   (qnipay-workforce-v15.html:12046-12071), opened from the Permissions page
+   (calm.ly-workforce-v15.html:12046-12071), opened from the Permissions page
    (8334). One field per user type, labelled with what that persona does.
    The names are checked together first (every role needs a name, no two may
    share one), so nothing is sent while one is wrong; then each changed name

@@ -9,7 +9,7 @@ import { useCaps } from '@/shell/useCaps';
 import { useTenant } from '@/shell/shellData';
 import { EntitlementDialog, RequestDialog, SimulateDialog } from './LeaveDialogs';
 
-/* My leave: the prototype's essLeave (qnipay-workforce-v15.html:7672-7713),
+/* My leave: the prototype's essLeave (calm.ly-workforce-v15.html:7672-7713),
    for an employee and for a manager's own record. Balances in days and hours,
    TOIL and carry-over, the days still to take, my requests (each waiting one
    with its own Cancel, D1), the adjustment ledger, "How this was worked out",
@@ -42,8 +42,12 @@ function MyLeaveView({ m }: { m: MyLeave }) {
   const [toTake, ...toTakeRest] = m.daysToTake.split(' · ');
   /* the prototype's isMgr() with LV_PRORATA */
   const canSimulate = caps.has('team_leave') && !!flags.LV_PRORATA;
+  const usedPercent = e.days > 0 ? Math.min(100, Math.round(((b.takenD + b.pending) / e.days) * 100)) : 0;
   return (
     <>
+      <div className="mb-lg flex justify-end">
+        <Button testId={tid.leave.requestOpen} kind="primary" onClick={() => setOpen('request')}>Request leave</Button>
+      </div>
       {/* the web-only strip (.card.wide-only): sick during booked leave */}
       <Card className="max-md:hidden">
         <div data-testid={tid.leave.offSick} className="flex flex-wrap items-center gap-sm">
@@ -59,8 +63,17 @@ function MyLeaveView({ m }: { m: MyLeave }) {
       <EssCols testId={tid.leave.cards}>
         <EssCard testId={tid.leave.balances} label={<>Balances<Tip testId={tid.leave.balancesTip}
           text={`Entitlement is calculated from your contracted hours, working pattern and length of service under the ${e.policy.name} policy.`} /></>}>
-          <EssRow><span>{annual}</span>
-            <strong data-testid={tid.leave.annual}>{hours ? `${b.leftH} of ${e.hours.toFixed(1)} hours` : `${b.leftD} of ${e.days} days`}</strong></EssRow>
+          <div className="mb-md border-b border-border pb-md">
+            <span className="text-sm text-text-secondary">{annual} remaining</span>
+            <strong data-testid={tid.leave.annual} className="my-sm block text-[length:var(--type-data-large)] leading-[1.1] font-medium tracking-[-.045em] tabular-nums">
+              {hours ? `${b.leftH} of ${e.hours.toFixed(1)} hours` : `${b.leftD} of ${e.days} days`}
+            </strong>
+            <div role="progressbar" aria-label="Leave entitlement used" aria-valuemin={0} aria-valuemax={100} aria-valuenow={usedPercent}
+              className="h-[5px] overflow-hidden rounded-pill bg-surface-subtle">
+              <div className="h-full rounded-pill bg-brand transition-[width] duration-(--motion-flow) ease-(--ease-flow)" style={{ width: `${usedPercent}%` }} />
+            </div>
+            <div className="mt-xs text-xs text-text-muted">{b.takenD} days taken · {b.pending} pending · {e.days} days total</div>
+          </div>
           <EssRow><span>Same balance in {hours ? 'days' : 'hours'}</span>
             <span data-testid={tid.leave.other}>{hours ? `${(b.leftH / (m.facts.contractedHours > 0 ? m.facts.contractedHours / 5 : 7.5)).toFixed(1)} days` : `${b.leftH.toFixed(2)} hours`}</span></EssRow>
           <EssRow><span>Taken so far</span><span data-testid={tid.leave.taken}>{b.takenD} days · {b.takenH.toFixed(2)} hours</span></EssRow>
@@ -97,7 +110,6 @@ function MyLeaveView({ m }: { m: MyLeave }) {
             : <Small testId={tid.leave.noHistory}>No adjustments recorded</Small>}
         </EssCard>
 
-        <Button testId={tid.leave.requestOpen} kind="primary" className="w-full" onClick={() => setOpen('request')}>Request leave</Button>
       </EssCols>
 
       {open === 'request' && <RequestDialog m={m} onClose={() => setOpen(null)} />}

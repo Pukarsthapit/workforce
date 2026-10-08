@@ -4,7 +4,7 @@ import { personByCode } from './support/read';
 import { signInEmail } from './support/timesheet';
 import { PRIYA, PUKAR, TOM, completeMine, myCase, onbAudit, onbNotes, openTracker, pdf, teamOf, uploadDoc } from './support/onboarding';
 
-/* Module 5, the manager's journey on Team onboarding on qnipay (brief group
+/* Module 5, the manager's journey on Team onboarding on calm.ly (brief group
    6, D4, D6): Tom has submitted everything. Pukar checks a document and
    verifies it, rejects the right to work with a reason; Tom sees the reason
    and the reopened step and uploads again; Pukar verifies the new upload.
@@ -13,7 +13,7 @@ import { PRIYA, PUKAR, TOM, completeMine, myCase, onbAudit, onbNotes, openTracke
    active and the tracker drops him. Invite moves Priya from candidate to
    preboarding, saying no email is sent; Add a new starter opens the person
    form set to candidate. Sessions switch by signing in again, as module 4. */
-test.beforeEach(async ({ api }) => { await api.seed('qnipay'); await api.setClock(FROZEN); });
+test.beforeEach(async ({ api }) => { await api.seed('calm.ly'); await api.setClock(FROZEN); });
 const info = (page: import('@playwright/test').Page, text: string | RegExp) => page.getByTestId(tid.toast.info).filter({ hasText: text });
 
 test('a manager checks documents, rejects one with a reason the starter acts on, chases, and starts them only once nothing blocks', async ({ page, api }) => {

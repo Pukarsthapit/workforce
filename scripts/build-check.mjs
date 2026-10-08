@@ -10,7 +10,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = resolve(root, 'dist');
 /* The seed marker is the demo tenant's email domain: every seeded person and
    account in social.json carries it, and nothing outside the seed does. */
-export const MARKERS = ['_dev/', 'Qnipay@123', 'setupWorker', 'mockServiceWorker', '@brightpath.org'];
+export const MARKERS = ['_dev/', 'calm.ly@123', 'setupWorker', 'mockServiceWorker', '@brightpath.org'];
 
 export function findMarkers(dir) {
   const hits = [];

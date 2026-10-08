@@ -258,7 +258,7 @@ describe('switched off, faults and rollback (Review Focus 7)', () => {
     const emp = await as('employee'), mgr = await as('manager'), before = snapshot(...WRITES);
     const r = await emp('GET', '/api/v1/notices/mine');
     expect(r.status).toBe(403);
-    expect(refusal(r)).toMatchObject({ code: 'feature-off', message: 'The notice board is switched off for this tenant.', next: 'Turn it on in Qnipay setup → Modules and features.' });
+    expect(refusal(r)).toMatchObject({ code: 'feature-off', message: 'The notice board is switched off for this tenant.', next: 'Turn it on in calm.ly setup → Modules and features.' });
     expect((await emp('POST', '/api/v1/notices/NTC-0002/acknowledge', { textVersion: 1 })).status).toBe(403);
     expect((await mgr('POST', '/api/v1/notices', NEW)).status).toBe(403);
     expect((await mgr('GET', '/api/v1/notices')).status).toBe(403);

@@ -21,7 +21,7 @@ import {
 } from './setup';
 
 /* Timesheet setup: the prototype's admTimesheet and admCaptureFields
-   (qnipay-workforce-v15.html:8680-8764, 8085-8104). What each employee type
+   (calm.ly-workforce-v15.html:8680-8764, 8085-8104). What each employee type
    captures, what the system refuses, the allowances and automatic pay rules
    per type, overtime, and the Business Central boundary. The prototype wrote
    each change as it was made; here every change edits one draft, Save sends
@@ -106,7 +106,7 @@ function SetupDraftView({ setup, types, env, picked, onPick }: {
         <ChipPicker>
           {types.map(t => (
             <Chip key={t.code} testId={tid.mts.fieldType(t.code)} on={t.code === code} onClick={() => onPick(t.code)}>
-              {t.name}<span className="text-xs opacity-70">{MODE[t.mode] ?? 'Day form'} · paid per {t.uom || 'hour'}</span></Chip>))}
+              {t.name}<span className="text-xs">{MODE[t.mode] ?? 'Day form'} · paid per {t.uom || 'hour'}</span></Chip>))}
         </ChipPicker>
         {current && <CaptureFields fields={fields} env={{ ...env, capabilities: current.capabilities }} labels={config.fieldDefaults} type={type}
           onChange={map => setType(t => ({ ...t, fields: map }))} />}
@@ -143,7 +143,7 @@ function SetupDraftView({ setup, types, env, picked, onPick }: {
         <ChipPicker>
           {types.map(t => (
             <Chip key={t.code} testId={tid.mts.type(t.code)} on={t.code === code} onClick={() => onPick(t.code)}>
-              {t.name} <span className="text-xs font-bold tracking-[.05em] opacity-70">{t.uom === 'day' ? 'DAY' : 'HR'}</span></Chip>))}
+              {t.name} <span className="text-xs font-bold tracking-[.05em]">{t.uom === 'day' ? 'DAY' : 'HR'}</span></Chip>))}
         </ChipPicker>
         {current && <>
           <h3 className={SUB}>Allowances this type can claim <span className={SUB_NOTE}>· the employee ticks these on the day; the value is what Business Central posts</span></h3>

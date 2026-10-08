@@ -68,7 +68,7 @@ export function sessionView(s: ServerSession): Session {
    with Onboarding on) sees the portal only, so the only changes they may make
    are the ones its endpoint marks allowedWhileOnboarding (their own
    onboarding, signing out, reading their notifications). */
-export const NOT_STARTED = { code: 'not-started', message: 'You can use the rest of Qnipay once you have started.',
+export const NOT_STARTED = { code: 'not-started', message: 'You can use the rest of calm.ly once you have started.',
   next: 'Finish your onboarding first. My onboarding shows what is left.' };
 export function requireSession(request: Request, allowedWhileViewing = false, allowedWhileOnboarding = false): AuthedSession {
   const token = request.headers.get('Authorization')?.replace(/^Bearer /, '') ?? '';
@@ -88,7 +88,7 @@ export function requireSession(request: Request, allowedWhileViewing = false, al
 export function requireCapability(s: { caps: string[] }, cap: string) {
   if (s.caps.includes(cap)) return;
   const label = store.coll<{ label?: string }>('capabilities')[cap]?.label ?? cap;
-  refuse(403, { code: 'capability', message: `This needs "${label}", which your access does not include.`, next: 'Ask an administrator to grant it on Qnipay setup → Permissions.' });
+  refuse(403, { code: 'capability', message: `This needs "${label}", which your access does not include.`, next: 'Ask an administrator to grant it on calm.ly setup → Permissions.' });
 }
 
 /* The audit row's `who`: the real signed-in person, and who they were

@@ -14,7 +14,7 @@ import {
 } from '@/domain/modules';
 
 /* Modules & features: the prototype's admModulesIndex, moduleEnableRow and
-   admModuleFeatures (qnipay-workforce-v15.html:8570-8679), with the data-mod
+   admModuleFeatures (calm.ly-workforce-v15.html:8570-8679), with the data-mod
    and data-flag handlers and the mod-off confirm (11119-11142, 12545-12559).
    The index is a card per module; opening one (/setup/amods?m=<code>) shows
    its enable row and its features, with the extras that hang off a feature

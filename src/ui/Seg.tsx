@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 
-/* The prototype's .seg (qnipay-workforce-v15.html:551-557): a pill of two or
+/* The prototype's .seg (calm.ly-workforce-v15.html:551-557): a pill of two or
    three choices on the tint, the chosen one lifted onto the card surface in
    brand ink (the accent in dark). Used for My timesheet's Day and Week, the
    approvals queue's views and proxy entry's Day and Week. Each choice is a

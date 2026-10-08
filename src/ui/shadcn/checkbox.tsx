@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils"
 import { CheckIcon } from "lucide-react"
 import { Checkbox as CheckboxPrimitive } from "radix-ui"
 
-/* The prototype's .cbx (qnipay-workforce-v15.html:534): a 16px box in the
+/* The prototype's .cbx (calm.ly-workforce-v15.html:534): a 16px box in the
    brand colour (the accent in dark), with a transparent 44px hit area. */
 function Checkbox({
   className,

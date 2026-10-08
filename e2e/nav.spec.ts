@@ -1,12 +1,100 @@
 import { test, expect } from './support/fixtures';
 import { tid } from '../src/testids';
 
-test('NV Manager navigation has two primary areas', async ({ page, signInAs }) => {
+test('NV Manager navigation has calm work, people and insight sections with a role-adaptive Home', async ({ page, signInAs }) => {
   await signInAs('manager');
-  await expect(page.getByTestId(tid.nav.group('work'))).toBeVisible();
-  await expect(page.getByTestId(tid.nav.group('team'))).toBeVisible();
-  await expect(page.getByTestId(tid.nav.group('setup'))).toHaveCount(0);
+  const mainNav = page.getByRole('navigation', { name: 'Main navigation' });
+  for (const section of ['WORK', 'PEOPLE', 'INSIGHTS']) {
+    await expect(page.getByRole('navigation', { name: section })).toBeVisible();
+  }
+  await expect(page.getByTestId('sidebar-home')).toHaveAttribute('href', '/team/thome');
+  for (const view of ['tteam', 'trota', 'tleave', 'tpeople']) {
+    await expect(mainNav.getByTestId(tid.nav.tab(view))).toBeVisible();
+  }
+  await expect(page.getByTestId('sidebar-settings')).toHaveCount(0);
+  const account = page.getByTestId(tid.shell.account);
+  expect(await account.evaluate(node => Boolean(node.closest('[aria-label="User area"]')))).toBe(true);
+  await account.click();
+  await expect(page.getByTestId(tid.shell.menuAccount)).toContainText('Rachel Hussain');
+  await expect(page.getByTestId(tid.shell.signOut)).toBeVisible();
+  await page.keyboard.press('Escape');
 });
+
+test('NV An admin without personal or team home still lands on a useful Home', async ({ page, signInAs }) => {
+  await signInAs('admin');
+  await page.goto('/');
+  await expect(page.getByTestId(tid.page('home'))).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Home', exact: true })).toBeVisible();
+  await expect(page.getByTestId('sidebar-home')).toHaveAttribute('href', '/');
+  await expect(page.getByTestId('home-destination-apeople')).toBeVisible();
+  await expect(page.getByTestId('home-destination-asetup')).toBeVisible();
+});
+
+test('NV The sidebar transforms into a drawer below desktop widths', async ({ page, signInAs }) => {
+  await signInAs('manager');
+  for (const width of [768, 1023]) {
+    await page.setViewportSize({ width, height: 900 });
+    await expect(page.getByRole('navigation', { name: 'Main navigation' })).toBeHidden();
+    await expect(page.getByTestId('shell-mobile-navigation')).toBeVisible();
+    await expect(page.getByRole('navigation', { name: 'Quick pages' })).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+  }
+  await page.getByTestId('shell-mobile-navigation').click();
+  await expect(page.getByRole('dialog').getByRole('navigation', { name: 'WORK' })).toBeVisible();
+  await expect(page.getByRole('dialog').getByRole('navigation', { name: 'PEOPLE' })).toBeVisible();
+  await page.keyboard.press('Escape');
+  await page.setViewportSize({ width: 1024, height: 900 });
+  await expect(page.getByRole('navigation', { name: 'Main navigation' })).toBeVisible();
+  await expect(page.getByTestId('shell-mobile-navigation')).toBeHidden();
+  await expect(page.getByRole('navigation', { name: 'Quick pages' })).toBeHidden();
+  const nav = page.getByRole('navigation', { name: 'Main navigation' });
+  await expect(page.getByRole('navigation', { name: 'WORK' })).toBeVisible();
+  await expect(nav.getByTestId(tid.nav.tab('trota'))).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(1024);
+});
+
+test('NV Sidebar collapses, preserves destinations, and remembers its state', async ({ page, signInAs }) => {
+  await signInAs('manager');
+  const sidebar = page.getByTestId('shell-sidebar');
+  await expect(sidebar).toHaveAttribute('data-collapsed', 'false');
+  await page.getByRole('button', { name: 'Collapse navigation' }).click();
+  await expect(sidebar).toHaveAttribute('data-collapsed', 'true');
+  await expect(page.getByTestId('shell-sidebar-home')).toBeVisible();
+  const rail = await sidebar.boundingBox();
+  const account = await page.getByTestId(tid.shell.account).boundingBox();
+  expect(account && rail && account.x >= rail.x && account.x + account.width <= rail.x + rail.width).toBe(true);
+  await expect(page.getByTestId(tid.nav.tab('trota'))).toHaveAttribute('aria-label', 'Rota');
+  await expect(page.getByTestId(tid.nav.tab('trota'))).toHaveAttribute('title', 'Rota');
+  await expect(page.getByTestId(tid.nav.tab('tleave'))).toBeVisible();
+  await page.getByTestId(tid.nav.tab('tleave')).click();
+  await expect(page.getByTestId(tid.page('tleave'))).toBeVisible();
+  await page.reload();
+  await expect(page.getByTestId('shell-sidebar')).toHaveAttribute('data-collapsed', 'true');
+  await page.getByRole('button', { name: 'Expand navigation' }).click();
+  await expect(page.getByTestId('shell-sidebar')).toHaveAttribute('data-collapsed', 'false');
+});
+
+test('NV The brand mark returns to the home page on desktop and mobile', async ({ page, signInAs }) => {
+  await signInAs('employee');
+  await page.getByTestId(tid.nav.tab('leave')).click();
+  await page.getByTestId('shell-sidebar-home').click();
+  await expect(page.getByTestId(tid.page('home'))).toBeVisible();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.getByTestId(tid.nav.bottom('leave')).click();
+  await page.getByTestId('shell-mobile-home').click();
+  await expect(page.getByTestId(tid.page('home'))).toBeVisible();
+});
+
+test('NV Timesheet has one prominent page title and starts closer to the utility header', async ({ page, signInAs }) => {
+  await signInAs('employee');
+  await page.getByTestId(tid.nav.tab('ts')).click();
+  const title = page.getByRole('heading', { name: 'Timesheet', exact: true });
+  await expect(title).toBeVisible();
+  await expect(page.locator('header[data-shell-topbar]').getByText('Timesheet')).toHaveCount(0);
+  const box = await title.boundingBox();
+  expect(box?.y).toBeLessThan(180);
+});
+
 test('NV A view from a later sub-project says so and names it', async ({ page, signInAs }) => {
   await signInAs('employee');
   await page.getByTestId(tid.nav.tab('hours')).click();
@@ -28,17 +116,28 @@ const checkCurrentPage = async (page: import('@playwright/test').Page) => {
   expect(result).toEqual({ dup: [], missing: 0 });
 };
 
-/* A module's setup page (mts, mrota, mleave) sits one level below Modules &
-   features (brief D6; v15:4059-4076): open each module card from the list,
-   then every page of its drill-in strip ("‹ All modules | X features |
-   X setup", on the tab strip or, on a phone, the bottom bar), then
-   "‹ All modules" back to the list. Starts and ends on the module list. */
+/* Module features remain contextual in the SYSTEM footer; module setup pages
+   remain within that drill-in. */
 async function walkModules(page: import('@playwright/test').Page, via: 'tab' | 'bottom') {
-  const link = via === 'tab' ? tid.nav.tab : tid.nav.bottom;
-  const strip = via === 'tab' ? 'nav[aria-label="Pages"] a[data-testid^="nav-tab-"]' : 'nav[aria-label="Quick pages"] > a[data-testid^="nav-bottom-"]';
   const cards = page.locator('main a[data-testid^="amods-card-"]');
   const n = await cards.count();
   expect(n).toBeGreaterThan(0);
+  if (via === 'tab') {
+    const setupModules = [['TS', 'mts'], ['R', 'mrota'], ['L', 'mleave']] as const;
+    for (const [module, view] of setupModules) {
+      await page.getByTestId(tid.amods.card(module)).click();
+      await checkCurrentPage(page);
+      await expect(page.getByTestId('sidebar-setting-mfeat')).toHaveAttribute('aria-current', 'page');
+      await page.getByTestId(`sidebar-setting-${view}`).click();
+      await checkCurrentPage(page);
+      await page.getByTestId('sidebar-setting-amods').click();
+      await expect(page.getByTestId(tid.page('amods'))).toBeVisible();
+    }
+    return;
+  }
+
+  const link = tid.nav.bottom;
+  const strip = 'nav[aria-label="Quick pages"] > a[data-testid^="nav-bottom-"]';
   for (let c = 0; c < n; c++) {
     await cards.nth(c).click();
     await checkCurrentPage(page);
@@ -50,34 +149,19 @@ async function walkModules(page: import('@playwright/test').Page, via: 'tab' | '
   }
 }
 
-/* The Modules card opens Modules & features; a module card drills in to
-   "‹ All modules | X features | X setup"; its setup tab opens the module's
-   setup page under the same strip; "‹ All modules" returns to the list. */
-test('NV The Modules card opens the module list; each module drills in to its features and setup, and ‹ All modules returns', async ({ page, signInAs }) => {
+/* Module feature/setup destinations remain reachable from the sidebar and
+   every module returns to the list without leaving the setup area. */
+test('NV Module features and setup remain reachable from the sidebar', async ({ page, signInAs }) => {
   await signInAs('admin');
-  await page.getByTestId(tid.nav.group('setup')).click();
+  await page.getByTestId('sidebar-settings').click();
   await page.getByTestId(tid.setup.card('mods')).click();
   await expect(page.getByTestId(tid.page('amods'))).toBeVisible();
-  const strip = page.locator('nav[aria-label="Pages"] a[data-testid^="nav-tab-"]');
-  for (const [code, name, view, setup] of [['TS', 'Timesheet', 'mts', 'Timesheet setup'], ['R', 'Rota', 'mrota', 'Rota setup'], ['L', 'Leave & absence', 'mleave', 'Leave setup']] as const) {
-    await page.getByTestId(tid.amods.card(code)).click();
-    await expect(page.getByTestId(tid.page('mfeat'))).toBeVisible();
-    await expect(strip).toHaveText(['‹ All modules', `${name} features`, setup]);
-    await expect(page.getByTestId(tid.nav.tab('mfeat'))).toHaveAttribute('aria-current', 'page');
-    await page.getByTestId(tid.nav.tab(view)).click();
-    await expect(page.getByTestId(tid.page(view))).toBeVisible();
-    await expect(strip).toHaveText(['‹ All modules', `${name} features`, setup]);
-    await expect(page.getByTestId(tid.nav.tab(view))).toHaveAttribute('aria-current', 'page');
-    await page.getByTestId(tid.nav.tab('amods')).click();
-    await expect(page.getByTestId(tid.page('amods'))).toBeVisible();
-    await expect(strip).toHaveText(['‹ All setup', 'Modules & features']);
-  }
+  await walkModules(page, 'tab');
 });
 
-/* Visits every page an admin can reach: every plain tab in the strip, every
-   item inside every grouped dropdown menu, and (setup being sectioned, not
-   one flat strip) every section card from the index plus every page inside
-   each section. Each page it lands on must carry its own page-<view>
+/* Visits every page an admin can reach: every page link nested under its
+   area, and every setup section card plus each page inside that section.
+   Each page it lands on must carry its own page-<view>
    container and full test id coverage: no duplicate test id anywhere on the
    page, and no untagged button/link/input/select/textarea inside <main>. */
 test('NV Every page an admin can reach has full test id coverage', async ({ page, signInAs }) => {
@@ -86,8 +170,8 @@ test('NV Every page an admin can reach has full test id coverage', async ({ page
 
   const stripTab = (excludeTestId?: string) =>
     excludeTestId
-      ? `nav[aria-label="Pages"] a[data-testid^="nav-tab-"]:not([data-testid="${excludeTestId}"])`
-      : 'nav[aria-label="Pages"] a[data-testid^="nav-tab-"]';
+      ? `nav[aria-label="Settings pages"] a[data-testid^="sidebar-setting-"]:not([data-testid="${excludeTestId}"])`
+      : 'nav[aria-label="Settings pages"] a[data-testid^="sidebar-setting-"]';
 
   const visitPlainTabs = async (excludeTestId?: string) => {
     const sel = stripTab(excludeTestId);
@@ -95,49 +179,31 @@ test('NV Every page an admin can reach has full test id coverage', async ({ page
     for (let i = 0; i < count; i++) { await page.locator(sel).nth(i).click(); await checkCurrentPage(page); }
   };
 
-  const visitMenus = async () => {
-    const menuSel = '[data-testid^="nav-menu-"]';
-    const itemSel = '[role="menuitem"] a[data-testid^="nav-tab-"]';
-    const menuCount = await page.locator(menuSel).count();
-    for (let m = 0; m < menuCount; m++) {
-      await page.locator(menuSel).nth(m).click(); // open once, just to read how many items it has
-      const itemCount = await page.locator(itemSel).count();
-      await page.keyboard.press('Escape'); // close it: the loop below always starts from closed
-      for (let i = 0; i < itemCount; i++) {
-        await page.locator(menuSel).nth(m).click(); // each selection closes the menu; reopen for the next item
-        await page.locator(itemSel).nth(i).click();
-        await checkCurrentPage(page);
-      }
+  for (const section of ['WORK', 'PEOPLE', 'INSIGHTS']) {
+    const links = page.locator(`nav[aria-label="${section}"] a[data-testid^="nav-tab-"]`);
+    const count = await links.count();
+    for (let i = 0; i < count; i++) {
+      await links.nth(i).click();
+      await checkCurrentPage(page);
     }
-  };
-
-  for (const g of ['work', 'team', 'setup']) {
-    const group = page.getByTestId(tid.nav.group(g));
-    if (!(await group.count())) continue;
-    await group.click();
+  }
+  await page.getByTestId('sidebar-settings').click();
+  await checkCurrentPage(page);
+  const cardSel = '[data-testid^="setup-card-"]';
+  const cardCount = await page.locator(cardSel).count();
+  for (let c = 0; c < cardCount; c++) {
+    await page.locator(cardSel).nth(c).click();
     await checkCurrentPage(page);
-
-    if (g === 'setup') {
-      const cardSel = '[data-testid^="setup-card-"]';
-      const cardCount = await page.locator(cardSel).count();
-      for (let c = 0; c < cardCount; c++) {
-        await page.locator(cardSel).nth(c).click(); // -> the section's first page
-        await checkCurrentPage(page);
-        await visitPlainTabs(tid.nav.tab('asetup')); // the rest of that section, excluding "‹ All setup"
-        if (await page.getByTestId(tid.page('amods')).count()) await walkModules(page, 'tab'); // mts, mrota, mleave sit one level down
-        await page.getByTestId(tid.nav.tab('asetup')).click(); // back to the index for the next section
-        await checkCurrentPage(page);
-      }
-    } else {
-      await visitPlainTabs();
-      await visitMenus();
-    }
+    await visitPlainTabs('sidebar-setting-asetup');
+    if (await page.getByTestId(tid.page('amods')).count()) await walkModules(page, 'tab');
+    await page.getByTestId('sidebar-settings').click();
+    await checkCurrentPage(page);
   }
 });
 
-/* Spec §10.3: no horizontal overflow, touch targets at least 44px. Ported
-   from the prototype's phone breakpoint (qnipay-workforce-v15.html:1552-1582,
-   791-818): brand name and role pill hidden, the tab strip hidden in favour
+/* Spec §10.3: no horizontal overflow, topbar and bottom-nav touch targets at least 44px. Ported
+   from the prototype's phone breakpoint (calm.ly-workforce-v15.html:1552-1582,
+   791-818): brand name hidden, the tab strip hidden in favour
    of the bottom bar, everything on one line that fits. */
 test('NV At 390px the header and bottom bar fit with no horizontal overflow and 44px touch targets', async ({ page, signInAs }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -147,7 +213,7 @@ test('NV At 390px the header and bottom bar fit with no horizontal overflow and 
   expect(scrollWidth).toBeLessThanOrEqual(390);
 
   const heights = await page.evaluate(() => {
-    const els = [...document.querySelectorAll('header button, header a[href], nav[aria-label="Quick pages"] button, nav[aria-label="Quick pages"] a[href]')]
+    const els = [...document.querySelectorAll('header[data-shell-topbar] button, header[data-shell-topbar] a[href], nav[aria-label="Quick pages"] button, nav[aria-label="Quick pages"] a[href]')]
       .filter(e => (e as HTMLElement).offsetParent !== null); // visible only
     return els.map(e => e.getBoundingClientRect().height);
   });
@@ -155,63 +221,37 @@ test('NV At 390px the header and bottom bar fit with no horizontal overflow and 
   for (const h of heights) expect(h).toBeGreaterThanOrEqual(44);
 });
 
-/* A phone has no tab strip (hidden below md) and at most five bottom-bar
-   destinations plus More. My Team (manager) and every setup section but
-   Organisation (admin) have more than five pages, so this reaches every one
-   of them using only the bottom bar and More's dialog, never the strip. For
-   setup, the bottom bar follows stripTabsFor's current section (Shell.tsx),
-   so entering a section still means a card on SetupIndex, exactly as on
-   desktop; from there it is bottom bar and More alone. */
-test('NV At 390px every destination is reachable from the bottom bar and More alone, for admin and manager', async ({ page, signInAs }) => {
-  test.setTimeout(60_000);
+/* Mobile uses the same global IA in a drawer, not a separate area switcher. */
+test('NV At phone width the drawer preserves role-aware navigation and footer destinations', async ({ page, signInAs }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-
-  const directSel = (excludeTestId?: string) =>
-    excludeTestId
-      ? `nav[aria-label="Quick pages"] > a[data-testid^="nav-bottom-"]:not([data-testid="${excludeTestId}"])`
-      : 'nav[aria-label="Quick pages"] > a[data-testid^="nav-bottom-"]';
-  const moreButton = () => page.getByTestId(tid.nav.more);
-  /* Go to lists every page of the strip; the way back to the setup index is left out, as it is from the bar walk */
-  const moreItemSel = `[data-testid="${tid.modal.root}"] a[data-testid^="nav-goto-"]:not([data-testid="${tid.nav.goTo('asetup')}"])`;
-
-  const visitBottomBar = async (excludeTestId?: string) => {
-    const sel = directSel(excludeTestId);
-    const count = await page.locator(sel).count();
-    for (let i = 0; i < count; i++) { await page.locator(sel).nth(i).click(); await checkCurrentPage(page); }
-
-    if (await moreButton().count()) {
-      await moreButton().click();
-      const itemCount = await page.locator(moreItemSel).count();
-      for (let i = 0; i < itemCount; i++) {
-        if (i > 0) await moreButton().click(); // selecting one closes the dialog; reopen for the next
-        await page.locator(moreItemSel).nth(i).click();
-        await checkCurrentPage(page);
-      }
-    }
-  };
-
   for (const persona of ['admin', 'manager'] as const) {
     await signInAs(persona);
-    for (const g of ['work', 'team', 'setup']) {
-      const group = page.getByTestId(tid.nav.group(g));
-      if (!(await group.count())) continue;
-      await group.click();
-      await checkCurrentPage(page);
-
-      if (g === 'setup') {
-        const cardSel = '[data-testid^="setup-card-"]';
-        const cardCount = await page.locator(cardSel).count();
-        for (let c = 0; c < cardCount; c++) {
-          await page.locator(cardSel).nth(c).click(); // -> the section's first page; no bottom bar at the index itself
-          await checkCurrentPage(page);
-          await visitBottomBar(tid.nav.bottom('asetup')); // the rest of that section, excluding "‹ All setup"
-          if (await page.getByTestId(tid.page('amods')).count()) await walkModules(page, 'bottom'); // mts, mrota, mleave sit one level down
-          await page.getByTestId(tid.nav.group('setup')).click(); // back to the index for the next section
-          await checkCurrentPage(page);
-        }
-      } else {
-        await visitBottomBar();
-      }
+    await page.getByTestId('shell-mobile-navigation').click();
+    const drawer = page.getByRole('dialog');
+    await expect(drawer.getByRole('navigation', { name: 'PEOPLE' })).toBeVisible();
+    await expect(drawer.getByTestId('mobile-navigation-help')).toBeVisible();
+    const navigationTargets = await drawer.locator('[data-testid^="mobile-nav-"], [data-testid^="mobile-navigation-"]').evaluateAll(
+      elements => elements.map(element => element.getBoundingClientRect().height),
+    );
+    expect(navigationTargets.length).toBeGreaterThan(0);
+    expect(navigationTargets.filter(height => height < 44)).toEqual([]);
+    await expect(drawer.getByTestId('mobile-navigation-settings')).toHaveCount(persona === 'admin' ? 1 : 0);
+    if (persona === 'manager') {
+      await expect(drawer.getByRole('navigation', { name: 'WORK' })).toBeVisible();
+      await expect(drawer.getByTestId('mobile-navigation-profile-link')).toBeVisible();
+    } else {
+      await expect(drawer.getByRole('navigation', { name: 'WORK' })).toHaveCount(0);
+      await expect(drawer.getByTestId('mobile-navigation-account')).toHaveAccessibleName('Account: Dee Fitzgerald');
+    }
+    await expect(drawer.getByTestId('mobile-navigation-account')).toBeVisible();
+    if (persona === 'admin') {
+      await drawer.getByTestId('mobile-navigation-settings').click();
+      await expect(drawer).toHaveCount(0);
+      await expect(page.getByTestId(tid.page('asetup'))).toBeVisible();
+    } else {
+      await drawer.getByTestId('mobile-navigation-profile-link').click();
+      await expect(drawer).toHaveCount(0);
+      await expect(page.getByTestId(tid.page('profile'))).toBeVisible();
     }
   }
 });

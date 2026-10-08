@@ -1,0 +1,401 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "name": "Textile UI Design System",
+  "description": "Full UI design token system derived from the provided textile palette. Indigo is the primary brand color; green is positive/secondary; coral and saffron are accents; red is destructive.",
+  "version": "1.0.0",
+  "color": {
+    "primitive": {
+      "indigo": {
+        "50": "#EEF0FF",
+        "100": "#DDE1FF",
+        "200": "#BBC3FF",
+        "300": "#9AA5F2",
+        "400": "#5964C4",
+        "500": "#3D4DB0",
+        "600": "#263CA0",
+        "700": "#203287",
+        "800": "#182666",
+        "900": "#111A45"
+      },
+      "green": {
+        "50": "#EEF8EF",
+        "100": "#D9F0DB",
+        "200": "#B5E0B9",
+        "300": "#76B87D",
+        "400": "#4A9453",
+        "500": "#267A35",
+        "600": "#21672D",
+        "700": "#1A5424",
+        "800": "#133F1B",
+        "900": "#0C2912"
+      },
+      "coral": {
+        "50": "#FFF0F1",
+        "100": "#FFDDE0",
+        "200": "#FFB9BF",
+        "300": "#F98C94",
+        "400": "#E95A63",
+        "500": "#D9434D",
+        "600": "#BF303A",
+        "700": "#98262E",
+        "800": "#711D23",
+        "900": "#4A1418"
+      },
+      "saffron": {
+        "50": "#FFF7E8",
+        "100": "#FDEBC8",
+        "200": "#F8D69A",
+        "300": "#EFB45A",
+        "400": "#D98208",
+        "500": "#C27106",
+        "600": "#A65E05",
+        "700": "#824904",
+        "800": "#5E3503",
+        "900": "#3B2102"
+      },
+      "red": {
+        "50": "#FFF0F0",
+        "100": "#FFDADA",
+        "200": "#FFB5B5",
+        "300": "#F77D7D",
+        "400": "#E84A4A",
+        "500": "#DD2929",
+        "600": "#C61F1F",
+        "700": "#9D1818",
+        "800": "#731212",
+        "900": "#480B0B"
+      },
+      "burgundy": {
+        "50": "#FDF0F1",
+        "100": "#F9D9DC",
+        "200": "#F0B1B7",
+        "300": "#D97A83",
+        "400": "#B83D49",
+        "500": "#97111B",
+        "600": "#820F18",
+        "700": "#690C13",
+        "800": "#4F090E",
+        "900": "#330609"
+      },
+      "neutral": {
+        "0": "#FFFFFF",
+        "50": "#FAFAF8",
+        "100": "#F7F1E6",
+        "200": "#EEEAE1",
+        "300": "#D9D6CF",
+        "400": "#B8B5AE",
+        "500": "#909089",
+        "600": "#667085",
+        "700": "#4A4F55",
+        "800": "#30353A",
+        "900": "#20252A",
+        "950": "#111315"
+      }
+    },
+    "semantic": {
+      "brand": {
+        "primary": "{color.primitive.indigo.600}",
+        "primaryHover": "{color.primitive.indigo.700}",
+        "primaryPressed": "{color.primitive.indigo.800}",
+        "primarySubtle": "{color.primitive.indigo.50}",
+        "secondary": "{color.primitive.green.500}",
+        "secondaryHover": "{color.primitive.green.600}",
+        "secondaryPressed": "{color.primitive.green.700}",
+        "secondarySubtle": "{color.primitive.green.50}"
+      },
+      "accent": {
+        "coral": "{color.primitive.coral.400}",
+        "coralHover": "{color.primitive.coral.500}",
+        "coralSubtle": "{color.primitive.coral.50}",
+        "saffron": "{color.primitive.saffron.400}",
+        "saffronHover": "{color.primitive.saffron.500}",
+        "saffronSubtle": "{color.primitive.saffron.50}",
+        "burgundy": "{color.primitive.burgundy.500}"
+      },
+      "feedback": {
+        "success": "{color.primitive.green.500}",
+        "successHover": "{color.primitive.green.600}",
+        "successSubtle": "{color.primitive.green.50}",
+        "warning": "{color.primitive.saffron.400}",
+        "warningHover": "{color.primitive.saffron.500}",
+        "warningSubtle": "{color.primitive.saffron.50}",
+        "error": "{color.primitive.red.500}",
+        "errorHover": "{color.primitive.red.600}",
+        "errorSubtle": "{color.primitive.red.50}",
+        "info": "{color.primitive.indigo.600}",
+        "infoHover": "{color.primitive.indigo.700}",
+        "infoSubtle": "{color.primitive.indigo.50}"
+      },
+      "text": {
+        "primary": "{color.primitive.neutral.900}",
+        "secondary": "{color.primitive.neutral.600}",
+        "tertiary": "{color.primitive.neutral.500}",
+        "disabled": "{color.primitive.neutral.400}",
+        "inverse": "{color.primitive.neutral.0}",
+        "link": "{color.primitive.indigo.600}",
+        "linkHover": "{color.primitive.indigo.700}",
+        "onPrimary": "{color.primitive.neutral.0}",
+        "onDark": "{color.primitive.neutral.0}"
+      },
+      "surface": {
+        "page": "{color.primitive.neutral.100}",
+        "default": "{color.primitive.neutral.0}",
+        "subtle": "{color.primitive.neutral.50}",
+        "raised": "{color.primitive.neutral.0}",
+        "brand": "{color.primitive.indigo.600}",
+        "brandSubtle": "{color.primitive.indigo.50}",
+        "success": "{color.primitive.green.50}",
+        "warning": "{color.primitive.saffron.50}",
+        "error": "{color.primitive.red.50}",
+        "inverse": "{color.primitive.neutral.900}"
+      },
+      "border": {
+        "default": "{color.primitive.neutral.300}",
+        "subtle": "{color.primitive.neutral.200}",
+        "strong": "{color.primitive.neutral.400}",
+        "focus": "{color.primitive.indigo.600}",
+        "error": "{color.primitive.red.500}",
+        "success": "{color.primitive.green.500}"
+      },
+      "icon": {
+        "default": "{color.primitive.neutral.700}",
+        "muted": "{color.primitive.neutral.500}",
+        "disabled": "{color.primitive.neutral.400}",
+        "brand": "{color.primitive.indigo.600}",
+        "success": "{color.primitive.green.500}",
+        "warning": "{color.primitive.saffron.500}",
+        "error": "{color.primitive.red.500}",
+        "inverse": "{color.primitive.neutral.0}"
+      }
+    }
+  },
+  "typography": {
+    "fontFamily": {
+      "sans": "Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+      "display": "Inter, system-ui, sans-serif",
+      "mono": "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+    },
+    "fontWeight": {
+      "regular": 400,
+      "medium": 500,
+      "semibold": 600,
+      "bold": 700,
+      "extrabold": 800
+    },
+    "fontSize": {
+      "xs": "12px",
+      "sm": "14px",
+      "md": "16px",
+      "lg": "18px",
+      "xl": "20px",
+      "2xl": "24px",
+      "3xl": "30px",
+      "4xl": "36px",
+      "5xl": "48px",
+      "6xl": "60px"
+    },
+    "lineHeight": {
+      "none": 1,
+      "tight": 1.2,
+      "snug": 1.35,
+      "normal": 1.5,
+      "relaxed": 1.65
+    },
+    "letterSpacing": {
+      "tight": "-0.02em",
+      "normal": "0",
+      "wide": "0.02em"
+    },
+    "styles": {
+      "display": "{typography.fontSize.5xl}/{typography.lineHeight.tight} 700",
+      "h1": "{typography.fontSize.4xl}/{typography.lineHeight.tight} 700",
+      "h2": "{typography.fontSize.3xl}/{typography.lineHeight.tight} 700",
+      "h3": "{typography.fontSize.2xl}/{typography.lineHeight.snug} 600",
+      "h4": "{typography.fontSize.xl}/{typography.lineHeight.snug} 600",
+      "bodyLarge": "{typography.fontSize.lg}/{typography.lineHeight.normal} 400",
+      "body": "{typography.fontSize.md}/{typography.lineHeight.normal} 400",
+      "bodySmall": "{typography.fontSize.sm}/{typography.lineHeight.normal} 400",
+      "label": "{typography.fontSize.sm}/{typography.lineHeight.tight} 600",
+      "caption": "{typography.fontSize.xs}/{typography.lineHeight.normal} 500"
+    }
+  },
+  "spacing": {
+    "0": "0px",
+    "1": "4px",
+    "2": "8px",
+    "3": "12px",
+    "4": "16px",
+    "5": "20px",
+    "6": "24px",
+    "7": "28px",
+    "8": "32px",
+    "10": "40px",
+    "12": "48px",
+    "16": "64px",
+    "20": "80px",
+    "24": "96px"
+  },
+  "sizing": {
+    "controlSm": "32px",
+    "controlMd": "40px",
+    "controlLg": "48px",
+    "controlXl": "56px",
+    "iconSm": "16px",
+    "iconMd": "20px",
+    "iconLg": "24px",
+    "iconXl": "32px",
+    "avatarSm": "32px",
+    "avatarMd": "40px",
+    "avatarLg": "48px",
+    "avatarXl": "64px"
+  },
+  "radius": {
+    "none": "0px",
+    "sm": "6px",
+    "md": "10px",
+    "lg": "14px",
+    "xl": "20px",
+    "2xl": "28px",
+    "full": "9999px"
+  },
+  "borderWidth": {
+    "none": "0px",
+    "thin": "1px",
+    "medium": "2px",
+    "thick": "3px"
+  },
+  "shadow": {
+    "none": "none",
+    "xs": "0 1px 2px rgba(32,37,42,0.05)",
+    "sm": "0 2px 6px rgba(32,37,42,0.08)",
+    "md": "0 4px 12px rgba(32,37,42,0.10)",
+    "lg": "0 12px 32px rgba(32,37,42,0.14)",
+    "xl": "0 20px 48px rgba(32,37,42,0.18)",
+    "focus": "0 0 0 3px rgba(38,60,160,0.22)"
+  },
+  "motion": {
+    "duration": {
+      "instant": "0ms",
+      "fast": "120ms",
+      "normal": "200ms",
+      "slow": "300ms",
+      "slower": "450ms"
+    },
+    "easing": {
+      "standard": "cubic-bezier(0.2,0,0,1)",
+      "emphasized": "cubic-bezier(0.2,0.8,0.2,1)",
+      "enter": "cubic-bezier(0,0,0.2,1)",
+      "exit": "cubic-bezier(0.4,0,1,1)"
+    }
+  },
+  "layout": {
+    "contentMaxWidth": "1200px",
+    "readingMaxWidth": "720px",
+    "mobileGutter": "16px",
+    "tabletGutter": "24px",
+    "desktopGutter": "32px",
+    "gridGap": "24px"
+  },
+  "zIndex": {
+    "base": 0,
+    "dropdown": 1000,
+    "sticky": 1100,
+    "overlay": 1200,
+    "modal": 1300,
+    "popover": 1400,
+    "toast": 1500,
+    "tooltip": 1600
+  },
+  "components": {
+    "button": {
+      "heightSm": "32px",
+      "heightMd": "40px",
+      "heightLg": "48px",
+      "radius": "{radius.md}",
+      "paddingX": "16px",
+      "primaryBg": "{color.semantic.brand.primary}",
+      "primaryHover": "{color.semantic.brand.primaryHover}",
+      "primaryPressed": "{color.semantic.brand.primaryPressed}",
+      "primaryText": "{color.semantic.text.onPrimary}",
+      "secondaryBg": "{color.semantic.brand.secondary}",
+      "secondaryHover": "{color.semantic.brand.secondaryHover}",
+      "secondaryText": "{color.semantic.text.onPrimary}",
+      "dangerBg": "{color.semantic.feedback.error}",
+      "dangerHover": "{color.semantic.feedback.errorHover}",
+      "dangerText": "{color.semantic.text.inverse}"
+    },
+    "input": {
+      "height": "48px",
+      "radius": "{radius.md}",
+      "background": "{color.semantic.surface.default}",
+      "text": "{color.semantic.text.primary}",
+      "placeholder": "{color.semantic.text.tertiary}",
+      "border": "{color.semantic.border.default}",
+      "focusBorder": "{color.semantic.border.focus}",
+      "focusRing": "{shadow.focus}",
+      "errorBorder": "{color.semantic.border.error}"
+    },
+    "card": {
+      "background": "{color.semantic.surface.default}",
+      "border": "{color.semantic.border.subtle}",
+      "radius": "{radius.lg}",
+      "padding": "{spacing.6}",
+      "shadow": "{shadow.sm}"
+    },
+    "badge": {
+      "radius": "{radius.full}",
+      "paddingX": "10px",
+      "paddingY": "6px",
+      "successBg": "{color.semantic.feedback.successSubtle}",
+      "successText": "{color.semantic.feedback.success}",
+      "warningBg": "{color.semantic.feedback.warningSubtle}",
+      "warningText": "{color.semantic.feedback.warning}",
+      "errorBg": "{color.semantic.feedback.errorSubtle}",
+      "errorText": "{color.semantic.feedback.error}",
+      "infoBg": "{color.semantic.feedback.infoSubtle}",
+      "infoText": "{color.semantic.feedback.info}"
+    },
+    "navigation": {
+      "height": "64px",
+      "background": "{color.semantic.surface.default}",
+      "activeColor": "{color.semantic.brand.primary}",
+      "inactiveColor": "{color.semantic.text.secondary}",
+      "border": "{color.semantic.border.subtle}"
+    },
+    "modal": {
+      "radius": "{radius.xl}",
+      "background": "{color.semantic.surface.default}",
+      "overlay": "rgba(17,19,21,0.55)",
+      "padding": "{spacing.6}",
+      "shadow": "{shadow.xl}"
+    },
+    "toast": {
+      "radius": "{radius.md}",
+      "background": "{color.semantic.surface.inverse}",
+      "text": "{color.semantic.text.inverse}",
+      "shadow": "{shadow.lg}"
+    }
+  },
+  "darkMode": {
+    "background": "#111315",
+    "surface": "#20252A",
+    "surfaceRaised": "#30353A",
+    "textPrimary": "#FFFFFF",
+    "textSecondary": "#D0D3D6",
+    "textTertiary": "#A6ABB0",
+    "border": "#4A4F55",
+    "primary": "#9AA5F2",
+    "primaryHover": "#BBC3FF",
+    "success": "#76B87D",
+    "warning": "#EFB45A",
+    "error": "#F77D7D"
+  },
+  "usageRules": {
+    "primaryBrandRatio": "Use Indigo as the dominant brand/action color.",
+    "accentRatio": "Use Coral and Saffron sparingly for emphasis, not as page-wide backgrounds.",
+    "feedback": "Use Green, Saffron and Red semantically for success, warning and error.",
+    "destructive": "Reserve Red for destructive or urgent actions.",
+    "warmth": "Use Cream as the signature page background to retain the textile-inspired character.",
+    "accessibility": "Do not place small text directly on low-contrast accent colors; use the semantic text tokens."
+  }
+}

@@ -10,7 +10,7 @@ import { TeamQueue } from './TeamQueue';
 import { TeamMatrix } from './TeamMatrix';
 import { BulkApproveDialog } from './TeamDialogs';
 
-/* Team timesheets: the prototype's mgrTeamTime (qnipay-workforce-v15.html:6990-7034).
+/* Team timesheets: the prototype's mgrTeamTime (calm.ly-workforce-v15.html:6990-7034).
    The banner and approve-all read the pending queue, which the server scopes
    to the approver's location and which leaves out the approver's own days.
    Rows a bulk approval could not decide come back as held and stay listed

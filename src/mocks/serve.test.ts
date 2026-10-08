@@ -26,7 +26,7 @@ let token = '';
 async function signInAs(userType: string) {
   const acc = Object.values(store.db.accounts as Record<string, { email: string; userType: string }>).find(a => a.userType === userType);
   if (!acc) throw new Error(`no seeded ${userType}`);
-  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: acc.email, password: 'Qnipay@123' }) });
+  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: acc.email, password: 'calm.ly@123' }) });
   token = ((await r.json()) as { token: string }).token;
 }
 beforeEach(async () => {

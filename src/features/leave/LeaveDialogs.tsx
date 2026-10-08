@@ -11,7 +11,7 @@ import { useTenant } from '@/shell/shellData';
 
 /* The dialogs My leave opens: leaveRequestModal with leaveShape and
    leaveRecalc, entitlementModal and proRataModal
-   (qnipay-workforce-v15.html:7715-7836). */
+   (calm.ly-workforce-v15.html:7715-7836). */
 
 const firstName = (name: string) => name.split(/\s/)[0] ?? name;
 /* What the entitlement and simulation dialogs need: My leave for your own,

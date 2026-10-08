@@ -1,7 +1,7 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from './Button';
 
-/* The prototype's .calnav (qnipay-workforce-v15.html:1372-1383): a 28px
+/* The prototype's .calnav (calm.ly-workforce-v15.html:1372-1383): a 28px
    previous button, the period in 14px display type, a 28px next button, then
    a small ghost button that returns to the current period and is disabled
    while you are on it. The arrows keep their drawn size and take a 44px tap

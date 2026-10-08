@@ -16,7 +16,7 @@ afterEach(() => { setToken(null); window.history.pushState({}, '', '/'); });
 test('each setup card keeps what its section configures behind hover, and says its page count in words', async () => {
   const admin = Object.values(store.db.accounts as unknown as Record<string, { email: string; userType: string }>).find(a => a.userType === 'admin');
   if (!admin) throw new Error('no seeded admin');
-  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: admin.email, password: 'Qnipay@123' }) });
+  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: admin.email, password: 'calm.ly@123' }) });
   setToken(((await r.json()) as { token: string }).token);
   window.history.pushState({}, '', '/setup/asetup');
   render(<App />);
@@ -42,17 +42,17 @@ test('each setup card keeps what its section configures behind hover, and says i
 
 /* Suite ICONS, CRUMBS AND REDUNDANT COUNTS: "And is dropped where it would
    only repeat the title": the setup index opens on its heading, with no
-   "Qnipay setup" crumb over a "Qnipay setup" title. */
+   "calm.ly setup" crumb over a "calm.ly setup" title. */
 test('the setup index has no crumb that would only repeat its title', async () => {
   const admin = Object.values(store.db.accounts as unknown as Record<string, { email: string; userType: string }>).find(a => a.userType === 'admin');
   if (!admin) throw new Error('no seeded admin');
-  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: admin.email, password: 'Qnipay@123' }) });
+  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: admin.email, password: 'calm.ly@123' }) });
   setToken(((await r.json()) as { token: string }).token);
   window.history.pushState({}, '', '/setup/asetup');
   render(<App />);
   const page = await screen.findByTestId(tid.page('asetup'));
   const heading = screen.getByRole('heading', { level: 1 });
-  expect(heading).toHaveTextContent('Qnipay setup');
+  expect(heading).toHaveTextContent('calm.ly setup');
   expect(page.firstElementChild).toContainElement(heading);
-  expect(within(page).getAllByText(/^Qnipay setup$/)).toEqual([heading]);
+  expect(within(page).getAllByText(/^calm.ly setup$/)).toEqual([heading]);
 });

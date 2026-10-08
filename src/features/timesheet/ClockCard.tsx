@@ -6,7 +6,7 @@ import { useClockIn, useClockOut, useCloseClock, useEndBreak, useStartBreak, typ
 import { CLOCK_STATUS, clockTime, clockedInSince, forgottenMessage, formatElapsed, isOpenState, nightLineNote, noDaySentence, CHOOSE_FINISH, CHOOSE_FINISH_NEXT } from '@/domain/clock';
 
 /* Module 2b Clocking: the prototype's clock card (.clockcard, renderClock and
-   paintClock, qnipay-workforce-v15.html:1227-1253, 6382-6386, 6890-6918). The
+   paintClock, calm.ly-workforce-v15.html:1227-1253, 6382-6386, 6890-6918). The
    state, the time worked and every sentence come from the server's record;
    the timer only ticks on locally from the read (no optimistic updates). */
 const RING_C = 2 * Math.PI * 34;
@@ -39,8 +39,14 @@ export function clockedStart(current: ClockRecord | null | undefined, stored?: s
 const flagged = (r: ClockMoved) => (r.warnings.length ? `Flagged: ${r.warnings.join(' ')}` : undefined);
 /* .btn.lime and .btn.glass: the accent with its dark ink, and the translucent
    white on the inverse surface; on a phone each grows to share the row. */
-const LIME = 'bg-brand-accent text-text-on-accent hover:bg-brand-accent active:bg-brand-accent max-md:min-w-0 max-md:flex-[1_1_auto]';
-const GLASS = 'border-glass-line bg-glass text-text-on-brand hover:bg-glass-hover max-md:min-w-0 max-md:flex-[1_1_auto]';
+const LIME = 'bg-danger text-white hover:bg-danger/90 active:bg-danger/80 dark:text-text-on-accent max-md:min-w-0 max-md:flex-[1_1_auto]';
+const GLASS = 'border-border-strong bg-surface text-text-primary hover:bg-surface-subtle max-md:min-w-0 max-md:flex-[1_1_auto]';
+const STATE_LABEL: Record<MyClock['current'] extends infer C ? C extends { state: infer S } ? S : never : never, string> = {
+  idle: 'Ready to work',
+  running: 'Working',
+  onBreak: 'On break',
+  clockedOut: 'Shift complete',
+};
 
 export function ClockCard({ clock, readAt }: { clock: MyClock; readAt: number }) {
   const clockIn = useClockIn(), startBreak = useStartBreak(), endBreak = useEndBreak(), clockOut = useClockOut();
@@ -64,24 +70,25 @@ export function ClockCard({ clock, readAt }: { clock: MyClock; readAt: number })
   const lineDay = clock.date < clock.now.date && clock.rota && !since ? nightLineNote(clock.rota.name, clock.date, open) : null;
   return (
     <>
-      <section data-testid={tid.clock.card} aria-label="Clock"
-        className="mb-md flex flex-wrap items-center gap-lg rounded-card bg-surface-inverse px-xl py-lg text-text-on-inverse max-md:flex-col max-md:items-start max-md:gap-md max-md:p-lg">
-        <div data-testid={tid.clock.ring} role="img" aria-label={`${shown}% of the ${clock.targetHours}-hour shift`} className="relative size-[76px] flex-none">
+      <section data-testid={tid.clock.card} data-clock-state={state} aria-label="Clock"
+        className="mb-xl grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-xl border-y border-ok/30 bg-ok-surface/35 px-xl py-xl max-md:flex max-md:flex-col max-md:items-stretch max-md:gap-md max-md:px-md">
+        <div data-testid={tid.clock.ring} role="img" aria-label={`${shown}% of the ${clock.targetHours}-hour shift`} className="relative size-[88px] flex-none max-md:size-[68px]">
           <svg viewBox="0 0 76 76" aria-hidden="true" className="size-[76px] -rotate-90">
             <circle cx="38" cy="38" r="34" className="fill-none stroke-ring-track stroke-[6]" />
             <circle cx="38" cy="38" r="34" style={{ strokeDasharray: RING_C, strokeDashoffset: RING_C * (1 - pct) }}
-              className="fill-none stroke-brand-accent stroke-[6] [stroke-linecap:round] transition-[stroke-dashoffset] duration-(--qp-duration-base) ease-qp" />
+              className="fill-none stroke-ok stroke-[6] [stroke-linecap:round] transition-[stroke-dashoffset] duration-(--motion-flow) ease-(--ease-flow)" />
           </svg>
           <div data-testid={tid.clock.ringPct} aria-hidden="true" className="absolute inset-0 grid place-items-center text-xs font-bold tabular-nums">{shown}%</div>
         </div>
-        <div>
+        <div className="min-w-0">
+          <div className="mb-xs text-xs font-semibold tracking-[.12em] text-ok">{STATE_LABEL[state]}</div>
           <div data-testid={tid.clock.timer} role="timer"
-            className="font-[family-name:var(--qp-font-display)] text-[length:var(--qp-text-30)] leading-[1.1] font-semibold tabular-nums">{formatElapsed(seconds)}</div>
-          <div data-testid={tid.clock.status} role="status" className="mt-[2px] text-xs opacity-80">{CLOCK_STATUS[state]}</div>
-          {since && <div data-testid={tid.clock.since} className="text-xs opacity-80">{since}</div>}
-          {lineDay && <div data-testid={tid.clock.lineDay} className="text-xs opacity-80">{lineDay}</div>}
+            className="font-[family-name:var(--qp-font-display)] text-5xl leading-none font-medium tracking-[-.055em] tabular-nums text-text-primary max-md:text-4xl">{formatElapsed(seconds)}</div>
+          <div data-testid={tid.clock.status} role="status" className="mt-sm text-sm text-text-secondary">{CLOCK_STATUS[state]}</div>
+          {since && <div data-testid={tid.clock.since} className="mt-xs text-xs text-text-muted">{since}</div>}
+          {lineDay && <div data-testid={tid.clock.lineDay} className="mt-xs text-xs text-text-muted">{lineDay}</div>}
         </div>
-        <div className="ml-auto flex flex-wrap gap-sm max-md:ml-0 max-md:w-full">
+        <div className="ml-auto flex flex-wrap gap-sm max-md:col-span-2 max-md:ml-0 max-md:w-full">
           {state === 'running' && clock.gates.breaks &&
             <Button testId={tid.clock.breakStart} kind="ghost" className={GLASS} pending={busy} onClick={() => go('breakStart')}>Start break</Button>}
           {/* Resume stays while on a break even if Break tracking was turned off since, so the break can end */}

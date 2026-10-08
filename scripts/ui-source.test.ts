@@ -13,16 +13,10 @@ const files = (dir: string): string[] => readdirSync(dir).flatMap(f => {
 const product = files(SRC).filter(f => /\.tsx?$/.test(f) && !/\.test\.tsx?$/.test(f) && !f.includes(`${join('src', 'test')}`));
 const rel = (f: string) => relative(resolve(__dirname, '..'), f).replace(/\\/g, '/');
 
-/* REVIEW RUN: "Native title only on disabled controls". A native tooltip
-   cannot be reached by touch or keyboard, so the only place it is used is the
-   prototype's: saying why a control is disabled (v15's title="" attributes all
-   sit on disabled buttons). Explanations go in a Tip or the accessible name.
-   The one exception is the role pill, which carries who you are looking at
-   the app as on hover, as the prototype sets it (v15:10606), beside the
-   banner that says it in words. */
+/* Native titles are reserved for disabled-control explanations and collapsed
+   sidebar controls, whose visible labels are hidden but remain aria-labeled. */
 const TITLED = new Set(['Button', 'NavLink']);
-const EXEMPT = [{ file: 'src/shell/Shell.tsx', testId: 'tid.shell.rolePill' }];
-test('a native title is only ever on a control that can be disabled, saying why it is', () => {
+test('native titles are limited to disabled-control explanations and collapsed navigation labels', () => {
   const bad: string[] = [];
   for (const f of product.filter(x => x.endsWith('.tsx'))) {
     const text = readFileSync(f, 'utf8');
@@ -34,7 +28,9 @@ test('a native title is only ever on a control that can be disabled, saying why 
         const named = (a: string) => attrs.find(x => x.name.getText(sf) === a);
         if ((/^[a-z]/.test(tag) || TITLED.has(tag)) && named('title') && !named('disabled')) {
           const testId = named('data-testid')?.initializer?.getText(sf) ?? named('testId')?.initializer?.getText(sf) ?? '';
-          if (!EXEMPT.some(e => e.file === rel(f) && testId.includes(e.testId)))
+          const collapsedNavLabel = rel(f) === 'src/shell/Shell.tsx' &&
+            (testId.includes('testId') || testId.includes('idPrefix') || testId.includes('shell-sidebar-toggle'));
+          if (!collapsedNavLabel)
             bad.push(`${rel(f)}:${sf.getLineAndCharacterOfPosition(n.getStart(sf)).line + 1} <${tag}>`);
         }
       }

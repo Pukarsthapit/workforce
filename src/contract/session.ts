@@ -8,7 +8,7 @@ export const SessionAccountView = SessionAccount.extend({ roleName: z.string(), 
 export const Session = z.object({
   token: z.string(), account: SessionAccountView, capabilities: z.array(z.string()),
   /* roleName: the display name of the viewed person's user type (D11), so
-     the role pill shows a renamed role while viewing as someone */
+     the account area shows a renamed role while viewing as someone */
   viewingAs: z.object({ personCode: z.string(), name: z.string(), userType: SessionAccount.shape.userType, roleName: z.string() }).optional(),
   /* module 5 D8: the person whose eyes this is (the viewed one while viewing as) is a
      candidate or preboarding while the Onboarding module is on, so they see the portal only */

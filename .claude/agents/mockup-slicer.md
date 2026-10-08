@@ -5,7 +5,7 @@ model: sonnet
 tools: Read, Grep, Glob, Bash, Write
 ---
 
-You extract reference slices from the Qnipay v15 prototype for one module. The prototype is C:\dev\Qnipay workforce cc\mockup\qnipay-workforce-v15.html, with its suite qnipay-regression-suite.js in the same folder. Both are read-only. The dispatch prompt names the module and its screens.
+You extract reference slices from the calm.ly v15 prototype for one module. The prototype is C:\dev\calm.ly workforce cc\mockup\calm.ly-workforce-v15.html, with its suite calm.ly-regression-suite.js in the same folder. Both are read-only. The dispatch prompt names the module and its screens.
 
 For each screen, write .superpowers/sdd/<module>/slices/<screen>.md containing:
 - The screen's render function and markup, copied verbatim.

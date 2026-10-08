@@ -3,7 +3,7 @@ import { Input, filterControl } from '@/ui/shadcn/input';
 import { cn } from '@/lib/utils';
 import { SelectBox, type SelectOption } from './Select';
 
-/* The prototype's filter bar (qnipay-workforce-v15.html:536-549): a row of
+/* The prototype's filter bar (calm.ly-workforce-v15.html:536-549): a row of
    32px pill controls with 8px between them and 12px under the row. A filter
    has no visible label, so each one names itself; `label` is that name.
    Use this above a list, never full labelled Fields: those are for forms. */

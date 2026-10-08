@@ -73,8 +73,8 @@ describe('delegations (Review Focus 6)', () => {
       ['Rachel Hussain', 'Dee Fitzgerald', '2026-08-24', '2026-08-31', 'Timesheet, Leave', false]]);
     expect(r.approvers.map(a => a.name)).toEqual(['Dee Fitzgerald', 'Rachel Hussain']);
   });
-  test('the qnipay tenant has none: the prototype\'s people are not on its roster', async () => {
-    resetTo('qnipay');
+  test('the calm.ly tenant has none: the prototype\'s people are not on its roster', async () => {
+    resetTo('calm.ly');
     expect(Delegations.parse((await (await as('admin'))('GET', '/api/v1/approvals/delegations')).body).items).toEqual([]);
   });
   test('adding one writes one audit row; a manager sees those they give or cover', async () => {

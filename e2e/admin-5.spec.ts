@@ -3,7 +3,7 @@ import { tid } from '../src/testids';
 import { signInEmail } from './support/timesheet';
 import { EDDIE, TOM, completeMine, myCase, onbAudit, openPortal, pdf } from './support/onboarding';
 
-/* Module 5, the administrator on Onboarding setup on qnipay (brief group 6,
+/* Module 5, the administrator on Onboarding setup on calm.ly (brief group 6,
    D2, D10, D11): Tom has completed every step but the review, every policy
    acknowledged. Eddie switches Emergency contacts off and saves (the toast is
    the prototype's: people part-way through keep what they gave); makes proof
@@ -11,7 +11,7 @@ import { EDDIE, TOM, completeMine, myCase, onbAudit, openPortal, pdf } from './s
    after; then uploads a new Employee handbook, which goes to v7.4 and asks the
    one person who acknowledged it again. Tom then sees six steps and the
    handbook unticked at its new version. */
-test.beforeEach(async ({ api }) => { await api.seed('qnipay'); await api.setClock(FROZEN); });
+test.beforeEach(async ({ api }) => { await api.seed('calm.ly'); await api.setClock(FROZEN); });
 const info = (page: import('@playwright/test').Page, text: string | RegExp) => page.getByTestId(tid.toast.info).filter({ hasText: text });
 
 test('an administrator switches a step off, changes a document setting and uploads a new policy version; the starter is asked again', async ({ page, api }) => {

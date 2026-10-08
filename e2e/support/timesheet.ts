@@ -1,4 +1,4 @@
-/* Module 2 journeys run on the qnipay seed, where the timesheet data lives
+/* Module 2 journeys run on the calm.ly seed, where the timesheet data lives
    with named people (src/mocks/seed/seed-2.test.ts): Bigyan Poudel (EMP004)
    is a Consultant, a grid type, with a day awaiting approval on 12/08/2026
    and two earlier weeks of drafts in closed periods; Pukar Sthapit (EMP001)
@@ -16,19 +16,23 @@ export const WEEK = '2026-08-10';
 export const TODAY = '2026-08-13';
 
 export async function signInEmail(page: Page, email: string) {
-  await page.evaluate(() => sessionStorage.removeItem('qnipay.session'));
+  await page.evaluate(() => sessionStorage.removeItem('calm.ly.session'));
   await page.goto('/');
   await page.getByTestId(tid.signIn.email).fill(email);
-  await page.getByTestId(tid.signIn.password).fill('Qnipay@123');
+  await page.getByTestId(tid.signIn.password).fill('calm.ly@123');
   await page.getByTestId(tid.signIn.submit).click();
-  await expect(page.getByTestId(tid.shell.account)).toBeVisible();
+  if ((page.viewportSize()?.width ?? 1280) < 768) {
+    await expect(page.getByTestId('shell-mobile-navigation')).toBeVisible();
+  } else {
+    await expect(page.getByTestId(tid.shell.account)).toBeVisible();
+  }
 }
 
 /* A versioned write straight to the server, as the signed-in session, to show
    the server refuses what the screen would not have sent. */
 export const sendVersioned = (page: Page, method: string, path: string, version: number, body?: unknown): Promise<Reply> =>
   page.evaluate(async ([m, p, v, b]) => {
-    const token = sessionStorage.getItem('qnipay.session');
+    const token = sessionStorage.getItem('calm.ly.session');
     const r = await fetch(p as string, { method: m as string, body: b === undefined ? undefined : JSON.stringify(b),
       headers: { 'Content-Type': 'application/json', 'If-Match': String(v), ...(token ? { Authorization: `Bearer ${token}` } : {}) } });
     const text = await r.text();

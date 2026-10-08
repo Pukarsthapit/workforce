@@ -88,7 +88,9 @@ for (const theme of ['light', 'dark'] as const) {
       const check = async (where: string) => {
         await setTheme(page, theme);
         const r = await new AxeBuilder({ page }).analyze();
-        expect(r.violations.filter(v => ['serious', 'critical'].includes(v.impact ?? '')).map(v => `${where} ${v.id}: ${v.nodes.length}`)).toEqual([]);
+        expect(r.violations.filter(v => ['serious', 'critical'].includes(v.impact ?? '')).map(v => ({
+          where, id: v.id, nodes: v.nodes.map(node => ({ target: node.target, html: node.html, failureSummary: node.failureSummary })),
+        }))).toEqual([]);
       };
       await signInAs(persona);
       for (const [path, ready] of PAGES_1B[persona]) {
@@ -118,7 +120,7 @@ test('phone: plan 1b pages have no horizontal overflow at 390px', async ({ page,
   }
 });
 
-/* Module 2's pages on the qnipay seed, where the timesheet data is: My
+/* Module 2's pages on the calm.ly seed, where the timesheet data is: My
    timesheet (week and day) for Bigyan Poudel, Team timesheets (queue, week
    matrix, return and bulk dialogs) and proxy entry for Pukar Sthapit, and
    Timesheet setup with its Add allowance dialog for Eddie Harford. Each step
@@ -147,7 +149,7 @@ const PAGES_2: [string, Step[]][] = [
   ]],
 ];
 test.describe('module 2 pages', () => {
-  test.beforeEach(async ({ api }) => { await api.seed('qnipay'); await api.setClock(FROZEN); });
+  test.beforeEach(async ({ api }) => { await api.seed('calm.ly'); await api.setClock(FROZEN); });
   for (const theme of ['light', 'dark'] as const) {
     test(`axe: timesheet pages and dialogs have no serious issues (${theme})`, async ({ page }) => {
       test.setTimeout(120_000);
@@ -157,7 +159,10 @@ test.describe('module 2 pages', () => {
           await go(page);
           await setTheme(page, theme);
           const r = await new AxeBuilder({ page }).analyze();
-          expect(r.violations.filter(v => ['serious', 'critical'].includes(v.impact ?? '')).map(v => `${where} ${v.id}: ${v.nodes.length}`)).toEqual([]);
+          const failures = r.violations
+            .filter(v => ['serious', 'critical'].includes(v.impact ?? ''))
+            .map(v => ({ where, id: v.id, nodes: v.nodes.map(node => ({ target: node.target, html: node.html, failureSummary: node.failureSummary })) }));
+          expect(failures).toEqual([]);
         }
       }
     });
@@ -205,7 +210,9 @@ test.describe('module 3 pages', () => {
   const serious = async (page: Page, where: string, theme: 'light' | 'dark') => {
     await setTheme(page, theme);
     const r = await new AxeBuilder({ page }).analyze();
-    expect(r.violations.filter(v => ['serious', 'critical'].includes(v.impact ?? '')).map(v => `${where} ${v.id}: ${v.nodes.length}`)).toEqual([]);
+    expect(r.violations.filter(v => ['serious', 'critical'].includes(v.impact ?? '')).map(v => ({
+      where, id: v.id, nodes: v.nodes.map(node => ({ target: node.target, html: node.html, failureSummary: node.failureSummary })),
+    }))).toEqual([]);
   };
   for (const theme of ['light', 'dark'] as const) {
     test(`axe: rota pages and dialogs have no serious issues (${theme})`, async ({ page }) => {
@@ -274,7 +281,9 @@ test.describe('module 4 pages', () => {
           await go(page);
           await setTheme(page, theme);
           const r = await new AxeBuilder({ page }).analyze();
-          expect(r.violations.filter(v => ['serious', 'critical'].includes(v.impact ?? '')).map(v => `${where} ${v.id}: ${v.nodes.length}`)).toEqual([]);
+          expect(r.violations.filter(v => ['serious', 'critical'].includes(v.impact ?? '')).map(v => ({
+            where, id: v.id, nodes: v.nodes.map(node => ({ target: node.target, failureSummary: node.failureSummary })),
+          }))).toEqual([]);
         }
       }
     });
@@ -301,7 +310,7 @@ test.describe('module 4 pages', () => {
    with the notice editor, tracker and withdraw dialog, the inbox panel and
    the page-unavailable page for Rachel Hussain. My home with its day dialog,
    Notices with the read dialog, and Documents for Amara Okafor. */
-const TEMPLATE_FILE = JSON.stringify({ kind: 'qnipay.template', v: 1, key: 'tpl_x', template: {
+const TEMPLATE_FILE = JSON.stringify({ kind: 'calm.ly.template', v: 1, key: 'tpl_x', template: {
   name: 'From a file', description: 'Brought in', scope: 'config', modules: { R: true }, flags: {}, extras: {}, labels: {}, employeeTypes: [] } });
 const PAGES_1C: [string, Step[]][] = [
   [DEE, [
@@ -348,7 +357,10 @@ test.describe('1c pages', () => {
   const serious = async (page: Page, where: string, theme: 'light' | 'dark') => {
     await setTheme(page, theme);
     const r = await new AxeBuilder({ page }).analyze();
-    expect(r.violations.filter(v => ['serious', 'critical'].includes(v.impact ?? '')).map(v => `${where} ${v.id}: ${v.nodes.length}`)).toEqual([]);
+    const failures = r.violations
+      .filter(v => ['serious', 'critical'].includes(v.impact ?? ''))
+      .map(v => ({ where, id: v.id, nodes: v.nodes.map(node => ({ target: node.target, html: node.html, failureSummary: node.failureSummary })) }));
+    expect(failures).toEqual([]);
   };
   for (const theme of ['light', 'dark'] as const) {
     test(`axe: 1c pages and dialogs have no serious issues (${theme})`, async ({ page }) => {
@@ -422,7 +434,9 @@ test.describe('clock', () => {
       await walkTheClock(page, api, async where => {
         await setTheme(page, theme);
         const r = await new AxeBuilder({ page }).analyze();
-        expect(r.violations.filter(v => ['serious', 'critical'].includes(v.impact ?? '')).map(v => `${where} ${v.id}: ${v.nodes.length}`)).toEqual([]);
+        expect(r.violations.filter(v => ['serious', 'critical'].includes(v.impact ?? '')).map(v => ({
+          where, id: v.id, nodes: v.nodes.map(node => ({ target: node.target, failureSummary: node.failureSummary })),
+        }))).toEqual([]);
       });
     });
   }
@@ -440,7 +454,7 @@ test.describe('clock', () => {
   });
 });
 
-/* Module 5 on the qnipay seed, where Onboarding and every ONB_* feature are
+/* Module 5 on the calm.ly seed, where Onboarding and every ONB_* feature are
    on: Tom Achterberg's portal on its personal, documents, policies and review
    steps, with a policy's read dialog, then (once he has sent everything) his
    submitted page; Team onboarding for Pukar Sthapit with the check dialog,
@@ -468,7 +482,7 @@ const pages5 = (api: Parameters<typeof completeMine>[1]): [string, Step[]][] => 
   ]],
 ];
 test.describe('module 5 pages', () => {
-  test.beforeEach(async ({ api }) => { await api.seed('qnipay'); await api.setClock(FROZEN); });
+  test.beforeEach(async ({ api }) => { await api.seed('calm.ly'); await api.setClock(FROZEN); });
   for (const theme of ['light', 'dark'] as const) {
     test(`axe: onboarding pages and dialogs have no serious issues (${theme})`, async ({ page, api }) => {
       test.setTimeout(150_000);

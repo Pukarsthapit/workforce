@@ -2,11 +2,11 @@ import type { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { Tip } from './Affordances';
 
-/* The prototype's .card (qnipay-workforce-v15.html:451-458): the card
-   surface, a 1px border, radius 12, 16px padding (--qp-density-pad), no
-   shadow, 12px under it. */
+/* A quiet grouping surface: open by default, with a divider instead of a
+   repeated outlined box. Callers can still add a surface when interaction
+   or layered content benefits from containment. */
 export function Card({ className, children, testId }: { className?: string; children: ReactNode; testId?: string }) {
-  return <div data-testid={testId} className={cn('mb-md rounded-card border bg-surface-card p-(--qp-density-pad)', className)}>{children}</div>;
+  return <div data-testid={testId} className={cn('mb-lg border-t border-border py-lg first:border-t-0 first:pt-0', className)}>{children}</div>;
 }
 /* .cardhead: a 14px/600 title, 8px gaps, 12px under it, actions pushed right. */
 export function CardHead({ title, actions }: { title: ReactNode; actions?: ReactNode }) {
@@ -29,14 +29,14 @@ export function IconTile({ children, off }: { children: ReactNode; off?: boolean
    icon tile and a 16px title, 16px 24px padding (16px on a narrow screen).
    A tip on the title carries what the card is for; `desc` is the .acard-h p
    line under the title (12px muted, 2px above). */
-export function AdminCard({ icon, title, tip, tipTestId, testId, desc, children }: {
+export function AdminCard({ title, tip, tipTestId, testId, desc, children }: {
   icon: ReactNode; title: string; tip?: string; tipTestId?: string; testId?: string; desc?: ReactNode; children: ReactNode;
 }) {
   return (
-    <section data-testid={testId} className="mb-md rounded-card border bg-surface-card px-xl py-lg max-lg:p-md">
+    <section data-testid={testId} className="mb-xl border-t border-border pt-lg first:border-t-0 first:pt-0">
       <div className="mb-md flex items-start gap-md">
-        <IconTile>{icon}</IconTile>
-        <div><h3>{title}{tip && tipTestId && <Tip testId={tipTestId} text={tip} />}</h3>
+        <span aria-hidden="true" className="mt-[9px] size-2 shrink-0 rounded-full bg-brand" />
+        <div><h3 className="text-base font-medium tracking-[-.02em]">{title}{tip && tipTestId && <Tip testId={tipTestId} text={tip} />}</h3>
           {desc && <p className="mt-[2px] text-xs text-text-muted">{desc}</p>}</div>
       </div>
       {children}

@@ -122,10 +122,10 @@ describe('editing someone', () => {
     await userEvent.click(screen.getByTestId(tid.people.edit('CP-1042')));
     await screen.findByTestId(tid.personForm.root);
     expect(screen.queryByTestId(tid.personForm.field('userType'))).toBeNull();
-    expect(screen.getByTestId(tid.personForm.root)).toHaveTextContent('Qnipay setup · Permissions');
+    expect(screen.getByTestId(tid.personForm.root)).toHaveTextContent('calm.ly setup · Permissions');
   });
   test('someone whose work email already signs in another account is told the address must change, not to add one', async () => {
-    resetTo('qnipay');
+    resetTo('calm.ly');
     await signInAs('admin');
     const shared = String(personOf('EMP015').email);
     expect(shared).toBe(String(personOf('EMP014').email));

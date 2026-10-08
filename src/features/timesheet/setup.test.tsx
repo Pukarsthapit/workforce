@@ -8,11 +8,11 @@ import { renderPage, withFakeServer } from '@/test/render-page';
 import { audits, resetTo, signInAs, snapshot } from '@/test/api-helpers';
 import { TimesheetSetupPage } from './TimesheetSetupPage';
 
-/* The qnipay seed: two employee types, Consultant (hourly, weekly grid, the
+/* The calm.ly seed: two employee types, Consultant (hourly, weekly grid, the
    first in the picker) and Project Manager (salaried, paid per day). The
    review threshold is 10 and the daily maximum 16. */
 withFakeServer();
-beforeEach(async () => { resetTo('qnipay'); await signInAs('admin'); });
+beforeEach(async () => { resetTo('calm.ly'); await signInAs('admin'); });
 const config = () => {
   const c = store.coll<TimesheetConfig>('timesheetConfig').timesheetConfig;
   if (!c) throw new Error('no timesheet config');

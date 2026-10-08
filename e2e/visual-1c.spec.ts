@@ -28,7 +28,7 @@ for (const { w, h } of WIDTHS) {
       test.setTimeout(180_000);
       await page.clock.setFixedTime(new Date(FROZEN));
       await page.setViewportSize({ width: w, height: h });
-      await page.addInitScript(t => { try { localStorage.setItem('qnipay.theme', t); } catch { /* the theme is also set on the html element */ } }, theme);
+      await page.addInitScript(t => { try { localStorage.setItem('calm.ly.theme', t); } catch { /* the theme is also set on the html element */ } }, theme);
       const shot = async (name: string) => {
         await settle(page);
         await expect(page).toHaveScreenshot(`${name}-${w}-${theme}.png`, { fullPage: true });

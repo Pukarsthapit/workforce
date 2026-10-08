@@ -1,5 +1,5 @@
 import social from './social.json';
-import qnipay from './qnipay.json';
+import calmly from './calmly.json';
 import meta from './meta.json';
 import { PERSON_STATES } from '@/domain/lifecycle';
 import { DIMENSION_CODE, EMPLOYEE_CODE, TYPE_CODE } from '@/domain/codes';
@@ -14,7 +14,7 @@ const PERSON_KEYS = ['code', 'name', 'email', 'phone', 'address', 'emergencyName
   'jobProfile', 'employeeType', 'category', 'location', 'department', 'manager', 'contractedHours', 'maxHours', 'night',
   'resource', 'cis', 'state', 'start', 'end'];
 
-for (const [name, raw] of Object.entries({ social, qnipay })) {
+for (const [name, raw] of Object.entries({ social, 'calm.ly': calmly })) {
   const seed = raw as unknown as SeedFile;
   describe(`seed ${name} for plan 1b`, () => {
     test('every person is in one of the seven states', () => {

@@ -10,7 +10,7 @@ import { StatePill } from '@/features/people/StatePill';
 
 const basis = (h: number) => (h >= 35 ? 'Full time' : h > 0 ? 'Part time' : 'No contracted hours');
 
-/* Ported from the prototype's admContracts (qnipay-workforce-v15.html:8284-
+/* Ported from the prototype's admContracts (calm.ly-workforce-v15.html:8284-
    8297): contracted hours, the one baseline Rota, Timesheet and Leave compare
    against. The prototype's inline input wrote on every keystroke without an
    audit; here Edit opens the contract and saves it through the person
@@ -23,7 +23,7 @@ export function ContractsPage() {
   const editing = held && latest(held, people.data);
   return (
     <Page testId={tid.page('acon')}>
-      <PageHead title="Contracts" crumb="Qnipay setup · Contracts" tipTestId={tid.head.tip('acon')}
+      <PageHead title="Contracts" crumb="calm.ly setup · Contracts" tipTestId={tid.head.tip('acon')}
         tip="Contracted hours: the common baseline for every comparison Timesheet and Rota make." actions={<GuideButton view="acon" />} />
       {people.isPending && <p className="text-text-secondary">Loading&hellip;</p>}
       {people.isError && <p data-testid={tid.contracts.error} role="alert" className="text-err">The contracts could not be loaded, so nothing here is current. Reload the page.</p>}

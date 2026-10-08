@@ -12,7 +12,7 @@ import { formatDay, formatDmy } from '@/domain/time';
 import { useTenant } from '@/shell/shellData';
 import { GiveBackDialog } from './TeamLeaveDialogs';
 
-/* Sickness: the prototype's mgrSick (qnipay-workforce-v15.html:7914-7953).
+/* Sickness: the prototype's mgrSick (calm.ly-workforce-v15.html:7914-7953).
    The first colleague over the absence trigger with Arrange it, then each
    colleague's absences as episodes and their Bradford score over 52 weeks
    (D9), recording an absence (a day next to an episode joins it rather than

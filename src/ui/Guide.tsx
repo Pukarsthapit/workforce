@@ -5,7 +5,7 @@ import { HelpButton } from './Affordances';
 import { Modal } from './Modal';
 import { GUIDES } from './guides';
 
-/* The page `?`: the prototype's guideBtn and guideModal (qnipay-workforce-v15.html:
+/* The page `?`: the prototype's guideBtn and guideModal (calm.ly-workforce-v15.html:
    10061-10079). It opens the view's guide in a modal, one titled section after
    another (.gsec: a 14px/650 heading over 14px secondary text at 1.6, 16px
    between sections), closed by one primary button. A view with no guide gets

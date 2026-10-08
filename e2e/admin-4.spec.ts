@@ -3,13 +3,13 @@ import { tid } from '../src/testids';
 import { BIGYAN, EDDIE, PUKAR, TODAY, dayState, signInEmail } from './support/timesheet';
 import { askFor, decide, leaveAudit } from './support/leave';
 
-/* Module 4, the administrator on Leave setup on qnipay (brief D11): leave no
+/* Module 4, the administrator on Leave setup on calm.ly (brief D11): leave no
    longer blocks timesheet capture and the approval SLA drops to 3 days, both
    applied only on Save, with one audit row carrying the before and after;
    then their effect, where colleagues meet them. Time on a day of approved
    leave now saves without "called in and worked anyway", the banner still
    shown (D8), and the request form says the manager has 3 days to decide. */
-test.beforeEach(async ({ api }) => { await api.seed('qnipay'); await api.setClock(FROZEN); });
+test.beforeEach(async ({ api }) => { await api.seed('calm.ly'); await api.setClock(FROZEN); });
 const info = (page: import('@playwright/test').Page, text: string | RegExp) => page.getByTestId(tid.toast.info).filter({ hasText: text });
 
 test('an administrator turns off leave blocking the timesheet and shortens the SLA; time on a leave day then saves, and the request form shows the new SLA', async ({ page, api }) => {

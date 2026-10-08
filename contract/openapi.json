@@ -1,7 +1,7 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Qnipay Workforce API (draft, from the fake server)",
+    "title": "calm.ly Workforce API (draft, from the fake server)",
     "version": "0.1.0"
   },
   "security": [
@@ -47526,7 +47526,7 @@
                   "properties": {
                     "kind": {
                       "type": "string",
-                      "const": "qnipay.template"
+                      "const": "calm.ly.template"
                     },
                     "v": {
                       "type": "number",

@@ -1,5 +1,5 @@
 /* The employment lifecycle. Ported from the prototype's EMP_STATES
-   (qnipay-workforce-v15.html, "IMP-013 — EMPLOYEE LIFECYCLE"). Status is never
+   (calm.ly-workforce-v15.html, "IMP-013 — EMPLOYEE LIFECYCLE"). Status is never
    free text: a person is in exactly one of these states, and moves only along
    `next`. The notes are the prototype's, rewritten without em-dash asides. */
 export const PERSON_STATES = ['candidate', 'preboard', 'active', 'suspended', 'onleave', 'leaver', 'archived'] as const;

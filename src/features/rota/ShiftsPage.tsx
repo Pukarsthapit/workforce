@@ -8,7 +8,7 @@ import { useTenant } from '@/shell/shellData';
 import { Palette } from './Palette';
 import { NewShiftTypeDialog, ShiftCatalogueBody } from './ShiftCatalogue';
 
-/* Shift catalogue: the prototype's mgrShifts (qnipay-workforce-v15.html:
+/* Shift catalogue: the prototype's mgrShifts (calm.ly-workforce-v15.html:
    7228-7237). The palette in the rota's colours, then the catalogue itself.
    A shift type is tenant-wide, which the caution says before anything is
    changed. Writing needs rota_shift, and Rota setup can keep it for

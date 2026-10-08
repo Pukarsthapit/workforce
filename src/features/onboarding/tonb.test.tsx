@@ -10,7 +10,7 @@ import { renderPage, withFakeServer } from '@/test/render-page';
 import { audits, personOf, resetTo } from '@/test/api-helpers';
 import { TeamOnboardingPage } from './TeamOnboardingPage';
 
-/* The qnipay seed at the frozen clock (13/08/2026): Pukar Sthapit (EMP001),
+/* The calm.ly seed at the frozen clock (13/08/2026): Pukar Sthapit (EMP001),
    the manager persona at Manchester, holds Track onboarding, Verify
    onboarding documents and Add and edit people. Priya Raman (EMP002) is a
    candidate starting 28/09/2026 and Tom Achterberg (EMP003) is preboarding
@@ -20,7 +20,7 @@ import { TeamOnboardingPage } from './TeamOnboardingPage';
 withFakeServer();
 const PUKAR = 'pukar.sthapit@dogmagroup.co.uk';
 const signIn = async (email = PUKAR) => {
-  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'Qnipay@123' }) });
+  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'calm.ly@123' }) });
   const body = (await r.json()) as { token?: string };
   if (!body.token) throw new Error(`sign-in as ${email} failed`);
   setToken(body.token);
@@ -53,7 +53,7 @@ const open = async () => {
   return screen.findByTestId(tid.tonb.list);
 };
 
-beforeEach(() => resetTo('qnipay'));
+beforeEach(() => resetTo('calm.ly'));
 
 describe('Team onboarding', () => {
   test('the starters at the manager\'s location with progress, state and what blocks them, Invite only for the candidate, with full test id coverage', async () => {

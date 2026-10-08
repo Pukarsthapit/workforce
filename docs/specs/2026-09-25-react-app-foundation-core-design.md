@@ -2,11 +2,11 @@
 
 Date: 25/09/2026
 Status: design agreed in conversation, awaiting spec review
-Reference implementation: `../Qnipay workforce cc/mockup/qnipay-workforce-v15.html` and its suite `qnipay-regression-suite.js` beside it (paths relative to this repository root)
+Reference implementation: `../calm.ly workforce cc/mockup/calm.ly-workforce-v15.html` and its suite `calm.ly-regression-suite.js` beside it (paths relative to this repository root)
 
 ## 1. Purpose
 
-Rebuild Qnipay Workforce as a React application, in stages. The first stages run
+Rebuild calm.ly Workforce as a React application, in stages. The first stages run
 against a fake API that behaves like the future real one. Production replaces the
 fake one endpoint at a time, so the application code does not change at the swap.
 
@@ -28,7 +28,7 @@ and the Workforce core that every module reads.
 - TypeScript in strict mode, Vite, React Router, TanStack Query for server state.
 - Zod schemas are the single contract, used by the client, the fake server and the OpenAPI output.
 - Vitest and Testing Library for unit, contract and component tests. Playwright on Chromium for end-to-end tests.
-- The app is its own repository, `C:\dev\qnipay-workforce-app`, outside OneDrive. The prototype folder `Qnipay workforce cc` stays in OneDrive and is reached as the sibling `../Qnipay workforce cc` through the junction `C:\dev\Qnipay workforce cc`. The prototype stays there as the reference and is not modified by this work.
+- The app is its own repository, `C:\dev\calm.ly-workforce-app`, outside OneDrive. The prototype folder `calm.ly workforce cc` stays in OneDrive and is reached as the sibling `../calm.ly workforce cc` through the junction `C:\dev\calm.ly workforce cc`. The prototype stays there as the reference and is not modified by this work.
 - npm as the package manager, Node 22 or later.
 - Sign-in is simulated: persona accounts behind a `session` endpoint shaped like an Entra ID session, so Entra can replace it.
 - The domain rules in CLAUDE.md carry over unchanged: no money, codes immutable, nothing in use deleted, every state change audited, no outcome claimed that was not observed, stubs labelled as stubs.
@@ -50,7 +50,7 @@ Rota comes before Leave, as in PRD §13. Each sub-project gets its own spec and 
 ## 5. Architecture
 
 ```
-qnipay-workforce-app/
+calm.ly-workforce-app/
   src/
     contract/     Zod schemas and the endpoint list; generates contract/openapi.json
     api/          typed fetch client and TanStack Query hooks
@@ -75,7 +75,7 @@ qnipay-workforce-app/
   success only from the response.
 - **Tokens.** The prototype's three-tier `--qp` stylesheet is lifted verbatim into
   `ui/tokens.css`, including the dark theme block. Tailwind's theme maps to those
-  CSS variables, so shadcn components render in Qnipay colours, Inter and the 4px
+  CSS variables, so shadcn components render in calm.ly colours, Inter and the 4px
   grid. The spacing scale is `--qp-space-xs` (4px) through `--qp-space-6xl` (120px).
 
 ## 6. Scope of sub-project 1
@@ -84,7 +84,7 @@ Each screen names the prototype view it is checked against.
 
 | Area | Screens (prototype view) | Behaviour |
 |---|---|---|
-| Shell | Sign-in, persona navigation (My Work, My Team, Qnipay setup), tab strip with group menus, phone bottom bar, bell and notification panel, account menu, view-as | Navigation follows capabilities and flags. View-as is audited. The role pill shows the account's role, and says so while viewing as someone else. |
+| Shell | Sign-in, persona navigation (My Work, My Team, calm.ly setup), tab strip with group menus, phone bottom bar, bell and notification panel, account menu, view-as | Navigation follows capabilities and flags. View-as is audited. The account area shows the account's role; the top bar reserves its space for navigation, theme and notifications. |
 | People | Admin people (`apeople`), Team people (`tpeople`), person record, add and edit form | Create and edit with field-level history. The seven-state lifecycle with guarded moves. Employee ID unique on create and immutable after, with the next free ID proposed in the tenant's own scheme. |
 | Self-service | My profile (`profile`), propose a change, the approval queue on Team people | Contact, emergency and bank changes take effect only once approved. Bank changes route to payroll as well. |
 | Dimensions | Locations, departments, cost centres, job profiles (`aloc`); projects and contracts (`acon`) | Codes unique and immutable. Nothing in use can be deleted, and the refusal names what uses it. |
@@ -93,7 +93,7 @@ Each screen names the prototype view it is checked against.
 | Tenant config | Organisation (`aorg`), Calendar (`acal`), Modules and features (`amods`, `mfeat`), industry templates | Modules and flags switch navigation on and off. Templates preset a whole tenant and can be saved, exported and imported. |
 | Frameworks | Notifications (`anotif`), Approvals chain and delegations (`aappr`) | The shared configuration. Modules raise events and use chains in later sub-projects. |
 | Audit | Audit log (`iaudit`) | Every state change from every area, filterable, showing before → after. |
-| Notice board | Notices (`notices`), My team → Notices (`tnotices`), the Home card | As specified in `../Qnipay workforce cc/docs/superpowers/specs/2026-09-25-notice-board-design.md`, including its "Decisions made during the build". |
+| Notice board | Notices (`notices`), My team → Notices (`tnotices`), the Home card | As specified in `../calm.ly workforce cc/docs/superpowers/specs/2026-09-25-notice-board-design.md`, including its "Decisions made during the build". |
 | Documents | Documents (`docs`) | Read-only list with its source. Payroll documents show "Not yet connected". |
 | Home | Employee home, Team home, in their core form | The notices card and person summary. Timesheet, rota and leave tiles are labelled stubs until their module arrives. |
 
@@ -175,7 +175,7 @@ states the consequence and what to do next.
 
 - An in-memory store, persisted to `localStorage` under a seed version. A store with
   an older seed version is set aside, never half-loaded.
-- Seeded from the prototype's own data, both the `qnipay` and `social` tenants, by a
+- Seeded from the prototype's own data, both the `calm.ly` and `social` tenants, by a
   one-off extraction script. No sample data is retyped.
 - Handlers call `domain/` for every rule.
 - Development and test endpoints under `/api/_dev`, excluded from production

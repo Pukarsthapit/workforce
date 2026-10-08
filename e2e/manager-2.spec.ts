@@ -7,7 +7,7 @@ import { BIGYAN, EDDIE, PUKAR, TODAY, dayState, sendVersioned, signInEmail } fro
    bulk, enter a day on a team member's behalf and approve it from the week
    matrix. Then the permission paths, straight to the server: their own day,
    someone outside their location, and an employee with no team rights. */
-test.beforeEach(async ({ api }) => { await api.seed('qnipay'); await api.setClock(FROZEN); });
+test.beforeEach(async ({ api }) => { await api.seed('calm.ly'); await api.setClock(FROZEN); });
 const BIGYAN_DAY = 'tsd_EMP004_2026-08-12', BIJAY_DAY = 'tsd_EMP005_2026-08-11', JAMIR_DAY = 'tsd_EMP007_2026-08-10';
 
 test('a manager approves a day, returns one with a reason, and approves the rest in bulk, each queued for Business Central', async ({ page, api }) => {
@@ -75,7 +75,7 @@ test('a manager enters a day on a team member’s behalf, it shows as a proxy en
 });
 
 test('the server refuses a manager’s own day, a day outside their location, and an employee with no team rights', async ({ page, api }) => {
-  /* everyone in the qnipay roster is at Manchester, so the admin moves Jamir to Remote first */
+  /* everyone in the calm.ly roster is at Manchester, so the admin moves Jamir to Remote first */
   await signInEmail(page, EDDIE);
   const jamir = (await api.get('/api/v1/people/per_EMP007')).body as { version: number };
   expect((await sendVersioned(page, 'PATCH', '/api/v1/people/per_EMP007', jamir.version, { location: 'REM' })).status).toBe(200);

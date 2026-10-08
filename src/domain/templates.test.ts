@@ -211,19 +211,19 @@ describe('names and removal (D4)', () => {
 describe('the file', () => {
   test('export and import round-trip exactly, with nothing ignored', () => {
     const file = templateFile('mne', shipped('mne'));
-    expect(file).toMatchObject({ kind: 'qnipay.template', v: 1, key: 'mne' });
+    expect(file).toMatchObject({ kind: 'calm.ly.template', v: 1, key: 'mne' });
     const r = readTemplateFile(JSON.stringify(file, null, 1));
     expect(r).toEqual({ ok: true, template: shipped('mne'), ignored: [] });
   });
   test('a file that is not JSON could not be read; one that is not a template says so', () => {
     expect(readTemplateFile('{not json')).toEqual({ ok: false, refusal: UNREADABLE });
     expect(UNREADABLE.message).toBe('That file could not be read.');
-    for (const text of ['[]', '{"kind":"qnipay.state","template":{}}', '{"kind":"qnipay.template"}', '"x"'])
+    for (const text of ['[]', '{"kind":"calm.ly.state","template":{}}', '{"kind":"calm.ly.template"}', '"x"'])
       expect(readTemplateFile(text), text).toEqual({ ok: false, refusal: NOT_A_TEMPLATE });
-    expect(NOT_A_TEMPLATE.message).toBe('That file is not a Qnipay template.');
+    expect(NOT_A_TEMPLATE.message).toBe('That file is not a calm.ly template.');
   });
   test('a prototype file keeps only what a template may hold and lists the rest, money included (D3)', () => {
-    const p = { kind: 'qnipay.template', v: 1, key: 'tpl_x', template: {
+    const p = { kind: 'calm.ly.template', v: 1, key: 'tpl_x', template: {
       name: 'X', description: '', scope: 'config', custom: true, savedAt: '13/08/2026', company: { currency: 'GBP £' }, payCodes: [{ code: 'OT', value: '1.5' }],
       modules: { A: true, Z: true }, flags: { WEEKLY: true, NOPE: true }, extras: { weekGrid: 'times', rate: 3 }, labels: {},
       employeeTypes: [{ code: 'driver', name: 'Driver', category: 'Contracted', mode: 'form', uom: 'hour', capabilities: [], rules: [{ val: '£21 flat' }], allow: ['OT'] }],

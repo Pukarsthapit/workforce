@@ -1,4 +1,4 @@
-/* Module 4 journeys. The employee and manager leave journeys run on qnipay,
+/* Module 4 journeys. The employee and manager leave journeys run on calm.ly,
    where Leave is on and Rota is off (brief D14): Bigyan Poudel (EMP004) has a
    waiting request for 3-4 September (lr_3), approved leave on 17-18 August
    (lr_5) and 12.5 of 24 days left; Bijay Shrestha (EMP005) waits on 24-28

@@ -9,15 +9,15 @@ import { renderPage, withFakeServer } from '@/test/render-page';
 import { audits, resetTo, signInAs } from '@/test/api-helpers';
 import { LeavePage } from './LeavePage';
 
-/* The qnipay seed at the frozen clock (Thursday 13/08/2026). Bigyan Poudel
+/* The calm.ly seed at the frozen clock (Thursday 13/08/2026). Bigyan Poudel
    (EMP004), an hourly employee on 40 hours, has 24 days under the Standard
    policy, 9.5 taken, a waiting request for 3-4 September (lr_3), an approved
    one for 17-18 August (lr_5), 6 hours of TOIL to use by 30/09/2026, and
    reports to Manish Nepal. Pukar Sthapit (EMP001) is the manager persona. */
 withFakeServer();
-beforeEach(() => resetTo('qnipay'));
+beforeEach(() => resetTo('calm.ly'));
 const signInEmail = async (email: string) => {
-  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'Qnipay@123' }) });
+  const r = await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: 'calm.ly@123' }) });
   const body = (await r.json()) as { token?: string };
   if (!body.token) throw new Error(`sign-in as ${email} failed`);
   setToken(body.token);

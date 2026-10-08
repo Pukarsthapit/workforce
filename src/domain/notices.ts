@@ -1,5 +1,5 @@
 /* 1c group 6: the notice board (brief D10). Ported from the prototype's
-   section 12b (qnipay-workforce-v15.html:5697-6097): seedNotices,
+   section 12b (calm.ly-workforce-v15.html:5697-6097): seedNotices,
    noticeStatus, NOTICE_STATUS, noticeFor, noticeAudience, noticeAcked,
    noticeScopes, postedNotices, noticeOrder, noticeGate and noticeAction.
 
@@ -135,7 +135,7 @@ export const scopeLabel = (s: NoticeScope, names: ScopeNames) => (s.kind === 'al
 /* ------------------------------------------------------------- refusals */
 export interface NoticeRefusal { status: 403 | 404 | 409 | 422; code: string; message: string; next: string; field?: string }
 export const NOTICES_OFF: NoticeRefusal = { status: 403, code: 'feature-off', message: 'The notice board is switched off for this tenant.',
-  next: 'Turn it on in Qnipay setup → Modules and features.' };
+  next: 'Turn it on in calm.ly setup → Modules and features.' };
 export const NO_NOTICE: NoticeRefusal = { status: 404, code: 'not-found', message: 'That notice no longer exists.', next: 'Reload the page.' };
 export const NO_LOCATION: NoticeRefusal = { status: 403, code: 'scope', message: 'You have no location to post to.',
   next: 'Ask an administrator to give you a location on your record.' };

@@ -7,7 +7,7 @@
 **Architecture:**
 - Features call a typed client. The client speaks HTTP only.
 - MSW answers from an in-memory store seeded from the prototype, and enforces every rule through pure `domain/` functions.
-- The `--qp` token stylesheet is lifted verbatim from the prototype and mapped into Tailwind v4, so shadcn/Radix components render in the Qnipay design language.
+- The `--qp` token stylesheet is lifted verbatim from the prototype and mapped into Tailwind v4, so shadcn/Radix components render in the calm.ly design language.
 
 **Tech Stack:**
 - Language and build: TypeScript 5 (strict), React 19, Vite 7.
@@ -21,7 +21,7 @@
 
 ## Global Constraints
 
-- Repository root: `C:\dev\qnipay-workforce-app`. The prototype lives at `../Qnipay workforce cc/mockup/qnipay-workforce-v15.html`, reached through the junction `C:\dev\Qnipay workforce cc`, which points at the prototype folder in OneDrive. Never modify the prototype.
+- Repository root: `C:\dev\calm.ly-workforce-app`. The prototype lives at `../calm.ly workforce cc/mockup/calm.ly-workforce-v15.html`, reached through the junction `C:\dev\calm.ly workforce cc`, which points at the prototype folder in OneDrive. Never modify the prototype.
 - Node 22 or later (the tests use `fs.globSync`), npm. Checked here: Node 24. TypeScript `strict: true`, `noUncheckedIndexedAccess: true`.
 - British English in every user-facing string. Plain sentences. No em-dash asides, and no "not X but Y".
 - A toast or refusal states the consequence and what to do next. The refusal shape is `{ code, message, next, usedBy?, field? }` (spec §7.2).
@@ -80,7 +80,7 @@
 
 ```json
 {
-  "name": "qnipay-workforce-app",
+  "name": "calm.ly-workforce-app",
   "private": true,
   "type": "module",
   "engines": { "node": ">=22" },
@@ -217,14 +217,14 @@ Expected: FAIL, `Cannot find module './App'`.
 <!doctype html>
 <html lang="en-GB">
   <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Qnipay Workforce</title></head>
+    <title>calm.ly Workforce</title></head>
   <body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body>
 </html>
 ```
 `src/App.tsx`:
 ```tsx
 export function App() {
-  return <div data-testid="app-root">Qnipay Workforce</div>;
+  return <div data-testid="app-root">calm.ly Workforce</div>;
 }
 ```
 `src/main.tsx`:
@@ -272,7 +272,7 @@ Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>"
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const proto = readFileSync(resolve(__dirname, '../../Qnipay workforce cc/mockup/qnipay-workforce-v15.html'), 'utf8');
+const proto = readFileSync(resolve(__dirname, '../../calm.ly workforce cc/mockup/calm.ly-workforce-v15.html'), 'utf8');
 const lifted = readFileSync(resolve(__dirname, '../src/ui/tokens.css'), 'utf8');
 const defs = (s: string) => new Set([...s.matchAll(/(--qp-[a-z0-9-]+)\s*:/g)].map(m => m[1]));
 
@@ -304,13 +304,13 @@ Expected: FAIL, `ENOENT … src/ui/tokens.css`.
 `scripts/lift-tokens.mjs`:
 ```js
 /* Copies the prototype's token layer verbatim. The prototype is the source of
-   truth for the Qnipay design language, so nothing here is retyped by hand. */
+   truth for the calm.ly design language, so nothing here is retyped by hand. */
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const SRC = process.env.PROTOTYPE_PATH || resolve(here, '../../Qnipay workforce cc/mockup/qnipay-workforce-v15.html');
+const SRC = process.env.PROTOTYPE_PATH || resolve(here, '../../calm.ly workforce cc/mockup/calm.ly-workforce-v15.html');
 const html = readFileSync(SRC, 'utf8');
 
 /* the block that opens at `start` and closes at its matching brace */
@@ -355,7 +355,7 @@ Expected: `tokens.css written: 2xx definitions`, and 3 tests pass. If "every --q
 /* the prototype switches theme with [data-theme="dark"], so shadcn's dark: does too */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
-/* shadcn reads these names. Each is an alias of a Qnipay semantic token, never a value. */
+/* shadcn reads these names. Each is an alias of a calm.ly semantic token, never a value. */
 :root {
   --background: var(--qp-color-surface-page);
   --foreground: var(--qp-color-text-primary);
@@ -398,7 +398,7 @@ Expected: `tokens.css written: 2xx definitions`, and 3 tests pass. If "every --q
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  /* Qnipay names, for everything shadcn does not name */
+  /* calm.ly names, for everything shadcn does not name */
   --color-brand: var(--qp-color-brand-primary);
   --color-brand-hover: var(--qp-color-brand-primary-hover);
   --color-brand-accent: var(--qp-color-brand-accent);
@@ -959,7 +959,7 @@ export * from './endpoints';
 
 `src/api/session-token.ts`:
 ```ts
-const KEY = 'qnipay.session';
+const KEY = 'calm.ly.session';
 export const getToken = () => { try { return sessionStorage.getItem(KEY); } catch { return null; } };
 export const setToken = (t: string | null) => { try { if (t) sessionStorage.setItem(KEY, t); else sessionStorage.removeItem(KEY); } catch { /* private mode: session lasts the tab */ } };
 ```
@@ -1021,7 +1021,7 @@ export function buildOpenApi() {
     if (e.request) op.requestBody = { content: { 'application/json': { schema: z.toJSONSchema(e.request, { unrepresentable: 'any' }) } } };
     (paths[p] ??= {})[e.method.toLowerCase()] = op;
   }
-  return { openapi: '3.1.0', info: { title: 'Qnipay Workforce API (draft, from the fake server)', version: '0.1.0' }, paths };
+  return { openapi: '3.1.0', info: { title: 'calm.ly Workforce API (draft, from the fake server)', version: '0.1.0' }, paths };
 }
 if (process.argv[1]?.endsWith('openapi.ts')) {
   mkdirSync(resolve(import.meta.dirname, '../contract'), { recursive: true });
@@ -1065,7 +1065,7 @@ Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>"
     - `store.now(): string`, ISO time;
     - `store.setClock(iso | null)`;
     - `store.reset(tenant?)`, `store.load(seed)` and `store.save()`.
-  - `SEED_VERSION` and `STORE_KEY = 'qnipay.app.store'`.
+  - `SEED_VERSION` and `STORE_KEY = 'calm.ly.app.store'`.
   - `refuse(status, refusal)`, `readJson(request, schema)`, `requireSession(request)`, `requireCapability(session, cap)` and `checkVersion(request, record)`.
   - `bump<T extends RecordMeta>(record, changes): T`, which returns a new record with `version+1` and `updatedAt = now`.
   - `writeAudit({who, act, entity, entityId, before, after, reason}): string`, which returns the audit ID.
@@ -1146,14 +1146,14 @@ Expected: FAIL, modules not found.
 /* The fake server's database. In memory, persisted to localStorage so a reload
    keeps what the person did, and set aside wholesale when the seed changes. */
 import socialSeed from './seed/social.json';
-import qnipaySeed from './seed/qnipay.json';
+import calm.lySeed from './seed/calm.ly.json';
 
-export const STORE_KEY = 'qnipay.app.store';
+export const STORE_KEY = 'calm.ly.app.store';
 export const SEED_VERSION = '2026-09-25.1a';
 export type Collections = Record<string, Record<string, Record<string, unknown>>>;
 export interface Seed { version: string; tenant: string; data: Collections }
 
-const SEEDS: Record<string, unknown> = { social: socialSeed, qnipay: qnipaySeed };
+const SEEDS: Record<string, unknown> = { social: socialSeed, calm.ly: calm.lySeed };
 const defaultSeed = (tenant = 'social') => ({ version: SEED_VERSION, tenant, data: structuredClone((SEEDS[tenant] as { data: Collections }).data) });
 
 export function createStore(seedFor: (tenant?: string) => Seed = defaultSeed) {
@@ -1184,11 +1184,11 @@ export function createStore(seedFor: (tenant?: string) => Seed = defaultSeed) {
 export const store = createStore();
 ```
 Task 6 produces the seed JSON files. Until then, create placeholders so the import resolves:
-`src/mocks/seed/social.json` and `src/mocks/seed/qnipay.json`, each containing:
+`src/mocks/seed/social.json` and `src/mocks/seed/calm.ly.json`, each containing:
 ```json
 { "version": "placeholder", "tenant": "social", "data": { "audit": {} } }
 ```
-Use `"tenant": "qnipay"` in the second file.
+Use `"tenant": "calm.ly"` in the second file.
 
 - [ ] **Step 4: HTTP helpers, audit and faults**
 
@@ -1359,7 +1359,7 @@ Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>"
 ### Task 6: Extract the seed from the prototype
 
 **Files:**
-- Create: `scripts/extract-seed.mjs`, `src/mocks/seed/social.json`, `src/mocks/seed/qnipay.json`, `src/mocks/seed/meta.json` (all generated)
+- Create: `scripts/extract-seed.mjs`, `src/mocks/seed/social.json`, `src/mocks/seed/calm.ly.json`, `src/mocks/seed/meta.json` (all generated)
 - Test: `src/mocks/seed/seed.test.ts`
 
 **Interfaces:**
@@ -1379,13 +1379,13 @@ Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>"
 `src/mocks/seed/seed.test.ts`:
 ```ts
 import social from './social.json';
-import qnipay from './qnipay.json';
+import calm.ly from './calm.ly.json';
 import meta from './meta.json';
 
 type Rec = Record<string, unknown> & { id: string; code?: string };
 const vals = (s: { data: Record<string, Record<string, Rec>> }, c: string) => Object.values(s.data[c] ?? {});
 
-for (const [name, seed] of Object.entries({ social, qnipay }) as [string, { tenant: string; data: Record<string, Record<string, Rec>> }][]) {
+for (const [name, seed] of Object.entries({ social, calm.ly }) as [string, { tenant: string; data: Record<string, Record<string, Rec>> }][]) {
   describe(`seed ${name}`, () => {
     test('has people, accounts, user types, capabilities and a tenant', () => {
       for (const c of ['people', 'accounts', 'userTypes', 'capabilities', 'locations', 'departments'])
@@ -1440,12 +1440,12 @@ import vm from 'node:vm';
 import { JSDOM } from 'jsdom';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const SRC = process.env.PROTOTYPE_PATH || resolve(here, '../../Qnipay workforce cc/mockup/qnipay-workforce-v15.html');
+const SRC = process.env.PROTOTYPE_PATH || resolve(here, '../../calm.ly workforce cc/mockup/calm.ly-workforce-v15.html');
 const html = readFileSync(SRC, 'utf8');
 const OUT = resolve(here, '../src/mocks/seed');
 const FROZEN = new Date(2026, 7, 13, 14, 30, 0);   // the date the sample data was authored around
 const STAMP = FROZEN.toISOString();
-const KEY = 'qnipay.workforce.v1';
+const KEY = 'calm.ly.workforce.v1';
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 /* ---- constants from the source: the text of `const NAME=<literal>;`, evaluated alone ---- */
@@ -1484,7 +1484,7 @@ function boot() {
     if (acc && acc.classList.contains('hidden')) click(act('show-accounts'));
     const row = [...d.querySelectorAll('#lg-accounts .acct')].find(b => /Configuration, modules/.test(b.textContent));
     d.querySelector('#lg-em').value = row.getAttribute('data-em');
-    d.querySelector('#lg-pw').value = 'Qnipay@123';
+    d.querySelector('#lg-pw').value = 'calm.ly@123';
     click(act('signin'));
   };
   const useTenant = k => {
@@ -1530,25 +1530,25 @@ const { w, signInAdmin, useTenant } = boot();
 signInAdmin();
 await sleep(500);
 const read = () => JSON.parse(w.localStorage.getItem(KEY)).data;
-const qnipay = read();
+const calm.ly = read();
 useTenant('social');
 await sleep(500);
 const social = read();
 
-writeFileSync(resolve(OUT, 'qnipay.json'), JSON.stringify(shape('qnipay', qnipay, PERMS_META), null, 1) + '\n');
+writeFileSync(resolve(OUT, 'calm.ly.json'), JSON.stringify(shape('calm.ly', calm.ly, PERMS_META), null, 1) + '\n');
 writeFileSync(resolve(OUT, 'social.json'), JSON.stringify(shape('social', social, PERMS_META), null, 1) + '\n');
 writeFileSync(resolve(OUT, 'meta.json'), JSON.stringify({
   flags: literal('FLAGS'), modules: literal('MODULES'), permGroups: literal('PERM_GROUPS'), empStates: literal('EMP_STATES') }, null, 1) + '\n');
-console.log('seed written: qnipay', (qnipay.PEOPLE || []).length, 'people; social', (social.PEOPLE || []).length, 'people');
+console.log('seed written: calm.ly', (calm.ly.PEOPLE || []).length, 'people; social', (social.PEOPLE || []).length, 'people');
 w.close();
 ```
 
 - [ ] **Step 4: Run it**
 
 Run: `npm run seed`
-Expected: `seed written: qnipay N people; social M people`, with both N and M greater than 0.
+Expected: `seed written: calm.ly N people; social M people`, with both N and M greater than 0.
 - If the store is empty, the sign-in did not happen: the account list's selector or text has changed.
-- To fix it, open the prototype, compare against `goSignIn` and `signInWith` in `../Qnipay workforce cc/mockup/qnipay-regression-suite.js:37-85`, and match those.
+- To fix it, open the prototype, compare against `goSignIn` and `signInWith` in `../calm.ly workforce cc/mockup/calm.ly-regression-suite.js:37-85`, and match those.
 - Change only the extractor.
 
 - [ ] **Step 5: Run the test**
@@ -1562,7 +1562,7 @@ Expected: all seed tests pass, and the Task 5 tests still pass.
 
 ```bash
 git add -A
-git commit -m "feat(mocks): seed extracted from the prototype for qnipay and social, with meta
+git commit -m "feat(mocks): seed extracted from the prototype for calm.ly and social, with meta
 
 Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>"
 ```
@@ -1607,7 +1607,7 @@ const post = (url: string, body?: unknown, token?: string) => fetch(url, { metho
 const anyAccount = (type: string) => Object.values(store.db.accounts as Record<string, { email: string; userType: string }>).find(a => a.userType === type)!;
 
 test('signing in with the demo password returns a session with capabilities', async () => {
-  const r = await post('/api/v1/session', { email: anyAccount('manager').email, password: 'Qnipay@123' });
+  const r = await post('/api/v1/session', { email: anyAccount('manager').email, password: 'calm.ly@123' });
   expect(r.status).toBe(200);
   const s = await r.json();
   expect(s.account.userType).toBe('manager');
@@ -1620,14 +1620,14 @@ test('a wrong password is refused with a next step, and nothing is issued', asyn
 });
 test('a session whose account has gone is refused, so the client signs out', async () => {
   const acc = anyAccount('employee');
-  const { token } = await (await post('/api/v1/session', { email: acc.email, password: 'Qnipay@123' })).json();
+  const { token } = await (await post('/api/v1/session', { email: acc.email, password: 'calm.ly@123' })).json();
   delete (store.db.accounts as Record<string, unknown>)[`acc_${acc.email}`];
   const r = await fetch('/api/v1/session', { headers: { Authorization: `Bearer ${token}` } });
   expect(r.status).toBe(401);
 });
 test('view-as is audited, and the session says who is really signed in', async () => {
   const admin = anyAccount('admin'), emp = anyAccount('employee');
-  const { token } = await (await post('/api/v1/session', { email: admin.email, password: 'Qnipay@123' })).json();
+  const { token } = await (await post('/api/v1/session', { email: admin.email, password: 'calm.ly@123' })).json();
   const r = await post('/api/v1/session/view-as', { personCode: emp.personCode }, token);
   const s = await r.json();
   expect(s.viewingAs.personCode).toBe(emp.personCode);
@@ -1660,7 +1660,7 @@ test('SI A wrong password says what to do and signs nobody in', async ({ page, a
 test('SI A failed sign-in request leaves you on the sign-in screen with a reason', async ({ page, api }) => {
   await api.fault('POST', '/api/v1/session', 500);
   await page.getByTestId(tid.signIn.email).fill('x@example.org');
-  await page.getByTestId(tid.signIn.password).fill('Qnipay@123');
+  await page.getByTestId(tid.signIn.password).fill('calm.ly@123');
   await page.getByTestId(tid.signIn.submit).click();
   await expect(page.getByTestId(tid.signIn.error)).toContainText(/Nothing has been changed/);
   await expect(page.getByTestId(tid.signIn.form)).toBeVisible();
@@ -1711,7 +1711,7 @@ import { handle, readJson, refuse } from './http';
 import { writeAudit } from './audit';
 import { SignInRequest, ViewAsRequest, type Session } from '@/contract/session';
 
-export const DEMO_PASSWORD = 'Qnipay@123';   // stub: shared demo password, replaced by Entra ID
+export const DEMO_PASSWORD = 'calm.ly@123';   // stub: shared demo password, replaced by Entra ID
 interface Account { email: string; userType: Session['account']['userType']; personCode: string; grants: string[]; revocations: string[] }
 interface Person { code: string; name: string }
 interface UserType { id: string; capabilities: string[] }
@@ -1742,7 +1742,7 @@ export function requireSession(request: Request): ServerSession & { account: Acc
   return { ...s, account: a, caps: view(s).capabilities };
 }
 export function requireCapability(s: { caps: string[] }, cap: string, label: string) {
-  if (!s.caps.includes(cap)) refuse(403, { code: 'capability', message: `This needs "${label}", which your access does not include.`, next: 'Ask an administrator to grant it on Qnipay setup → Permissions.' });
+  if (!s.caps.includes(cap)) refuse(403, { code: 'capability', message: `This needs "${label}", which your access does not include.`, next: 'Ask an administrator to grant it on calm.ly setup → Permissions.' });
 }
 const who = (s: ServerSession & { account: Account }) => ({ personCode: s.account.personCode, name: personBy(s.account.personCode)?.name ?? s.email, ...(s.viewingAs ? { viewingAs: s.viewingAs } : {}) });
 
@@ -1850,7 +1850,7 @@ export function SignIn() {
   }
   return (
     <main data-testid={tid.page('sign-in')} className="mx-auto flex min-h-dvh max-w-md flex-col justify-center gap-lg p-lg">
-      <h1 className="text-[length:var(--qp-text-24)] font-semibold">Sign in to Qnipay Workforce</h1>
+      <h1 className="text-[length:var(--qp-text-24)] font-semibold">Sign in to calm.ly Workforce</h1>
       <p className="text-text-secondary">Simulated sign-in. Production uses your Microsoft work account.</p>
       <form data-testid={tid.signIn.form} onSubmit={submit} className="flex flex-col gap-md" noValidate>
         <Field testId="sign-in-email-field" label="Email address"><TextInput testId={tid.signIn.email} type="email" autoComplete="username" value={email} onChange={e => setEmail(e.target.value)} /></Field>
@@ -1862,7 +1862,7 @@ export function SignIn() {
       {showAccounts && <ul className="flex flex-col gap-xs" aria-label="Demo accounts. A shortcut, not the whole list.">
         {accounts.data?.map(a => <li key={a.email}>
           <button type="button" data-testid={tid.signIn.account(a.email)} className="w-full rounded-control border border-border p-sm text-left"
-            onClick={() => { setEmail(a.email); setPassword('Qnipay@123'); }}>
+            onClick={() => { setEmail(a.email); setPassword('calm.ly@123'); }}>
             <b>{a.name}</b> · {NOTE[a.userType]}<span className="block text-text-secondary">{a.email}</span></button></li>)}
       </ul>}
     </main>);
@@ -1920,7 +1920,7 @@ import { tid } from '../../src/testids';
 /* MSW lives in the page's service worker, so control calls run inside the page. */
 const call = (page: Page, method: string, path: string, body?: unknown) =>
   page.evaluate(async ([m, p, b]) => {
-    const token = sessionStorage.getItem('qnipay.session');
+    const token = sessionStorage.getItem('calm.ly.session');
     const r = await fetch(p as string, { method: m as string, headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
       body: b === undefined ? undefined : JSON.stringify(b) });
     const text = await r.text();
@@ -1930,7 +1930,7 @@ const call = (page: Page, method: string, path: string, body?: unknown) =>
 export const FROZEN = '2026-08-13T14:30:00.000Z';
 type Persona = 'employee' | 'manager' | 'admin';
 export const test = base.extend<{
-  api: { reset(): Promise<void>; seed(t: 'social' | 'qnipay'): Promise<void>; setClock(iso: string | null): Promise<void>;
+  api: { reset(): Promise<void>; seed(t: 'social' | 'calm.ly'): Promise<void>; setClock(iso: string | null): Promise<void>;
     fault(method: string, path: string, status: number, times?: number): Promise<void>; get(path: string): Promise<{ status: number; body: unknown }>;
     send(method: string, path: string, body?: unknown): Promise<{ status: number; body: unknown }> };
   signInAs(p: Persona): Promise<void>;
@@ -1953,10 +1953,10 @@ export const test = base.extend<{
     await use(async (p: Persona) => {
       const accounts = (await api.get('/api/v1/session/accounts')).body as { email: string; userType: Persona }[];
       const acc = accounts.find(a => a.userType === p)!;
-      await page.evaluate(() => sessionStorage.removeItem('qnipay.session'));
+      await page.evaluate(() => sessionStorage.removeItem('calm.ly.session'));
       await page.goto('/');
       await page.getByTestId(tid.signIn.email).fill(acc.email);
-      await page.getByTestId(tid.signIn.password).fill('Qnipay@123');
+      await page.getByTestId(tid.signIn.password).fill('calm.ly@123');
       await page.getByTestId(tid.signIn.submit).click();
       await expect(page.getByTestId(tid.shell.rolePill)).toBeVisible();
     });
@@ -2116,7 +2116,7 @@ export function resolveCapabilities(templateCaps: readonly string[], grants: rea
 ```
 `src/domain/nav.ts`, ported from the prototype `NAV()`:
 ```ts
-/* Ported from the prototype's NAV() (qnipay-workforce-v15.html, "function NAV()").
+/* Ported from the prototype's NAV() (calm.ly-workforce-v15.html, "function NAV()").
    Order is screen order; a run of tabs sharing `group` becomes one menu. */
 export interface NavInput { caps: Set<string>; modules: Record<string, boolean>; flags: Record<string, boolean>; onboarding: boolean }
 export interface NavTab { view: string; label: string; group?: string; path: string; built: boolean; subProject?: string }
@@ -2180,7 +2180,7 @@ export function buildNav({ caps, modules, flags, onboarding }: NavInput): NavGro
   const groups: NavGroup[] = [
     { key: 'work', label: 'My Work', tabs: keep(work) },
     { key: 'team', label: 'My Team', tabs: onboarding ? [] : keep(team) },
-    { key: 'setup', label: 'Qnipay setup', tabs: onboarding || !setupTabs.length ? [] : [tab('setup', 'asetup', 'Qnipay setup'), ...setupTabs] },
+    { key: 'setup', label: 'calm.ly setup', tabs: onboarding || !setupTabs.length ? [] : [tab('setup', 'asetup', 'calm.ly setup'), ...setupTabs] },
   ];
   return groups.filter(g => g.tabs.length);
 }
@@ -2259,7 +2259,7 @@ export function ShellView({ nav, roleLabel, viewingAs, unread, onSignOut, onEndV
   return (
     <div className="flex min-h-dvh flex-col">
       <header className="flex items-center gap-md bg-surface-inverse px-lg py-sm text-primary-foreground">
-        <span className="font-semibold">Qnipay</span>
+        <span className="font-semibold">calm.ly</span>
         <nav aria-label="Areas" className="flex gap-xs">
           {nav.map(g => <Link key={g.key} to={g.tabs[0]!.path} data-testid={tid.nav.group(g.key)}
             aria-current={g === current ? 'true' : undefined}
@@ -2390,7 +2390,7 @@ const req = (method: string, url: string, body?: unknown, ifMatch?: number) => f
 beforeEach(async () => {
   store.reset('social');
   token = (await (await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email: acc('admin').email, password: 'Qnipay@123' }) })).json()).token;
+    body: JSON.stringify({ email: acc('admin').email, password: 'calm.ly@123' }) })).json()).token;
 });
 const ut = (id: string) => (store.db.userTypes as Record<string, { version: number; capabilities: string[] }>)[id]!;
 const audits = () => Object.values(store.db.audit as Record<string, { act: string; after: unknown; before: unknown }>);
@@ -2429,7 +2429,7 @@ test('a per-user exception needs a reason, is audited, and changes that user\'s 
 });
 test('a manager is refused, naming the capability', async () => {
   token = (await (await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email: acc('manager').email, password: 'Qnipay@123' }) })).json()).token;
+    body: JSON.stringify({ email: acc('manager').email, password: 'calm.ly@123' }) })).json()).token;
   const r = await req('GET', '/api/v1/user-types');
   expect(r.status).toBe(403);
   expect((await r.json()).message).toMatch(/Permissions and role configuration/);
@@ -2554,7 +2554,7 @@ beforeAll(() => server.listen({ onUnhandledRequest: 'error' })); afterAll(() => 
 beforeEach(async () => {
   store.reset('social'); queryClient.clear();
   const admin = Object.values(store.db.accounts as Record<string, { email: string; userType: string }>).find(a => a.userType === 'admin')!;
-  setToken((await (await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: admin.email, password: 'Qnipay@123' }) })).json()).token);
+  setToken((await (await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: admin.email, password: 'calm.ly@123' }) })).json()).token);
 });
 const mount = () => render(<QueryClientProvider client={queryClient}><PermissionsPage /></QueryClientProvider>);
 
@@ -2714,7 +2714,7 @@ let token = '';
 beforeEach(async () => {
   store.reset('social'); store.setClock('2026-08-13T14:30:00.000Z');
   const admin = Object.values(store.db.accounts as Record<string, { email: string; userType: string }>).find(a => a.userType === 'admin')!;
-  token = (await (await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: admin.email, password: 'Qnipay@123' }) })).json()).token;
+  token = (await (await fetch('/api/v1/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: admin.email, password: 'calm.ly@123' }) })).json()).token;
 });
 const get = async (q = '') => (await fetch('/api/v1/audit' + q, { headers: { Authorization: `Bearer ${token}` } })).json();
 
@@ -2890,7 +2890,7 @@ test('n/a always carries a reason, ported always names its test', () => {
     "MOBILE FOUNDATION": "1c", "REVIEW RUN: SYSTEM, MOBILE, DENSITY, AFFORDANCES": "1c",
     "EMPLOYEE CRUD + LIFECYCLE (IMP-013)": "1b", "DIMENSION CRUD (IMP-019)": "1b", "EMPLOYEE TYPE CRUD (pre-existing, now covered)": "1b",
     "PEOPLE, CONTRACTS AND DIMENSIONS": "1b", "EMPLOYEE IDENTIFIERS": "1b", "TENANT DATA FROM THE BC EXPORT": "1b",
-    "MODULES — index, then drill in (mirrors Qnipay setup)": "1c", "TIMESHEET IS LICENSABLE, CORE IS THE BASE APP": "1c",
+    "MODULES — index, then drill in (mirrors calm.ly setup)": "1c", "TIMESHEET IS LICENSABLE, CORE IS THE BASE APP": "1c",
     "FEATURE OWNERSHIP": "1c", "MODULE PAGES ARE THE SAME SHAPE": "1c", "ONE HOME PER PAGE": "1c", "GUIDES — explanation moved off the page": "1c",
     "SAVING A TENANT AS A TEMPLATE": "1c", "FUSION3 CONFIGURED THROUGH THE TEMPLATE": "1c", "A MODULE THAT IS OFF SAYS NOTHING": "1c",
     "SETUP CONTROLS DO ONE THING": "1c", "ITEM 4 — actionable notifications and deep links": "1c", "NOTICE BOARD (Workforce core)": "1c",
@@ -2916,7 +2916,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const SUITE = process.env.PROTOTYPE_SUITE || resolve(here, '../../Qnipay workforce cc/mockup/qnipay-regression-suite.js');
+const SUITE = process.env.PROTOTYPE_SUITE || resolve(here, '../../calm.ly workforce cc/mockup/calm.ly-regression-suite.js');
 const OUT = resolve(here, '../e2e/trace.json');
 const map = JSON.parse(readFileSync(resolve(here, '../e2e/trace-areas.json'), 'utf8'));
 const src = readFileSync(SUITE, 'utf8').split('\n');
@@ -2934,7 +2934,7 @@ src.forEach(line => {
     rows.push({ id, section, text, area, status: old ? old.status : 'pending', ...(old?.test ? { test: old.test } : {}), ...(old?.reason ? { reason: old.reason } : {}) });
   }
 });
-writeFileSync(OUT, JSON.stringify({ generatedFrom: 'qnipay-regression-suite.js', rows }, null, 1) + '\n');
+writeFileSync(OUT, JSON.stringify({ generatedFrom: 'calm.ly-regression-suite.js', rows }, null, 1) + '\n');
 console.log(`trace.json: ${rows.length} rows`);
 if (defaulted.size) console.log('sections sent to the default area (' + map.defaultArea + '):\n  ' + [...defaulted].join('\n  '));
 ```
@@ -2984,7 +2984,7 @@ The permissions matrix is a matrix. CLAUDE.md says matrices scroll with the firs
 
 Run:
 ```bash
-VITE_MOCKS=off npm run build && grep -rl "_dev/reset\|mockServiceWorker\|Qnipay@123" dist/assets || echo "no mock code in the build"
+VITE_MOCKS=off npm run build && grep -rl "_dev/reset\|mockServiceWorker\|calm.ly@123" dist/assets || echo "no mock code in the build"
 ```
 Expected: `no mock code in the build`.
 - If it finds anything, the dynamic `import('./mocks/browser')` in `main.tsx` has been made static somewhere.

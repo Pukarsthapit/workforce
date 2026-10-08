@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { Avatar } from './Record';
 
-/* The prototype's suggestion card and its reasons (qnipay-workforce-v15.html:
+/* The prototype's suggestion card and its reasons (calm.ly-workforce-v15.html:
    710-726): who could take something, why, and what you can do about it.
    Used by Team rota's suggested cover and cell picker, and by Cover requests. */
 

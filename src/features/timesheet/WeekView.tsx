@@ -10,7 +10,7 @@ import { fillFromRota, gridAs, gridTotals, initialGrid, kindFor, refusedDay, wee
 import { WeekGrid } from './WeekGrid';
 import { MultiWeek } from './MultiWeek';
 
-/* The week view: tsWeekView (qnipay-workforce-v15.html:6337-6366) and the
+/* The week view: tsWeekView (calm.ly-workforce-v15.html:6337-6366) and the
    submit-week and fill-from-rota actions (11370-11419). The submission is one
    request; what the server held back comes back with its reasons and stays on
    screen under the grid. */

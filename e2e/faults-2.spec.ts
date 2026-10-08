@@ -9,7 +9,7 @@ import { BIGYAN, EDDIE, PUKAR, TODAY, WEEK, dayState, sendVersioned, signInEmail
    proxy, approve, approve in bulk, save Timesheet setup and retry a posting.
    A fault is registered after signing in, because signing in reloads the
    page and faults live in the page (fixtures.ts). */
-test.beforeEach(async ({ api }) => { await api.seed('qnipay'); await api.setClock(FROZEN); });
+test.beforeEach(async ({ api }) => { await api.seed('calm.ly'); await api.setClock(FROZEN); });
 
 test('a fault on any timesheet write shows the refusal, and leaves no record and no audit row', async ({ page, api }) => {
   test.setTimeout(120_000);

@@ -100,7 +100,7 @@ describe('deep links (NOTIF_TARGETS, notifReachable)', () => {
     expect(linkFor('Timesheet', 'admin', nav('integration'))).toBeNull(); // ipay is not built yet
     expect(linkFor('Workforce', 'employee', nav('own_home'))).toEqual({ view: 'home', path: '/work/home', label: 'Home' }); // built in 1c group 7
     expect(linkFor('Workforce', 'employee', nav('own_ts'))).toBeNull(); // not on the nav without own_home
-    expect(linkFor('Workforce', 'admin', nav('mod_cfg'))).toEqual({ view: 'asetup', path: '/setup/asetup', label: 'Qnipay setup' });
+    expect(linkFor('Workforce', 'admin', nav('mod_cfg'))).toEqual({ view: 'asetup', path: '/setup/asetup', label: 'calm.ly setup' });
   });
   test('every page the app knows is listed once, whoever reaches it', () => {
     const paths = everyTab().map(t => t.path);

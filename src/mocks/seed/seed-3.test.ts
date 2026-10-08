@@ -1,5 +1,5 @@
 import social from './social.json';
-import qnipay from './qnipay.json';
+import calmly from './calmly.json';
 import {
   COVER_REASONS, FULFIL_AUDIENCES, FULFIL_CHANNELS, ROTA_STATES, isValidCell, onRoster, recalcShift, rotaConfigProblem, rotaWeekId,
   type FulfilStage, type RotaConfig, type ShiftType, type TypeRota,
@@ -97,8 +97,8 @@ describe('seed social for module 3', () => {
   });
 });
 
-test('qnipay keeps Rota off and has no rota data (D9)', () => {
-  const q = qnipay as unknown as SeedFile;
+test('calmly keeps Rota off and has no rota data (D9)', () => {
+  const q = calmly as unknown as SeedFile;
   expect((q.data.tenant?.tenant as Rec & { modules: Record<string, boolean> }).modules.R).toBe(false);
   for (const c of ROTA) expect(q.data[c], c).toBeUndefined();
 });

@@ -1,6 +1,6 @@
 /* 1c group 5: approval chains and delegations (brief D8). Ported from the
    prototype's APPROVAL_CHAIN, CHAIN_SCOPES, CHAIN_WHEN and DELEGATIONS
-   (qnipay-workforce-v15.html:2262-2276), admApprovals (8405-8473) and the
+   (calm.ly-workforce-v15.html:2262-2276), admApprovals (8405-8473) and the
    chain-add, deleg-add, data-chain, data-chaindel and data-deldel handlers.
 
    Where the prototype and the brief part company, the brief wins:

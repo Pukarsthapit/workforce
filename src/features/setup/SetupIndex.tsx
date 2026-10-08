@@ -13,7 +13,7 @@ interface Section { key: string; label: string; description: string; pages: NavT
 const ICON: Record<string, ReactNode> = { org: <Building />, mods: <Blocks />, people: <Users />, gov: <ShieldCheck />, int: <Plug /> };
 
 /* Ported from the prototype's admSetupIndex and SETUP_SECTIONS
-   (qnipay-workforce-v15.html:9271-9281, 3975-3991): an administrator has one
+   (calm.ly-workforce-v15.html:9271-9281, 3975-3991): an administrator has one
    place called setup, sectioned by what it configures, not a single strip of
    a dozen-plus tabs. Each card opens the section's first reachable page; the
    tab strip then shows the rest of that section plus a way back (Shell.tsx's
@@ -37,7 +37,7 @@ export function SetupIndex() {
   });
   return (
     <Page testId={tid.page('asetup')}>
-      <PageHead title="Qnipay setup" tip="Everything that decides how this workforce runs, grouped by what it decides." tipTestId={tid.head.tip('asetup')}
+      <PageHead title="calm.ly setup" tip="Everything that decides how this workforce runs, grouped by what it decides." tipTestId={tid.head.tip('asetup')}
         actions={<Caution testId={tid.head.caution('asetup')} text="Changes here apply immediately, to everyone. There is no draft, no approval and no scheduled release in this build. A setting is live for the whole organisation the moment it is changed, and the change is recorded in the audit log." />} />
       <TooltipProvider delayDuration={400}>
         <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,320px),1fr))] gap-md">
